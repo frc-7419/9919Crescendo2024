@@ -1,2 +1,2 @@
-# SwerveBase
- Contains some basic swerve code to build off of
+# 9919 Cresendo
+ robot code for 9919 in the Cresendo 2024 FRC competition
