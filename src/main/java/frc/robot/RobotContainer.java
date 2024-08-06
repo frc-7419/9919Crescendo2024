@@ -7,16 +7,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+import frc.robot.subsystems.drive.ShooterSubsystem;
 
 public class RobotContainer {
   
   // Joysticks, subsystems, and commands must all be private and final
 
   // Joysticks
-  private final XboxController driver = new XboxController(0); //driver
+  private final XboxController driver = new XboxController(Constants.OperatorConstants.kDriveControllerPort); //driver
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   //Commands
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);

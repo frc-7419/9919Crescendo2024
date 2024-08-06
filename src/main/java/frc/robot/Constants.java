@@ -19,6 +19,9 @@ import edu.wpi.first.math.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class OperatorConstants {
+    public static final int kDriveControllerPort = 0;
+  }
   public static class SwerveConstants {
     /*
     * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X CONFIGURATIONS
