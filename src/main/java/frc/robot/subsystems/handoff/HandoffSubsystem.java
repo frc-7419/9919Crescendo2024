@@ -5,6 +5,7 @@
 package frc.robot.subsystems.handoff;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HandoffConstants;
@@ -31,11 +32,11 @@ public class HandoffSubsystem extends SubsystemBase {
   // The other basic motor control methods. Eg coast, brake, etc.
 
   public void coast() {
-    handoffMotor.setNeutralMode(NeutralMode.Coast);
+    handoffMotor.setNeutralMode(NeutralModeValue.Coast);
   }
 
   public void brake() {
-    handoffMotor.setNeutralMode(NeutralMode.Brake);
+    handoffMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
   public void stop() {
@@ -43,6 +44,7 @@ public class HandoffSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(float speed) {
+    // that is not a valid way of setting the speed, either use voltage or velocity voltage. phoenix6 doesn't have percent ouput or an equvilant
     handoffMotor.set(ControlMode.PercentOutput, speed);
   }
 
