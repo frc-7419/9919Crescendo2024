@@ -15,28 +15,37 @@ public class RunDiverter extends Command {
 
   // Declare the subsystem and variables
 
-  public RunDiverter() {
+  private HandoffSubsystem handoffSubsystem;
+  private float speed;
+
+  public RunDiverter(HandoffSubsystem handoffSubsystem, float speed) {
     // Initialize the subsystem and variables
+    this.handoffSubsystem = handoffSubsystem;
+    this.speed = speed;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(handoffSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     // Initialize the motor
+    handoffSubsystem.coast();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // Run the motor
+    handoffSubsystem.setSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Stop the motor
+    handoffSubsystem.brake();
   }
 
   // Returns true when the command should end.

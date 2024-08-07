@@ -23,11 +23,28 @@ public class HandoffSubsystem extends SubsystemBase {
 
   public HandoffSubsystem() {
     handoffMotor = new TalonFX(HandoffConstants.handoffMotorID);
+    coast();
   }
 
   // Method to apply power to the handoff motor for the command.
 
   // The other basic motor control methods. Eg coast, brake, etc.
+
+  public void coast() {
+    handoffMotor.setNeutralMode(NeutralMode.Coast);
+  }
+
+  public void brake() {
+    handoffMotor.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public void stop() {
+    handoffMotor.set(0);
+  }
+
+  public void setSpeed(float speed) {
+    handoffMotor.set(ControlMode.PercentOutput, speed);
+  }
 
   @Override
   public void periodic() {
