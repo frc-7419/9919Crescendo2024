@@ -22,6 +22,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriveControllerPort = 0;
   }
+  
   public static class SwerveConstants {
     /*
     * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X CONFIGURATIONS
@@ -40,6 +41,7 @@ public final class Constants {
     public static final double kSpeedMotorGearRatio = 12.0/24.0* 24.0/22.0 * 15.0/45.0;
     public static final double LENGTH = Units.inchesToMeters(26.5);
     public static final double HALF_LENGTH = LENGTH/2.0;
+    
     //Not sure how to calculate this theoretically but this needs to be determined experimentally first
     //Neo Free-Speed 13.16 ft/s 15.68 ft/s 18.66 ft/s
     public static final double kMaxTranslationalSpeed = Units.feetToMeters(3);
@@ -71,6 +73,7 @@ public final class Constants {
     public final int turnEncoderID;
     public final double offset;
     public final Translation2d location;
+    
     public static final double kMaxTurningSpeed = 0.3;
     
     public SwerveModuleConstants(int driveMotorID, int turnMotorID, int turnEncoderID, double offset, Translation2d location) {
@@ -80,5 +83,11 @@ public final class Constants {
       this.offset = offset;
       this.location = location;
     } 
+
+    
+  }
+  public static class ShooterConstants {
+    public static final int bottomShooterID = 20;
+    public static final int topShooterID = 20;
   }
 }
