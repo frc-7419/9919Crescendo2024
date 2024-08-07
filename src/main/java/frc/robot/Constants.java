@@ -19,6 +19,13 @@ import edu.wpi.first.math.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class RobotConstants {
+    public static final String kCanbus = "rio";
+  }
+  public static class ElevatorConstants {
+    public static final int motorOneID = 0;
+    public static final int motorTwoID = 0;
+  }
   public static class SwerveConstants {
     /*
     * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X CONFIGURATIONS

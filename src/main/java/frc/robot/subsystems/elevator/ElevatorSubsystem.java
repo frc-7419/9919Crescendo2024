@@ -11,6 +11,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private final TalonFX motorOne; 
@@ -18,8 +19,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final MotionMagicVoltage mmVoltage;
 
   public ElevatorSubsystem() {
-    this.motorOne = new TalonFX(0);
-    this.motorTwo = new TalonFX(0);
+    this.motorOne = new TalonFX(Constants.ElevatorConstants.motorOneID, Constants.RobotConstants.kCanbus);
+    this.motorTwo = new TalonFX(Constants.ElevatorConstants.motorTwoID, Constants.RobotConstants.kCanbus);
     this.mmVoltage = new MotionMagicVoltage(0).withSlot(0);
     motorOne.setInverted(true); //TODO: when robot is built and motor are in place check if inversion is needed
     motorTwo.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
@@ -37,6 +38,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     motionMagicConfig.MotionMagicCruiseVelocity = 80; // rps cruise velocity TODO
     motionMagicConfig.MotionMagicAcceleration = 160; // rps/s acceleration TODO
     motionMagicConfig.MotionMagicJerk = 1600; // rps/s^2 jerk TODO
+    
+    // Apply config
     motorOne.getConfigurator().apply(config);
     motorTwo.getConfigurator().apply(config);
     motorTwo.setControl(new Follower(motorOne.getDeviceID(), false));
