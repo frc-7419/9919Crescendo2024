@@ -5,7 +5,7 @@
 package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,20 +13,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  // Things the subsystem will do:
-  // - We want everything in meters, no inches or feet so a conversion ratio is needed. For example, the speed of the motors should be in m/s
   private final TalonFX topMotor; 
   private final TalonFX bottomMotor;
-  private final VoltageOut voltageOut;
-
-
+  private final VelocityVoltage velocityVoltage;
 
   public ShooterSubsystem() {
-    this.topMotor = new TalonFX(Constants.ShooterConstants.topShooterID,"rio");
-    this.bottomMotor = new TalonFX(Constants.ShooterConstants.bottomShooterID, "rio");
+    this.topMotor = new TalonFX(Constants.ShooterConstants.topShooterID,Constants.RobotConstants.kCanbus);
+    this.bottomMotor = new TalonFX(Constants.ShooterConstants.bottomShooterID, Constants.RobotConstants.kCanbus);
     topMotor.setInverted(true);
-    this.voltageOut = new VoltageOut(0);
-    voltageOut.EnableFOC = true;
+    this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
     /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
@@ -38,26 +33,31 @@ public class ShooterSubsystem extends SubsystemBase {
     config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
     config.Voltage.PeakForwardVoltage = 12;
     config.Voltage.PeakReverseVoltage = -12;
-
     topMotor.getConfigurator().apply(config);
     bottomMotor.getConfigurator().apply(config);
   }
 
   /**
-   * Runs the motors of the shooter at the given speeds in m/s
-   * @param bottomSpeed speed of the bottom motor in m/s, positive will push the note forward 
-   * @param topSpeed speed of the top motor in m/s, positive will push the note forward
+   * Runs the motors of the shooter at the given speeds in RPS
+   * @param bottomSpeed speed of the bottom motor in RPS, positive will push the note forward 
+   * @param topSpeed speed of the top motor in RPS, positive will push the note forward
    */
-  public void run(final double topVoltage, final double bottomVoltage) {
-    voltageOut.Output = topVoltage;
-    topMotor.setControl(voltageOut);
-    voltageOut.Output = bottomVoltage;
-    bottomMotor.setControl(voltageOut);
+  public void run(final double topRPM, final double bottomRPM) {
+    if(topRPM!=0||bottomRPM!=0) {
+      coast();
+      topMotor.setControl(velocityVoltage.withVelocity(topRPM/60.0D));
+      bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM/60.0D));
+    } 
+    else {
+      brake();
+      topMotor.setControl(velocityVoltage.withVelocity(topRPM/60.0D));
+      bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM/60.0D));
+    }
   }
 
   /**
    * Gets the velocity of the top motor
-   * @return velocity in m/s positive means forward
+   * @return velocity in RPS, positive means forward
    */
   public double getTopVelocity() {
     return topMotor.getVelocity().getValue();
@@ -65,7 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /**
    * Gets the velocity of the bottom motor
-   * @return velocity in m/s positive means forward
+   * @return velocity in RPS, positive means forward
    */
   public double getBottomVelocity() {
     return bottomMotor.getVelocity().getValue();
@@ -74,18 +74,18 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Top Shooter Velocity", getTopVelocity());
-    SmartDashboard.putNumber("Bottom Shooter Velocity", getBottomVelocity());
-    SmartDashboard.putNumber("Top Shooter Voltage: ", topMotor.getMotorVoltage().getValue());
-    SmartDashboard.putNumber("Bottom Shooter Voltage: ", bottomMotor.getMotorVoltage().getValue());
-    SmartDashboard.putNumber("Top Shooter Temperature ", topMotor.getDeviceTemp().getValue());
-    SmartDashboard.putNumber("Bottom Shooter Temperature", bottomMotor.getDeviceTemp().getValue());
+    SmartDashboard.putNumber("shooter/Top Velocity", getTopVelocity());
+    SmartDashboard.putNumber("shooter/Bottom Velocity", getBottomVelocity());
+    SmartDashboard.putNumber("shooter/Top Voltage: ", topMotor.getMotorVoltage().getValue());
+    SmartDashboard.putNumber("shooter/Bottom Voltage: ", bottomMotor.getMotorVoltage().getValue());
+    SmartDashboard.putNumber("shooter/Top Temperature ", topMotor.getDeviceTemp().getValue());
+    SmartDashboard.putNumber("shooter/Bottom Temperature", bottomMotor.getDeviceTemp().getValue());
   }
-  public void coast() {
+  private void coast() {
     topMotor.setNeutralMode(NeutralModeValue.Coast);
     bottomMotor.setNeutralMode(NeutralModeValue.Coast);
   }
-  public void brake() {
+  private void brake() {
     topMotor.setNeutralMode(NeutralModeValue.Brake);
     bottomMotor.setNeutralMode(NeutralModeValue.Brake);
   }
