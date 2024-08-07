@@ -42,6 +42,8 @@ public class RunDiverter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // Stop when condition is met such as a beam break sensor. Not sure what will be
+    // used but use a beam break sensor as a placeholder.
+    return false; 
   }
 }
