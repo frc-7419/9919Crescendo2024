@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 public class RobotContainer {
   
@@ -17,6 +18,7 @@ public class RobotContainer {
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
 
   //Commands
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
