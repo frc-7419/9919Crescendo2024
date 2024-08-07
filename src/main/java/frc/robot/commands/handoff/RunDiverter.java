@@ -17,12 +17,12 @@ public class RunDiverter extends Command {
   // Declare the subsystem and variables
 
   private HandoffSubsystem handoffSubsystem;
-  private float speed;
+  private float voltage;
 
-  public RunDiverter(HandoffSubsystem handoffSubsystem, float speed) {
+  public RunDiverter(HandoffSubsystem handoffSubsystem, float voltage) {
     // Initialize the subsystem and variables
     this.handoffSubsystem = handoffSubsystem;
-    this.speed = speed;
+    this.voltage = voltage;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(handoffSubsystem);
@@ -39,7 +39,7 @@ public class RunDiverter extends Command {
   @Override
   public void execute() {
     // Run the motor
-    handoffSubsystem.setSpeed(speed);
+    handoffSubsystem.setVoltage(voltage);
   }
 
   // Called once the command ends or is interrupted.
