@@ -20,14 +20,15 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     this.topMotor = new TalonFX(Constants.ShooterConstants.topShooterID,Constants.RobotConstants.kCanbus);
     this.bottomMotor = new TalonFX(Constants.ShooterConstants.bottomShooterID, Constants.RobotConstants.kCanbus);
-    topMotor.setInverted(true);
+    topMotor.setInverted(true);    //TODO: when robot is built and motor are in place check if inversion is needed
+    bottomMotor.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
     this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
     /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
     config.Slot0.kS = 0.1; // To account for friction, add 0.1 V of static feedforward                    DONT TOUCH
     config.Slot0.kV = 0.11299435; // volts per rotation per second                                        DONT TOUCH
-    config.Slot0.kP = 0.11; // An error of 1 rotation per second results in 0.11 V output                 TOUCH
+    config.Slot0.kP = 0.11; // An error of 1 rotation per second results in 0.11 V output                 TODO: tune value for P
     config.Slot0.kI = 0; // No output for integrated error                                                DONT TOUCH
     config.Slot0.kD = 0; // No output for error derivative                                                DONT TOUCH
     config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
