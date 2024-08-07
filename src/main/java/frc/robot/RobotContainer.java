@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
@@ -14,6 +15,7 @@ public class RobotContainer {
 
   // Joysticks
   private final XboxController driver = new XboxController(0); //driver
+  private final CommandXboxController operator = new CommandXboxController(1);
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
@@ -32,8 +34,11 @@ public class RobotContainer {
    * This method is for configuring the button bindings on the joysticks
    */
   private void configureButtonBindings() {
-
+    // Handoff
+    // Run diverter clockwise. Ex: operator.y().whileTrue(new RunDiverter(diverter, 0.5));
+    // Same for counter-clockwise
   }
+  
   /**
    * This method is for configuring the auton chooser
    */
