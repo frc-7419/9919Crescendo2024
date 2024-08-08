@@ -78,4 +78,7 @@ public final class Constants {
       this.location = location;
     } 
   }
+  public static class IntakeConstants {
+    
+  }
 }

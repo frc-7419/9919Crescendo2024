@@ -2,11 +2,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.intake.IntakeWristSubsystem;
+
 
 public class RobotContainer {
   
@@ -17,9 +22,13 @@ public class RobotContainer {
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
+  private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
 
   //Commands
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
+  private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(),driver.getLeftX()), intake);
+  private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0,0.0), intake);
   private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
   /**
    * Creates new RobotContainer and configures auton and buttons
