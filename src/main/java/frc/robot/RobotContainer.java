@@ -29,6 +29,8 @@ public class RobotContainer {
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
   private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(),driver.getLeftX()), intake);
   private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0,0.0), intake);
+  private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
+  private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
   private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
   /**
    * Creates new RobotContainer and configures auton and buttons

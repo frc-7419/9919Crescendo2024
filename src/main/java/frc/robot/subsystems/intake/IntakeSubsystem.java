@@ -8,18 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.units.Angle;
-import edu.wpi.first.units.MutableMeasure;
-import edu.wpi.first.units.Velocity;
-import edu.wpi.first.units.Voltage;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -35,8 +26,8 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public IntakeSubsystem() {
     // Initialize the top and bottom motors
-    this.topMotor = new TalonFX(0);
-    this.bottomMotor = new TalonFX(0);
+    this.topMotor = new TalonFX(Constants.IntakeConstants.topIntakeID,Constants.RobotConstants.kCanbus);
+    this.bottomMotor = new TalonFX(Constants.IntakeConstants.bottomIntakeID,Constants.RobotConstants.kCanbus);
     this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
     // Invert the top motor, but not the bottom motor

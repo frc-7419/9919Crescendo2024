@@ -5,6 +5,8 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -16,7 +18,7 @@ public class IntakeWristSubsystem extends SubsystemBase {
   private final MotionMagicVoltage mmVoltage;
 
   public IntakeWristSubsystem() {
-    this.wristMotor = new TalonFX(0, "rio");
+    this.wristMotor = new TalonFX(Constants.IntakeConstants.intakeWristMotorID, Constants.RobotConstants.kCanbus);
     this.mmVoltage = new MotionMagicVoltage(0).withSlot(0);
     wristMotor.setInverted(false);
     TalonFXConfiguration config = new TalonFXConfiguration();
