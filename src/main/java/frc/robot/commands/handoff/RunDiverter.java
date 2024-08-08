@@ -47,6 +47,7 @@ public class RunDiverter extends Command {
   public void end(boolean interrupted) {
     // Stop the motor
     handoffSubsystem.brake();
+    handoffSubsystem.setVoltage(0);
   }
 
   // Returns true when the command should end.
@@ -54,6 +55,6 @@ public class RunDiverter extends Command {
   public boolean isFinished() {
     // Stop when condition is met such as a beam break sensor. Not sure what will be
     // used but use a beam break sensor as a placeholder.
-    return false; 
+    return false;
   }
 }

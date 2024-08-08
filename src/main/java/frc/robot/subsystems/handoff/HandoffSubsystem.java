@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.handoff;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -52,8 +51,6 @@ public class HandoffSubsystem extends SubsystemBase {
   }
 
   public void setVoltage(float voltage) {
-    // that is not a valid way of setting the speed, either use voltage or velocity voltage. phoenix6 doesn't have percent ouput or an equvilant
-    // look at this page you will see what you are trying to do is from v5, right under that is the way to do it in v6 https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/control-requests-guide.html
     handoffMotor1.setControl(m_request.withOutput(voltage));
     handoffMotor2.setControl(m_request.withOutput(voltage));
   }
