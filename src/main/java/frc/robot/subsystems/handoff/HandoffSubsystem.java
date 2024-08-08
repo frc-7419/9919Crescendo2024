@@ -22,11 +22,13 @@ public class HandoffSubsystem extends SubsystemBase {
    * Counter-Clockwise: To Intake
    */
 
-  private TalonFX handoffMotor;
+  private TalonFX handoffMotor1;
+  private TalonFX handoffMotor2;
   final VoltageOut m_request = new VoltageOut(0);
 
   public HandoffSubsystem() {
-    handoffMotor = new TalonFX(HandoffConstants.handoffMotorID);
+    handoffMotor1 = new TalonFX(HandoffConstants.handoffMotor1ID);
+    handoffMotor2 = new TalonFX(HandoffConstants.handoffMotor2ID);
     coast();
   }
 
@@ -35,21 +37,25 @@ public class HandoffSubsystem extends SubsystemBase {
   // The other basic motor control methods. Eg coast, brake, etc.
 
   public void coast() {
-    handoffMotor.setNeutralMode(NeutralModeValue.Coast);
+    handoffMotor1.setNeutralMode(NeutralModeValue.Coast);
+    handoffMotor2.setNeutralMode(NeutralModeValue.Coast);
   }
 
   public void brake() {
-    handoffMotor.setNeutralMode(NeutralModeValue.Brake);
+    handoffMotor1.setNeutralMode(NeutralModeValue.Brake);
+    handoffMotor2.setNeutralMode(NeutralModeValue.Brake);
   }
 
   public void stop() {
-    handoffMotor.set(0);
+    handoffMotor1.set(0);
+    handoffMotor2.set(0);
   }
 
   public void setVoltage(float voltage) {
     // that is not a valid way of setting the speed, either use voltage or velocity voltage. phoenix6 doesn't have percent ouput or an equvilant
     // look at this page you will see what you are trying to do is from v5, right under that is the way to do it in v6 https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/control-requests-guide.html
-    handoffMotor.setControl(m_request.withOutput(voltage));
+    handoffMotor1.setControl(m_request.withOutput(voltage));
+    handoffMotor2.setControl(m_request.withOutput(voltage));
   }
 
   @Override

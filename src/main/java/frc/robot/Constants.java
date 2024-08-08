@@ -90,6 +90,7 @@ public final class Constants {
   }
 
   public static class HandoffConstants {
-    public static final int handoffMotorID = -1; // Change This
+    public static final int handoffMotor1ID = -1; // Change This
+    public static final int handoffMotor2ID = -1; // Change This
   }
 }
