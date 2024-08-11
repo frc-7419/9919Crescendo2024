@@ -35,17 +35,14 @@ public class ControlHapticsWithJoystick extends Command {
       System.out.println("Rumble");
     }
     if (joystick.b().getAsBoolean()) {
-      haptics.stopRumble(Haptics.ControllerType.DRIVER);
+      haptics.setRequest(new HapticRequest(Haptics.ControllerType.DRIVER, RequestType.STOP));
     }
     if (joystick.x().getAsBoolean()) {
-      HapticRequest r = new HapticRequest(Haptics.ControllerType.DRIVER, RequestType.WARN, 3);
-      haptics.setRequest(r);
-      r.dump();
+      haptics.setRequest(new HapticRequest(Haptics.ControllerType.BOTH, RequestType.WARN, 3));
     }
     if (joystick.y().getAsBoolean()) {
       haptics.setRequest(new HapticRequest(Haptics.ControllerType.DRIVER, RequestType.RUMBLE, 3));
     }
-
   }
 
   // Called once the command ends or is interrupted.
