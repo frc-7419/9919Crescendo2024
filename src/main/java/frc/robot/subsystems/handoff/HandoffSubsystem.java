@@ -28,6 +28,7 @@ public class HandoffSubsystem extends SubsystemBase {
   public HandoffSubsystem() {
     handoffMotor1 = new TalonFX(HandoffConstants.handoffMotor1ID);
     handoffMotor2 = new TalonFX(HandoffConstants.handoffMotor2ID);
+    handoffMotor2.setInverted(true);
     coast();
   }
 
