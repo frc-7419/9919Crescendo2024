@@ -22,12 +22,18 @@ public final class Constants {
   public static class RobotConstants {
     public static final String kCanbus = "rio";
   }
+
+  public static class ElevatorConstants {
+    public static final int motorOneID = 0;
+    public static final int motorTwoID = 0;
+
   public static class OperatorConstants {
     public static final int kDriveControllerPort = 0;
   }
   public static class AmpConstants {
     public static final int topShooterID = 0;
     public static final int bottomShooterID = 0;
+
   }
   public static class SwerveConstants {
     /*

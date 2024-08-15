@@ -10,10 +10,14 @@ import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.amp.AmpSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intake.IntakeWristSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooter.BeamBreakSubsystem;
+
 
 public class RobotContainer {
   
@@ -24,8 +28,12 @@ public class RobotContainer {
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+
+  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
+
 
   //Commands
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
