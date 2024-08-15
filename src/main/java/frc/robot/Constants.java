@@ -19,6 +19,22 @@ import edu.wpi.first.math.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class RobotConstants {
+    public static final String kCanbus = "rio";
+  }
+
+  public static class ElevatorConstants {
+    public static final int motorOneID = 0;
+    public static final int motorTwoID = 0;
+
+  public static class OperatorConstants {
+    public static final int kDriveControllerPort = 0;
+  }
+  public static class AmpConstants {
+    public static final int topShooterID = 0;
+    public static final int bottomShooterID = 0;
+
+  }
   public static class SwerveConstants {
     /*
      * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X
@@ -41,10 +57,13 @@ public final class Constants {
      */
     public static final double kSpeedMotorGearRatio = 12.0 / 24.0 * 24.0 / 22.0 * 15.0 / 45.0;
     public static final double LENGTH = Units.inchesToMeters(26.5);
+
     public static final double HALF_LENGTH = LENGTH / 2.0;
     // Not sure how to calculate this theoretically but this needs to be determined
     // experimentally first
     // Neo Free-Speed 13.16 ft/s 15.68 ft/s 18.66 ft/s
+
+
     public static final double kMaxTranslationalSpeed = Units.feetToMeters(3);
     // arbitrary value in radians, let's say one pi/second
     public static final double kMaxRotationalSpeed = Math.PI / 4;
@@ -77,6 +96,7 @@ public final class Constants {
     public final int turnEncoderID;
     public final double offset;
     public final Translation2d location;
+    
     public static final double kMaxTurningSpeed = 0.3;
 
     public SwerveModuleConstants(int driveMotorID, int turnMotorID, int turnEncoderID, double offset,
@@ -86,11 +106,27 @@ public final class Constants {
       this.turnEncoderID = turnEncoderID;
       this.offset = offset;
       this.location = location;
+
     }
   }
 
   public static class HandoffConstants {
     public static final int handoffMotor1ID = -1; // Change This
     public static final int handoffMotor2ID = -1; // Change This
+    } 
+
+    
+  }
+  public static class ShooterConstants {
+    public static final int bottomShooterID = 20;
+    public static final int topShooterID = 20;
+  }
+  public static class RobotConstants {
+    public static final String kCanbus = "rio";
+  }
+  public static class IntakeConstants {
+    public static final int topIntakeID = 0;
+    public static final int bottomIntakeID = 0;
+    public static final int intakeWristMotorID = 0;
   }
 }
