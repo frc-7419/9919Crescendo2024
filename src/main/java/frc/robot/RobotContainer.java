@@ -2,31 +2,39 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.amp.AmpSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.shooter.BeamBreakSubsystem;
 
 public class RobotContainer {
   
   // Joysticks, subsystems, and commands must all be private and final
 
   // Joysticks
-  private final XboxController driver = new XboxController(0); //driver
+  private final XboxController driver = new XboxController(Constants.OperatorConstants.kDriveControllerPort); //driver
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
   private final AmpSubsystem amp = new AmpSubsystem();
 
   //Commands
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
+  private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
+  private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
   private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
   /**
    * Creates new RobotContainer and configures auton and buttons
    */
-  public RobotContainer() {
+  public RobotContainer() { 
     configureButtonBindings();
     configureAutoSelector();
   }
@@ -54,5 +62,6 @@ public class RobotContainer {
    */
   public void setDefaultCommands() {
     driveBase.setDefaultCommand(swerveDriveFieldCentric);
+    shooter.setDefaultCommand(joystickShooter);
   }
 }
