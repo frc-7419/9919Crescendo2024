@@ -26,34 +26,28 @@ public class RobotContainer {
   // Joysticks, subsystems, and commands must all be private and final
 
   // Joysticks
-  private final CommandXboxController operator = new CommandXboxController(1);
   private final XboxController driver = new XboxController(Constants.OperatorConstants.kDriveControllerPort); //driver
+  private final CommandXboxController operator = new CommandXboxController(1);
 
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
   private final HandoffSubsystem handoff = new HandoffSubsystem();
-
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
-
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
-
-
-  //Commands
-  private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
-  private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(),driver.getLeftX()), intake);
-  private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0,0.0), intake);
-  private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
-  private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
   private final AmpSubsystem amp = new AmpSubsystem();
-
+  
   //Commands
   private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
   private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
   private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
+  private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(),driver.getLeftX()), intake);
+  private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0,0.0), intake);
+  private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
+  private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
   private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
   /**
    * Creates new RobotContainer and configures auton and buttons
