@@ -25,7 +25,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriveControllerPort = 0;
   }
-  
+  public static class AmpConstants {
+    public static final int topShooterID = 0;
+    public static final int bottomShooterID = 0;
+  }
   public static class SwerveConstants {
     /*
     * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X CONFIGURATIONS
