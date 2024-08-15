@@ -12,52 +12,54 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HandoffConstants;
 
 public class HandoffSubsystem extends SubsystemBase {
-  /** Creates a new HandoffSubsystem. */
+    final VoltageOut m_request = new VoltageOut(0);
+    /**
+     * Creates a new HandoffSubsystem.
+     */
 
-  /*
-   * Just a diverter wheel powered by a falcon.
-   * 
-   * Clockwise: To Elevator
-   * Counter-Clockwise: To Intake
-   */
+    /*
+     * Just a diverter wheel powered by a falcon.
+     *
+     * Clockwise: To Elevator
+     * Counter-Clockwise: To Intake
+     */
 
-  private TalonFX handoffMotor1;
-  private TalonFX handoffMotor2;
-  final VoltageOut m_request = new VoltageOut(0);
+    private TalonFX handoffMotor1;
+    private TalonFX handoffMotor2;
 
-  public HandoffSubsystem() {
-    handoffMotor1 = new TalonFX(HandoffConstants.handoffMotor1ID);
-    handoffMotor2 = new TalonFX(HandoffConstants.handoffMotor2ID);
-    handoffMotor2.setInverted(true);
-    coast();
-  }
+    public HandoffSubsystem() {
+        handoffMotor1 = new TalonFX(HandoffConstants.handoffMotor1ID);
+        handoffMotor2 = new TalonFX(HandoffConstants.handoffMotor2ID);
+        handoffMotor2.setInverted(true);
+        coast();
+    }
 
-  // Method to apply power to the handoff motor for the command.
+    // Method to apply power to the handoff motor for the command.
 
-  // The other basic motor control methods. Eg coast, brake, etc.
+    // The other basic motor control methods. Eg coast, brake, etc.
 
-  public void coast() {
-    handoffMotor1.setNeutralMode(NeutralModeValue.Coast);
-    handoffMotor2.setNeutralMode(NeutralModeValue.Coast);
-  }
+    public void coast() {
+        handoffMotor1.setNeutralMode(NeutralModeValue.Coast);
+        handoffMotor2.setNeutralMode(NeutralModeValue.Coast);
+    }
 
-  public void brake() {
-    handoffMotor1.setNeutralMode(NeutralModeValue.Brake);
-    handoffMotor2.setNeutralMode(NeutralModeValue.Brake);
-  }
+    public void brake() {
+        handoffMotor1.setNeutralMode(NeutralModeValue.Brake);
+        handoffMotor2.setNeutralMode(NeutralModeValue.Brake);
+    }
 
-  public void stop() {
-    handoffMotor1.set(0);
-    handoffMotor2.set(0);
-  }
+    public void stop() {
+        handoffMotor1.set(0);
+        handoffMotor2.set(0);
+    }
 
-  public void setVoltage(float voltage) {
-    handoffMotor1.setControl(m_request.withOutput(voltage));
-    handoffMotor2.setControl(m_request.withOutput(voltage));
-  }
+    public void setVoltage(float voltage) {
+        handoffMotor1.setControl(m_request.withOutput(voltage));
+        handoffMotor2.setControl(m_request.withOutput(voltage));
+    }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+    }
 }

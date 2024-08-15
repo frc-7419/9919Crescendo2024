@@ -7,6 +7,7 @@ package frc.robot.subsystems.drive;
 // import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -33,11 +34,12 @@ public class SwerveModule {
 
     /**
      * Makes a new swerve module, this handles one turn motor and one drive motor
-     * @param turnMotorID is a CAN ID parameter (int)
-     * @param driveMotorID is a CAN ID parameter (int)
-     * @param turnEncoderID is a CAN ID parameter (int)
+     *
+     * @param turnMotorID       is a CAN ID parameter (int)
+     * @param driveMotorID      is a CAN ID parameter (int)
+     * @param turnEncoderID     is a CAN ID parameter (int)
      * @param turnEncoderOffset is absolute pos at zero in deg (double)
-     * @param module for naming modules during comprehensive shuffleboard outputs (String)
+     * @param module            for naming modules during comprehensive shuffleboard outputs (String)
      */
     public SwerveModule(int turnMotorID, int driveMotorID, int turnEncoderID, double turnEncoderOffset, String module) {
         this.module = module;
@@ -60,7 +62,7 @@ public class SwerveModule {
         // turnEncoder.configSensorDirection(false);
         // Drive encoder init
         driveEncoder = driveMotor.getEncoder();
-        driveEncoder.setPositionConversionFactor(1/((1/Constants.SwerveConstants.kWheelCircumfrence)*5.5));
+        driveEncoder.setPositionConversionFactor(1 / ((1 / Constants.SwerveConstants.kWheelCircumfrence) * 5.5));
         driveEncoder.setVelocityConversionFactor(1); //TODO: fix this
     }
 
@@ -68,7 +70,7 @@ public class SwerveModule {
         turnMotor.setIdleMode(IdleMode.kCoast);
         driveMotor.setIdleMode(IdleMode.kCoast);
     }
-    
+
     public void brake() {
         turnMotor.setIdleMode(IdleMode.kBrake);
         driveMotor.setIdleMode(IdleMode.kBrake);
@@ -110,12 +112,12 @@ public class SwerveModule {
         driveMotor.set(0);
         turnMotor.set(0);
     }
-    
+
     /**
      * Outputs values to dashboard
      */
     public void outputDashboard() {
         // SmartDashboard.putNumber(module+" angle", turnEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber(module+" driveEncoder", getDrivePosition());
+        SmartDashboard.putNumber(module + " driveEncoder", getDrivePosition());
     }
 }

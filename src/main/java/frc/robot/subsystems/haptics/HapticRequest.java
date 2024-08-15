@@ -3,29 +3,20 @@ package frc.robot.subsystems.haptics;
 import frc.robot.Constants.ControllerConstants;
 
 public class HapticRequest {
-    public enum RequestType {
-        RUMBLE,
-        WARN,
-        STOP
-    }
-
+    private static final double DEFAULT_INTENSITY = ControllerConstants.defaultRumbleIntensity;
+    private static final double DEFAULT_PULSE_INTERVAL = ControllerConstants.defaultPulseInterval;
     private Haptics.ControllerType controllerType;
     private RequestType requestType;
     private double intensity;
     private double duration;
     private double interval;
-
     private double startTime;
     private double endTime;
     private boolean active;
-
-    private static final double DEFAULT_INTENSITY = ControllerConstants.defaultRumbleIntensity;
-    private static final double DEFAULT_PULSE_INTERVAL = ControllerConstants.defaultPulseInterval;
-
     private boolean debug;
 
     public HapticRequest(Haptics.ControllerType controllerType, RequestType requestType,
-            double duration, double interval, double intensity, boolean debug) {
+                         double duration, double interval, double intensity, boolean debug) {
         this.controllerType = controllerType;
         this.requestType = requestType;
         this.duration = duration;
@@ -35,17 +26,17 @@ public class HapticRequest {
     }
 
     public HapticRequest(Haptics.ControllerType controllerType, RequestType requestType, double duration,
-            double interval, double intensity) {
+                         double interval, double intensity) {
         this(controllerType, requestType, duration, interval, intensity, false);
     }
 
     public HapticRequest(Haptics.ControllerType controllerType, RequestType requestType, double duration,
-            double interval) {
+                         double interval) {
         this(controllerType, requestType, duration, interval, DEFAULT_INTENSITY);
     }
 
     public HapticRequest(Haptics.ControllerType controllerType, RequestType requestType,
-            double duration) {
+                         double duration) {
         this(controllerType, requestType, duration, DEFAULT_PULSE_INTERVAL);
     }
 
@@ -147,5 +138,11 @@ public class HapticRequest {
         return ("Active: " + active + " Controller: " + controllerType + " Request: " + requestType
                 + " Intensity: " + intensity
                 + " Duration: " + duration + " Interval: " + interval);
+    }
+
+    public enum RequestType {
+        RUMBLE,
+        WARN,
+        STOP
     }
 }

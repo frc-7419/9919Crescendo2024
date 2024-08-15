@@ -14,47 +14,48 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private final TalonFX motorOne; 
-  private final TalonFX motorTwo;
-  private final MotionMagicVoltage mmVoltage;
+    private final TalonFX motorOne;
+    private final TalonFX motorTwo;
+    private final MotionMagicVoltage mmVoltage;
 
-  public ElevatorSubsystem() {
-    this.motorOne = new TalonFX(Constants.ElevatorConstants.motorOneID, Constants.RobotConstants.kCanbus);
-    this.motorTwo = new TalonFX(Constants.ElevatorConstants.motorTwoID, Constants.RobotConstants.kCanbus);
-    this.mmVoltage = new MotionMagicVoltage(0).withSlot(0);
-    motorOne.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
-    motorTwo.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
-    TalonFXConfiguration config = new TalonFXConfiguration();
-    /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
-    config.Slot0.kS = 0.1; // Friction                                                                    TODO: Friction, tune kS
-    config.Slot0.kV = 0.11299435; // volts per rotation per second                                        TODO: tune kV
-    config.Slot0.kG = 0; // Gravity                                                                       TODO: figure out gravity
-    config.Slot0.kP = 0.11; // Dependent on position                                                      TODO: tune P
-    config.Slot0.kI = 0; // Dependent on accumulated error                                                TODO: tune I
-    config.Slot0.kD = 0; // Dependent on speed                                                            TODO: tune D
+    public ElevatorSubsystem() {
+        this.motorOne = new TalonFX(Constants.ElevatorConstants.motorOneID, Constants.RobotConstants.kCanbus);
+        this.motorTwo = new TalonFX(Constants.ElevatorConstants.motorTwoID, Constants.RobotConstants.kCanbus);
+        this.mmVoltage = new MotionMagicVoltage(0).withSlot(0);
+        motorOne.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
+        motorTwo.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
+        config.Slot0.kS = 0.1; // Friction                                                                    TODO: Friction, tune kS
+        config.Slot0.kV = 0.11299435; // volts per rotation per second                                        TODO: tune kV
+        config.Slot0.kG = 0; // Gravity                                                                       TODO: figure out gravity
+        config.Slot0.kP = 0.11; // Dependent on position                                                      TODO: tune P
+        config.Slot0.kI = 0; // Dependent on accumulated error                                                TODO: tune I
+        config.Slot0.kD = 0; // Dependent on speed                                                            TODO: tune D
 
-    // set Motion Magic settings
-    MotionMagicConfigs motionMagicConfig = config.MotionMagic;
-    motionMagicConfig.MotionMagicCruiseVelocity = 80; // rps cruise velocity TODO
-    motionMagicConfig.MotionMagicAcceleration = 160; // rps/s acceleration TODO
-    motionMagicConfig.MotionMagicJerk = 1600; // rps/s^2 jerk TODO
-    
-    // Apply config
-    motorOne.getConfigurator().apply(config);
-    motorTwo.getConfigurator().apply(config);
-    motorTwo.setControl(new Follower(motorOne.getDeviceID(), false));
-  }
+        // set Motion Magic settings
+        MotionMagicConfigs motionMagicConfig = config.MotionMagic;
+        motionMagicConfig.MotionMagicCruiseVelocity = 80; // rps cruise velocity TODO
+        motionMagicConfig.MotionMagicAcceleration = 160; // rps/s acceleration TODO
+        motionMagicConfig.MotionMagicJerk = 1600; // rps/s^2 jerk TODO
 
-  /**
-   * position is in rotations right now
-   * @param position
-   */
-  public void goToPosition(double position) {
-    motorOne.setControl(mmVoltage.withPosition(position));
-  }
+        // Apply config
+        motorOne.getConfigurator().apply(config);
+        motorTwo.getConfigurator().apply(config);
+        motorTwo.setControl(new Follower(motorOne.getDeviceID(), false));
+    }
 
-  @Override
-  public void periodic() {
-    
-  }
+    /**
+     * position is in rotations right now
+     *
+     * @param position
+     */
+    public void goToPosition(double position) {
+        motorOne.setControl(mmVoltage.withPosition(position));
+    }
+
+    @Override
+    public void periodic() {
+
+    }
 }

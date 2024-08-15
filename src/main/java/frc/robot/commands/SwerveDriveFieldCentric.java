@@ -9,33 +9,33 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 
 public class SwerveDriveFieldCentric extends Command {
-  private XboxController joystick;
-  private DriveBaseSubsystem driveBaseSubsystem;
+    private XboxController joystick;
+    private DriveBaseSubsystem driveBaseSubsystem;
 
-  public SwerveDriveFieldCentric(XboxController joystick, DriveBaseSubsystem driveBaseSubsystem) {
-    this.joystick = joystick;
-    this.driveBaseSubsystem = driveBaseSubsystem;
-    addRequirements(driveBaseSubsystem);
-  }
+    public SwerveDriveFieldCentric(XboxController joystick, DriveBaseSubsystem driveBaseSubsystem) {
+        this.joystick = joystick;
+        this.driveBaseSubsystem = driveBaseSubsystem;
+        addRequirements(driveBaseSubsystem);
+    }
 
-  @Override
-  public void initialize() {
-    driveBaseSubsystem.coast();
-    driveBaseSubsystem.zeroYaw();
-  }
+    @Override
+    public void initialize() {
+        driveBaseSubsystem.coast();
+        driveBaseSubsystem.zeroYaw();
+    }
 
-  @Override
-  public void execute() {
-    driveBaseSubsystem.setModuleStates(driveBaseSubsystem.getChassisSpeedsFromJoystick(joystick.getLeftY(), joystick.getLeftX(), joystick.getRightX(), joystick.getLeftBumper()));
-  }
+    @Override
+    public void execute() {
+        driveBaseSubsystem.setModuleStates(driveBaseSubsystem.getChassisSpeedsFromJoystick(joystick.getLeftY(), joystick.getLeftX(), joystick.getRightX(), joystick.getLeftBumper()));
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    driveBaseSubsystem.brake();
-  }
+    @Override
+    public void end(boolean interrupted) {
+        driveBaseSubsystem.brake();
+    }
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

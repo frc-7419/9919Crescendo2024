@@ -9,32 +9,33 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 
 public class Rotate extends Command {
-  private final DriveBaseSubsystem driveBaseSubsystem;
-  private final double degrees;
-  public Rotate(DriveBaseSubsystem driveBaseSubsystem, double degrees) {
-    this.driveBaseSubsystem = driveBaseSubsystem;
-    this.degrees = degrees;
-    addRequirements(driveBaseSubsystem);
-  }
+    private final DriveBaseSubsystem driveBaseSubsystem;
+    private final double degrees;
 
-  @Override
-  public void initialize() {
-    driveBaseSubsystem.coast();
-  }
+    public Rotate(DriveBaseSubsystem driveBaseSubsystem, double degrees) {
+        this.driveBaseSubsystem = driveBaseSubsystem;
+        this.degrees = degrees;
+        addRequirements(driveBaseSubsystem);
+    }
 
-  @Override
-  public void execute() {
-    driveBaseSubsystem.setModuleStates(new ChassisSpeeds(0,0,Math.PI/6));
-  }
+    @Override
+    public void initialize() {
+        driveBaseSubsystem.coast();
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    driveBaseSubsystem.setModuleStates(new ChassisSpeeds(0,0,0));
-    driveBaseSubsystem.brake();
-  }
+    @Override
+    public void execute() {
+        driveBaseSubsystem.setModuleStates(new ChassisSpeeds(0, 0, Math.PI / 6));
+    }
 
-  @Override
-  public boolean isFinished() {
-    return Math.abs(degrees-(driveBaseSubsystem.getYaw()+320.4))<3;
-  }
+    @Override
+    public void end(boolean interrupted) {
+        driveBaseSubsystem.setModuleStates(new ChassisSpeeds(0, 0, 0));
+        driveBaseSubsystem.brake();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return Math.abs(degrees - (driveBaseSubsystem.getYaw() + 320.4)) < 3;
+    }
 }
