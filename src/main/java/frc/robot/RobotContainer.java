@@ -10,6 +10,8 @@ import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.amp.AmpSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.intake.IntakeWristSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooter.BeamBreakSubsystem;
 
@@ -22,6 +24,15 @@ public class RobotContainer {
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
+  private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
+
+  //Commands
+  private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
+  private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(),driver.getLeftX()), intake);
+  private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0,0.0), intake);
+  private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
+  private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
   private final AmpSubsystem amp = new AmpSubsystem();

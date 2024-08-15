@@ -96,4 +96,12 @@ public final class Constants {
     public static final int bottomShooterID = 20;
     public static final int topShooterID = 20;
   }
+  public static class RobotConstants {
+    public static final String kCanbus = "rio";
+  }
+  public static class IntakeConstants {
+    public static final int topIntakeID = 0;
+    public static final int bottomIntakeID = 0;
+    public static final int intakeWristMotorID = 0;
+  }
 }
