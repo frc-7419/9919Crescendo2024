@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -10,6 +11,7 @@ import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.amp.AmpSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
+import frc.robot.subsystems.handoff.HandoffSubsystem;
 
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
@@ -24,10 +26,13 @@ public class RobotContainer {
   // Joysticks, subsystems, and commands must all be private and final
 
   // Joysticks
+  private final CommandXboxController operator = new CommandXboxController(1);
   private final XboxController driver = new XboxController(Constants.OperatorConstants.kDriveControllerPort); //driver
+
 
   //Subsystems
   private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+  private final HandoffSubsystem handoff = new HandoffSubsystem();
 
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
 
@@ -61,8 +66,11 @@ public class RobotContainer {
    * This method is for configuring the button bindings on the joysticks
    */
   private void configureButtonBindings() {
-
+    // Handoff
+    // Run diverter clockwise. Ex: operator.y().whileTrue(new RunDiverter(diverter, 0.5));
+    // Same for counter-clockwise
   }
+  
   /**
    * This method is for configuring the auton chooser
    */
