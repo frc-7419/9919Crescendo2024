@@ -31,7 +31,7 @@ public class AmpSubsystem extends SubsystemBase {
 
         TalonFXConfiguration vvConfig = new TalonFXConfiguration();
         /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
-        vvConfig.Slot0.kS = 0.1; // To account for friction, add 0.1 V of static feedforward                    DONT TOUCH
+        vvConfig.Slot0.kS = 0.1; // To account for friction                                                     TODO: calculate friction
         vvConfig.Slot0.kV = 0.11299435; // volts per rotation per second                                        DONT TOUCH
         vvConfig.Slot0.kP = 0.11; // An error of 1 rotation per second results in 0.11 V output                 TODO: tune value for P
         vvConfig.Slot0.kI = 0; // No output for integrated error                                                DONT TOUCH
@@ -82,7 +82,7 @@ public class AmpSubsystem extends SubsystemBase {
      *
      * @param position
      */
-    public void goToPosition(double position) {
+    public void goToPosition(final double position) {
         angleMotor.setControl(mmVoltage.withPosition(position));
     }
 
@@ -109,9 +109,9 @@ public class AmpSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("amp/Top Velocity", getTopVelocity());
         SmartDashboard.putNumber("amp/Angle Position", getAnglePosition());
-        SmartDashboard.putNumber("amp/Top Voltage: ", noteMotor.getMotorVoltage().getValue());
-        SmartDashboard.putNumber("amp/Angle Voltage: ", angleMotor.getMotorVoltage().getValue());
-        SmartDashboard.putNumber("amp/Top Temperature ", noteMotor.getDeviceTemp().getValue());
+        SmartDashboard.putNumber("amp/Top Voltage", noteMotor.getMotorVoltage().getValue());
+        SmartDashboard.putNumber("amp/Angle Voltage", angleMotor.getMotorVoltage().getValue());
+        SmartDashboard.putNumber("amp/Top Temperature", noteMotor.getDeviceTemp().getValue());
         SmartDashboard.putNumber("amp/Angle Temperature", angleMotor.getDeviceTemp().getValue());
     }
 

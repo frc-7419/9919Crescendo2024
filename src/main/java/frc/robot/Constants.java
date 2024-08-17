@@ -8,33 +8,47 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean constants. This class should not be used for any other
- * purpose. All constants should be declared globally (i.e. public static). Do
- * not put anything functional in this class.
- *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the constants are needed, to reduce verbosity.
- */
 public final class Constants {
     public static class RobotConstants {
-        public static final String kCanbus = "rio";
+        public static final String kCanbus = "rio"; //TODO: check if we are going to use roborio canbus or a different one like canivore
+    }
+
+    public static class ControllerConstants {
+        public static final int kDriveControllerPort = 0;
+        public static final int kOperatorControllerPort = 1;
+        public static final double defaultRumbleIntensity = 0.7;
+        public static final double defaultPulseInterval = 0.5;
     }
 
     public static class ElevatorConstants {
-        public static final int motorOneID = 0;
-        public static final int motorTwoID = 0;
-    }
-
-    public static class OperatorConstants {
-        public static final int kDriveControllerPort = 0;
+        public static final int motorOneID = 0; //TODO: set ID once robot is built
+        public static final int motorTwoID = 0; //TODO: set ID once robot is built
     }
 
     public static class AmpConstants {
-        public static final int topShooterID = 0;
-        public static final int bottomShooterID = 0;
+        public static final int topShooterID = 0; //TODO: set ID once robot is built
+        public static final int bottomShooterID = 0; //TODO: set ID once robot is built
+    }
+
+    public static class HandoffConstants {
+        public static final int motorOneID = 0; //TODO: set ID once robot is built
+        public static final int motorTwoID = 0; //TODO: set ID once robot is built
+    }
+
+    public static class BeambreakConstants {
+        public static final int frontBeambreakChannel = 0; //TODO: set channel once robot is built
+        public static final int backBeambreakChannel = 2; //TODO: set channel once robot is built
+    }
+
+    public static class ShooterConstants {
+        public static final int bottomShooterID = 0; //TODO: set ID once robot is built
+        public static final int topShooterID = 0; //TODO: set ID once robot is built
+    }
+
+    public static class IntakeConstants {
+        public static final int topIntakeID = 0; //TODO: set ID once robot is built
+        public static final int bottomIntakeID = 0; //TODO: set ID once robot is built
+        public static final int intakeWristMotorID = 0; //TODO: set ID once robot is built
     }
 
     public static class SwerveConstants {
@@ -96,36 +110,12 @@ public final class Constants {
         public final double offset;
         public final Translation2d location;
 
-        public SwerveModuleConstants(int driveMotorID, int turnMotorID, int turnEncoderID, double offset,
-                                     Translation2d location) {
+        public SwerveModuleConstants(int driveMotorID, int turnMotorID, int turnEncoderID, double offset, Translation2d location) {
             this.driveMotorID = driveMotorID;
             this.turnMotorID = turnMotorID;
             this.turnEncoderID = turnEncoderID;
             this.offset = offset;
             this.location = location;
         }
-    }
-
-    public static class ControllerConstants {
-        public static final int driverControllerPort = 0;
-        public static final int operatorControllerPort = 1;
-        public static final double defaultRumbleIntensity = 0.7;
-        public static final double defaultPulseInterval = 0.5;
-    }
-
-    public static class HandoffConstants {
-        public static final int handoffMotor1ID = -1; // Change This
-        public static final int handoffMotor2ID = -1; // Change This
-    }
-
-    public static class ShooterConstants {
-        public static final int bottomShooterID = 20;
-        public static final int topShooterID = 20;
-    }
-
-    public static class IntakeConstants {
-        public static final int topIntakeID = 0;
-        public static final int bottomIntakeID = 0;
-        public static final int intakeWristMotorID = 0;
     }
 }

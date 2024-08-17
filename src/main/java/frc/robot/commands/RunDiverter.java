@@ -2,24 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.handoff;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
 
 public class RunDiverter extends Command {
-    /**
-     * Creates a new RunDiverter.
-     */
-
     // Just apply a given power to the diverter wheel motor.
 
     // Example call: operator.y().whileTrue(new RunDiverter(diverter, 0.5));
 
     // Declare the subsystem and variables
 
-    private HandoffSubsystem handoffSubsystem;
-    private float voltage;
+    private final HandoffSubsystem handoffSubsystem;
+    private final float voltage;
 
     public RunDiverter(HandoffSubsystem handoffSubsystem, float voltage) {
         // Initialize the subsystem and variables

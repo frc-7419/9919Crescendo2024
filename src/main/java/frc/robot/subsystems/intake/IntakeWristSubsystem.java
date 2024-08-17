@@ -45,7 +45,7 @@ public class IntakeWristSubsystem extends SubsystemBase {
      *
      * @param position
      */
-    public void goToPosition(double position) {
+    public void goToPosition(final double position) {
         wristMotor.setControl(mmVoltage.withPosition(position));
     }
 

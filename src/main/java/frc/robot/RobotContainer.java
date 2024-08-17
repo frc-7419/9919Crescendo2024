@@ -12,9 +12,7 @@ import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.amp.AmpSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
-
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
-
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intake.IntakeWristSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -26,8 +24,8 @@ public class RobotContainer {
     // Joysticks, subsystems, and commands must all be private and final
 
     // Joysticks
-    private final XboxController driver = new XboxController(Constants.OperatorConstants.kDriveControllerPort); //driver
-    private final CommandXboxController operator = new CommandXboxController(1);
+    private final XboxController driver = new XboxController(Constants.ControllerConstants.kDriveControllerPort); //driver
+    private final CommandXboxController operator = new CommandXboxController(Constants.ControllerConstants.kOperatorControllerPort);
 
 
     //Subsystems

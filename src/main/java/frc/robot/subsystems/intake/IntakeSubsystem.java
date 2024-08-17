@@ -38,12 +38,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
         // Configure the Talon FX motors
         TalonFXConfiguration config = new TalonFXConfiguration();
-        config.Slot0.kS = 0.1; // Account for friction
-        config.Slot0.kV = 0.11299435; // Volts per rotation per second
-        config.Slot0.kP = 0.11; // Proportional gain for velocity control
-        config.Slot0.kI = 0; // No integral gain
-        config.Slot0.kD = 0; // No derivative gain
-        config.Slot0.kG = 0; // No gravity compensation
+        config.Slot0.kS = 0.1; // To account for friction                                                     TODO: calculate friction
+        config.Slot0.kV = 0.11299435; // volts per rotation per second                                        DONT TOUCH
+        config.Slot0.kP = 0.11; // An error of 1 rotation per second results in 0.11 V output                 TODO: tune value for P
+        config.Slot0.kI = 0; // No output for integrated error                                                DONT TOUCH
+        config.Slot0.kD = 0; // No output for error derivative                                                DONT TOUCH
+        config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
         config.Voltage.PeakForwardVoltage = 12; // Maximum forward voltage
         config.Voltage.PeakReverseVoltage = -12; // Maximum reverse voltage
         topMotor.getConfigurator().apply(config);

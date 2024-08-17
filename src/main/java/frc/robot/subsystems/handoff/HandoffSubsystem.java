@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.HandoffConstants;
 
 public class HandoffSubsystem extends SubsystemBase {
@@ -24,13 +25,13 @@ public class HandoffSubsystem extends SubsystemBase {
      * Counter-Clockwise: To Intake
      */
 
-    private TalonFX handoffMotor1;
-    private TalonFX handoffMotor2;
+    private final TalonFX handoffMotorOne;
+    private final TalonFX handoffMotorTwo;
 
     public HandoffSubsystem() {
-        handoffMotor1 = new TalonFX(HandoffConstants.handoffMotor1ID);
-        handoffMotor2 = new TalonFX(HandoffConstants.handoffMotor2ID);
-        handoffMotor2.setInverted(true);
+        handoffMotorOne = new TalonFX(HandoffConstants.motorOneID, Constants.RobotConstants.kCanbus);
+        handoffMotorTwo = new TalonFX(HandoffConstants.motorTwoID, Constants.RobotConstants.kCanbus);
+        handoffMotorTwo.setInverted(true);
         coast();
     }
 
@@ -39,23 +40,23 @@ public class HandoffSubsystem extends SubsystemBase {
     // The other basic motor control methods. Eg coast, brake, etc.
 
     public void coast() {
-        handoffMotor1.setNeutralMode(NeutralModeValue.Coast);
-        handoffMotor2.setNeutralMode(NeutralModeValue.Coast);
+        handoffMotorOne.setNeutralMode(NeutralModeValue.Coast);
+        handoffMotorTwo.setNeutralMode(NeutralModeValue.Coast);
     }
 
     public void brake() {
-        handoffMotor1.setNeutralMode(NeutralModeValue.Brake);
-        handoffMotor2.setNeutralMode(NeutralModeValue.Brake);
+        handoffMotorOne.setNeutralMode(NeutralModeValue.Brake);
+        handoffMotorTwo.setNeutralMode(NeutralModeValue.Brake);
     }
 
     public void stop() {
-        handoffMotor1.set(0);
-        handoffMotor2.set(0);
+        handoffMotorOne.set(0);
+        handoffMotorTwo.set(0);
     }
 
-    public void setVoltage(float voltage) {
-        handoffMotor1.setControl(m_request.withOutput(voltage));
-        handoffMotor2.setControl(m_request.withOutput(voltage));
+    public void setVoltage(final double voltage) {
+        handoffMotorOne.setControl(m_request.withOutput(voltage));
+        handoffMotorTwo.setControl(m_request.withOutput(voltage));
     }
 
     @Override

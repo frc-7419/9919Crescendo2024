@@ -50,7 +50,7 @@ public class ElevatorSubsystem extends SubsystemBase {
      *
      * @param position
      */
-    public void goToPosition(double position) {
+    public void goToPosition(final double position) {
         motorOne.setControl(mmVoltage.withPosition(position));
     }
 
