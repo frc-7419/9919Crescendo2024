@@ -41,7 +41,7 @@ public class IntakeWristSubsystem extends SubsystemBase {
     }
 
     /**
-     * position is in rotations right now
+     * Makes the wrist go to the specified position using Motion Magic and voltage control.
      *
      * @param position
      */
