@@ -16,6 +16,8 @@ public class ControlHapticsWithJoystick extends Command {
 
     /**
      * Creates a new ControlHapticsWithJoystick.
+     * @param haptics the haptics subsystem
+     * @param joystick the joystick to control the haptics
      */
     public ControlHapticsWithJoystick(Haptics haptics, CommandXboxController joystick) {
         this.haptics = haptics;
@@ -48,12 +50,20 @@ public class ControlHapticsWithJoystick extends Command {
     }
 
     // Called once the command ends or is interrupted.
+    /*
+     * Ends the command.
+     * @param interrupted whether the command was interrupted
+     */
     @Override
     public void end(boolean interrupted) {
         haptics.setRequest(new HapticRequest(Haptics.ControllerType.DRIVER, RequestType.STOP));
     }
 
     // Returns true when the command should end.
+    /*
+     * Checks if the command is finished.
+     * @return false
+     */
     @Override
     public boolean isFinished() {
         return false;

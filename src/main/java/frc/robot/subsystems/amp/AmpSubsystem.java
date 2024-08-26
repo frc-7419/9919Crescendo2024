@@ -115,10 +115,16 @@ public class AmpSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("amp/Angle Temperature", angleMotor.getDeviceTemp().getValue());
     }
 
+    /*
+     * Sets the motors to coast mode.
+     */
     private void coast() {
         noteMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
+    /*
+     * Sets the motors to brake mode.
+     */
     private void brake() {
         noteMotor.setNeutralMode(NeutralModeValue.Brake);
     }

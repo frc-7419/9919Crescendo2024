@@ -6,22 +6,36 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class Haptics extends SubsystemBase {
+    // Instance Fields
     private XboxController driverHID;
     private XboxController operatorHID;
     private HapticRequest driverRequest;
     private HapticRequest operatorRequest;
     private Timer masterTimer = new Timer();
 
+    /*
+     * Constructor for the Haptics subsystem.
+     * @param driver the driver's controller
+     * @param operator the operator's controller
+     */
     public Haptics(CommandXboxController driver, CommandXboxController operator) {
         driverHID = driver.getHID();
         operatorHID = operator.getHID();
         masterTimer.start();
     }
-
+    /*
+     * Gets the current time from the master timer.
+     * @return the current time
+     */
     private double getTime() {
         return masterTimer.get();
     }
 
+    /*
+     * Starts the rumble on the specified controller.
+     * @param controller the controller to start the rumble on
+     * @param intensity the intensity of the rumble
+     */
     public void startRumble(ControllerType controller, double intensity) {
         switch (controller) {
             case DRIVER:
@@ -39,10 +53,18 @@ public class Haptics extends SubsystemBase {
         }
     }
 
+    /*
+     * Stops the rumble on the specified controller.
+     * @param controller the controller to stop the rumble on
+     */
     public void stopRumble(ControllerType controller) {
         startRumble(controller, 0.0);
     }
-
+    
+    /*
+     * Sets the request for the specified controller.
+     * @param request the haptic request
+     */
     public void setRequest(HapticRequest request) {
         switch (request.getControllerType()) {
             case DRIVER:
@@ -63,6 +85,9 @@ public class Haptics extends SubsystemBase {
     }
 
     @Override
+    /*
+     * Periodic method for the Haptics subsystem.
+     */
     public void periodic() {
         double currentTime = getTime();
 
@@ -74,7 +99,7 @@ public class Haptics extends SubsystemBase {
             operatorRequest.processRequest(this, currentTime);
         }
     }
-
+    // The ControllerType can be set to any three of these constants.
     public enum ControllerType {
         DRIVER,
         OPERATOR,
