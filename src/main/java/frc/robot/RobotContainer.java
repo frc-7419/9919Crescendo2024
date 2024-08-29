@@ -21,10 +21,15 @@ import frc.robot.subsystems.shooter.BeamBreakSubsystem;
 
 public class RobotContainer {
 
-    // Joysticks, subsystems, and commands must all be private and final
+    // JOYSTICKS, SUBSYSTEMS, AND COMMANDS MUST ALL BE PRIVATE AND FINAL
 
-    // Joysticks
-    private final XboxController driver = new XboxController(Constants.ControllerConstants.kDriveControllerPort); //driver
+    /**
+     * Joystick
+     *  - The objects in this catagory are joysticks, they should be either a CommandXboxController, XboxController, or a Joystick
+     *  - The joystick objects handle handle all input from joysticks which are plugged in to the Driver Station
+     *  - The port of the joystick is selected in the Driver Station, generally we have the drive controller in port 0 while the operator controller uses port 1
+     */
+    private final XboxController driver = new XboxController(Constants.ControllerConstants.kDriveControllerPort);
     private final CommandXboxController operator = new CommandXboxController(Constants.ControllerConstants.kOperatorControllerPort);
 
 
