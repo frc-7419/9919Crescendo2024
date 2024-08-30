@@ -23,7 +23,7 @@ public class RobotContainer {
 
     // JOYSTICKS, SUBSYSTEMS, AND COMMANDS MUST ALL BE PRIVATE AND FINAL
 
-    /**
+    /*
      * Joystick
      *  - The objects in this catagory are joysticks, they should be either a CommandXboxController, XboxController, or a Joystick
      *  - The joystick objects handle handle all input from joysticks which are plugged in to the Driver Station
@@ -33,7 +33,11 @@ public class RobotContainer {
     private final CommandXboxController operator = new CommandXboxController(Constants.ControllerConstants.kOperatorControllerPort);
 
 
-    //Subsystems
+    /*
+     * Subsystems
+     *  - This catagory is for all subsystems which the robot has.
+     *  - Subsystems should have methods which do low-level things such as running a motor, there shouldn't be complicated algorithms
+     */
     private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
     private final HandoffSubsystem handoff = new HandoffSubsystem();
     private final ElevatorSubsystem elevator = new ElevatorSubsystem();
@@ -43,7 +47,10 @@ public class RobotContainer {
     private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
     private final AmpSubsystem amp = new AmpSubsystem();
 
-    //Commands
+    /*
+     * Commands
+     *  - This catagory is for commands, the commands can either be lambda instant or run commands, or they can be classes
+     */
     private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
     private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
     private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
@@ -78,8 +85,7 @@ public class RobotContainer {
     }
 
     /**
-     * This will be the method which gets called to
-     *
+     * This method gets callled in Robot to schedule the auton command, so whatever commond this method returns will be the one running during the autonomous period
      * @return Auton command
      */
     public Command getAutonomousCommand() {
