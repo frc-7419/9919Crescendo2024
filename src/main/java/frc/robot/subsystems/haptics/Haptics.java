@@ -12,15 +12,32 @@ public class Haptics extends SubsystemBase {
     private HapticRequest operatorRequest;
     private Timer masterTimer = new Timer();
 
+    /**
+     * Initializes all the instance fields of the Haptics class
+     * @param driver is the driver controller, which is an Xbox controller
+     * @param operator is the operator controller, which is an Xbox controller
+     */
     public Haptics(CommandXboxController driver, CommandXboxController operator) {
         driverHID = driver.getHID();
         operatorHID = operator.getHID();
         masterTimer.start();
+
     }
 
+
+    /**
+     * The getTime funtion returns the set delay of when the Haptics will run
+     * @return the delay of the Haptics
+     * 
+     */
     private double getTime() {
         return masterTimer.get();
     }
+    /** 
+     * startRumble starts vibrating the controller
+     * @param controller is the controller that will vibrate
+     * @param intensity is the intensity of the vibration
+     */
 
     public void startRumble(ControllerType controller, double intensity) {
         switch (controller) {
@@ -38,11 +55,17 @@ public class Haptics extends SubsystemBase {
                 break;
         }
     }
-
+    /**
+     * stopRumble stops the vibration of the controller
+     * @param controller is the controller that will stop vibrating
+     */
     public void stopRumble(ControllerType controller) {
         startRumble(controller, 0.0);
     }
-
+    /**
+     * setRequest sets the request for the driver controller or both the controllers
+     * @param request is the request that will be set
+     */ 
     public void setRequest(HapticRequest request) {
         switch (request.getControllerType()) {
             case DRIVER:
@@ -61,7 +84,10 @@ public class Haptics extends SubsystemBase {
                 break;
         }
     }
-
+    /**
+     * periodic is called periodically to check if the request is still active
+     * runs every 20 miliseconds
+     */
     @Override
     public void periodic() {
         double currentTime = getTime();

@@ -20,7 +20,7 @@ public class AmpSubsystem extends SubsystemBase {
     private final TalonFX angleMotor;
     private final VelocityVoltage velocityVoltage;
     private final MotionMagicVoltage mmVoltage;
-
+    // The Constructors inirilize all the instace fiels such as the motors and the voltage controlers and the motion magic.
     public AmpSubsystem() {
         this.noteMotor = new TalonFX(Constants.AmpConstants.topShooterID, Constants.RobotConstants.kCanbus);
         this.angleMotor = new TalonFX(Constants.AmpConstants.bottomShooterID, Constants.RobotConstants.kCanbus);
@@ -62,10 +62,8 @@ public class AmpSubsystem extends SubsystemBase {
     }
 
     /**
-     * Runs the motors of the amp shooter at the given speeds in RPS
-     *
-     * @param bottomSpeed speed of the bottom motor in RPS, positive will push the note forward
-     * @param topSpeed    speed of the top motor in RPS, positive will push the note forward
+     * Sets the noteMotor to run at a specific RPM
+     * @param RPM is rotations per minute. How fast the motor revs
      */
     public void run(final double RPM) {
         if (RPM != 0) {
@@ -78,9 +76,9 @@ public class AmpSubsystem extends SubsystemBase {
     }
 
     /**
-     * position is in rotations
-     *
-     * @param position
+     * Sets the angleMotor to go to a specific position
+     *  Angle motor controls the angle of the amp shooter
+     * @param position is in rotations
      */
     public void goToPosition(final double position) {
         angleMotor.setControl(mmVoltage.withPosition(position));
@@ -89,7 +87,7 @@ public class AmpSubsystem extends SubsystemBase {
     /**
      * Gets the velocity of the top motor
      *
-     * @return velocity in RPS, positive means forward
+     * @return velocity in RPS (Rotations per second), positive means forward
      */
     public double getTopVelocity() {
         return noteMotor.getVelocity().getValue();
@@ -97,14 +95,17 @@ public class AmpSubsystem extends SubsystemBase {
 
     /**
      * Gets the position of the angle motor
-     *
+     * Angle motor controls the angle of the amp shooter
      * @return position in rotations, positive means forward
      */
     public double getAnglePosition() {
         return angleMotor.getPosition().getValue();
     }
 
-
+    /**
+     * Monitors the motor's temperature, voltage, and position
+     * So we can see how the motor dianoistics while the robot is running
+     */
     @Override
     public void periodic() {
         SmartDashboard.putNumber("amp/Top Velocity", getTopVelocity());
@@ -114,11 +115,11 @@ public class AmpSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("amp/Top Temperature", noteMotor.getDeviceTemp().getValue());
         SmartDashboard.putNumber("amp/Angle Temperature", angleMotor.getDeviceTemp().getValue());
     }
-
+    //Coasting is when the motor is not using any power to keep it from moving
     private void coast() {
         noteMotor.setNeutralMode(NeutralModeValue.Coast);
     }
-
+    //Braking is when the motor is using power to keep it from moving
     private void brake() {
         noteMotor.setNeutralMode(NeutralModeValue.Brake);
     }

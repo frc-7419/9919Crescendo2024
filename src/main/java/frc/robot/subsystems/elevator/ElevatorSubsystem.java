@@ -17,7 +17,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TalonFX motorOne;
     private final TalonFX motorTwo;
     private final MotionMagicVoltage mmVoltage;
-
+    //
+    /*
+     *  The Constructors initialize all the instace fields such as the motors and the voltage controllers and the motion magic.
+     *  The ElevatorSubsystem class is a subsystem that controls the elevator of the robot and initalizes the PID.
+     */
     public ElevatorSubsystem() {
         this.motorOne = new TalonFX(Constants.ElevatorConstants.motorOneID, Constants.RobotConstants.kCanbus);
         this.motorTwo = new TalonFX(Constants.ElevatorConstants.motorTwoID, Constants.RobotConstants.kCanbus);
@@ -46,9 +50,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     /**
-     * position is in rotations right now
-     *
-     * @param position
+     * The goToPosition method is used to set the first motor to specific position
+     * 
+     * @param position is in rotations right now
      */
     public void goToPosition(final double position) {
         motorOne.setControl(mmVoltage.withPosition(position));
