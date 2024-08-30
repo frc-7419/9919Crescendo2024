@@ -25,6 +25,7 @@ public class HandoffSubsystem extends SubsystemBase {
      * Counter-Clockwise: To Intake
      */
 
+      
     private final TalonFX handoffMotorOne;
     private final TalonFX handoffMotorTwo;
 
@@ -39,21 +40,22 @@ public class HandoffSubsystem extends SubsystemBase {
 
     // The other basic motor control methods. Eg coast, brake, etc.
 
+    /*Setting the handoff motors to neutral mode. */
     public void coast() {
         handoffMotorOne.setNeutralMode(NeutralModeValue.Coast);
         handoffMotorTwo.setNeutralMode(NeutralModeValue.Coast);
     }
-
+    /*Setting the handoff motors to brake mode. */
     public void brake() {
         handoffMotorOne.setNeutralMode(NeutralModeValue.Brake);
         handoffMotorTwo.setNeutralMode(NeutralModeValue.Brake);
     }
-
+    /*Setting the handoff motors to stop. */
     public void stop() {
         handoffMotorOne.set(0);
         handoffMotorTwo.set(0);
     }
-
+/*Outputitng the voltage of the handoff motor*/
     public void setVoltage(final double voltage) {
         handoffMotorOne.setControl(m_request.withOutput(voltage));
         handoffMotorTwo.setControl(m_request.withOutput(voltage));
