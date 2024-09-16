@@ -9,10 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
-import frc.robot.subsystems.amp.AmpSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intake.IntakeWristSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -40,12 +38,10 @@ public class RobotContainer {
      */
     private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
     private final HandoffSubsystem handoff = new HandoffSubsystem();
-    private final ElevatorSubsystem elevator = new ElevatorSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
     private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
-    private final AmpSubsystem amp = new AmpSubsystem();
 
     /*
      * Commands
