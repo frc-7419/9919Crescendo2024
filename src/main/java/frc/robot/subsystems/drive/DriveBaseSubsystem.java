@@ -6,6 +6,8 @@ package frc.robot.subsystems.drive;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBaseSubsystem extends SubsystemBase {
@@ -26,17 +29,46 @@ public class DriveBaseSubsystem extends SubsystemBase {
     private final SwerveModule backRightModule;
     private final AHRS ahrs;
 
+    private final LimelightHelpers limeLight;
+    private final SwerveDrivePoseEstimator m_poseEstimator;
+
     public DriveBaseSubsystem() {
-        frontLeftModule = new SwerveModule(SwerveConstants.frontLeft.turnMotorID, SwerveConstants.frontLeft.driveMotorID, SwerveConstants.frontLeft.turnEncoderID, SwerveConstants.frontLeft.offset, "FrontLeftModule");
-        frontRightModule = new SwerveModule(SwerveConstants.frontRight.turnMotorID, SwerveConstants.frontRight.driveMotorID, SwerveConstants.frontRight.turnEncoderID, SwerveConstants.frontRight.offset, "FrontRightModule");
-        backLeftModule = new SwerveModule(SwerveConstants.backLeft.turnMotorID, SwerveConstants.backLeft.driveMotorID, SwerveConstants.backLeft.turnEncoderID, SwerveConstants.backLeft.offset, "BackLeftModule");
-        backRightModule = new SwerveModule(SwerveConstants.backRight.turnMotorID, SwerveConstants.backRight.driveMotorID, SwerveConstants.backRight.turnEncoderID, SwerveConstants.backRight.offset, "BackRightModule");
+        frontLeftModule = new SwerveModule(SwerveConstants.frontLeft.turnMotorID,
+                SwerveConstants.frontLeft.driveMotorID, SwerveConstants.frontLeft.turnEncoderID,
+                SwerveConstants.frontLeft.offset, "FrontLeftModule");
+        frontRightModule = new SwerveModule(SwerveConstants.frontRight.turnMotorID,
+                SwerveConstants.frontRight.driveMotorID, SwerveConstants.frontRight.turnEncoderID,
+                SwerveConstants.frontRight.offset, "FrontRightModule");
+        backLeftModule = new SwerveModule(SwerveConstants.backLeft.turnMotorID, SwerveConstants.backLeft.driveMotorID,
+                SwerveConstants.backLeft.turnEncoderID, SwerveConstants.backLeft.offset, "BackLeftModule");
+        backRightModule = new SwerveModule(SwerveConstants.backRight.turnMotorID,
+                SwerveConstants.backRight.driveMotorID, SwerveConstants.backRight.turnEncoderID,
+                SwerveConstants.backRight.offset, "BackRightModule");
         ahrs = new AHRS(SerialPort.Port.kMXP);
         ahrs.zeroYaw(); // field centric, we need yaw to be zero
-        m_odometry = new SwerveDriveOdometry(Constants.SwerveConstants.m_SwerveDriveKinematics, ahrs.getRotation2d(), getPositions());
+        m_odometry = new SwerveDriveOdometry(Constants.SwerveConstants.m_SwerveDriveKinematics, ahrs.getRotation2d(),
+                getPositions());
         coast();
+
+        limeLight = new LimelightHelpers();
+        m_poseEstimator = new SwerveDrivePoseEstimator(
+                Constants.SwerveConstants.m_SwerveDriveKinematics,
+                getRotation2d(),
+                getPositions(),
+                new Pose2d(),
+                VecBuilder.fill(0.1, 0.1, 0.1), // TODO: Placeholder for STD untill the actual robot is made
+                VecBuilder.fill(0.1, 0.1, 0.1));
     }
 
+    public void estimatePost() {
+        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        if (limelightMeasurement.tagCount >= 2) {
+            m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+            m_poseEstimator.addVisionMeasurement(
+                    limelightMeasurement.pose,
+                    limelightMeasurement.timestampSeconds);
+        }
+    }
 
     public void zeroYaw() {
         ahrs.zeroYaw();
@@ -55,11 +87,10 @@ public class DriveBaseSubsystem extends SubsystemBase {
     }
 
     public boolean reachedDist(double meters) {
-        return
-                (frontLeftModule.reachedDist(meters)) &&
-                        (frontRightModule.reachedDist(meters)) &&
-                        (backLeftModule.reachedDist(meters)) &&
-                        (backRightModule.reachedDist(meters));
+        return (frontLeftModule.reachedDist(meters)) &&
+                (frontRightModule.reachedDist(meters)) &&
+                (backLeftModule.reachedDist(meters)) &&
+                (backRightModule.reachedDist(meters));
     }
 
     public void resetDriveEnc() {
@@ -92,7 +123,8 @@ public class DriveBaseSubsystem extends SubsystemBase {
     }
 
     public SwerveModulePosition[] getPositions() {
-        return new SwerveModulePosition[]{frontLeftModule.getPose(), frontRightModule.getPose(), backLeftModule.getPose(), backRightModule.getPose()};
+        return new SwerveModulePosition[] { frontLeftModule.getPose(), frontRightModule.getPose(),
+                backLeftModule.getPose(), backRightModule.getPose() };
     }
 
     public void stop() {
@@ -121,7 +153,9 @@ public class DriveBaseSubsystem extends SubsystemBase {
     }
 
     /**
-     * Returns chassis speeds from field-centric joystick controls. This is what determines the translational speed of the robot in proportion to joystick values.
+     * Returns chassis speeds from field-centric joystick controls. This is what
+     * determines the translational speed of the robot in proportion to joystick
+     * values.
      *
      * @param joystick
      * @return
