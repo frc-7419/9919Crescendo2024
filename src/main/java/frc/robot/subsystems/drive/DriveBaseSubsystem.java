@@ -56,7 +56,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
                 getRotation2d(),
                 getPositions(),
                 new Pose2d(),
-                VecBuilder.fill(0.1, 0.1, 0.1), // TODO: Placeholder for Standard Deviation untill the actual robot is made
+                VecBuilder.fill(0.1, 0.1, 0.1), // TODO: Placeholder for Standard Deviation until the actual robot is made
                 VecBuilder.fill(0.1, 0.1, 0.1));
     }
 

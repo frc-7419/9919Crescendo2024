@@ -57,4 +57,3 @@ public class TurnToSpeaker extends Command {
   
   }
 }
-// do you want to learn how to make a linked list in java? if you are 
