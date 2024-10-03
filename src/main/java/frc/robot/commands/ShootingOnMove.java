@@ -14,8 +14,8 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class ShootingOnMove extends Command {
   /** Creates a new ShootingOnMove. */
-  DriveBaseSubsystem driveBaseSubsystem;
-  ShooterSubsystem shooterSubsystem;
+  private final DriveBaseSubsystem driveBaseSubsystem;
+  private final ShooterSubsystem shooterSubsystem;
   private final PIDController aimController;
   private final double shooterAngle;
   public final double shooterSpeed;
@@ -24,7 +24,7 @@ public class ShootingOnMove extends Command {
   public static final double kP = 0.1;
   public static final double kI = 0.0;
   public static final double kD = 0.1;
-  public Joystick joystick;
+  private final Joystick joystick;
   public ShootingOnMove(DriveBaseSubsystem driveBaseSubsystem, ShooterSubsystem shooterSubsystem, Joystick joystick) {
     // initializing subsystems + variables
     this.driveBaseSubsystem = driveBaseSubsystem;
