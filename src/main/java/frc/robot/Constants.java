@@ -50,6 +50,11 @@ public final class Constants {
         public static final int bottomIntakeID = 0; //TODO: set ID once robot is built
         public static final int intakeWristMotorID = 0; //TODO: set ID once robot is built
     }
+    public static class Limelight {
+        public static final double turnToSpeakerkP = 0.1; // TODO: tune
+        public static final double turnToSpeakerkI = 0.0; // TODO: tune
+        public static final double turnToSpeakerkD = 0.1; // TODO: tune
+    }
 
     public static class SwerveConstants {
         /*
@@ -72,8 +77,8 @@ public final class Constants {
          * shaft as the 24T Pulley
          */
         public static final double kSpeedMotorGearRatio = 12.0 / 24.0 * 24.0 / 22.0 * 15.0 / 45.0;
-        public static final double LENGTH = Units.inchesToMeters(26.5);
-        public static final double HALF_LENGTH = LENGTH / 2.0;
+        public static final double LENGTH = Units.inchesToMeters(26.5); // TODO: update
+        public static final double HALF_LENGTH = LENGTH / 2.0; // TODO: update
         // Not sure how to calculate this theoretically but this needs to be determined
         // experimentally first
         // Neo Free-Speed 13.16 ft/s 15.68 ft/s 18.66 ft/s
