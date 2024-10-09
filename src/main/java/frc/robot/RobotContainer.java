@@ -48,9 +48,9 @@ public class RobotContainer {
      *  - This catagory is for commands, the commands can either be lambda instant or run commands, or they can be classes
      */
     private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
-    private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
+    private final Command joystickShooter = new InstantCommand(() -> shooter.run(operator.getLeftY(), operator.getLeftY()), shooter);
     private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
-    private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(), driver.getLeftX()), intake);
+    private final Command runIntake = new InstantCommand(() -> intake.run(operator.getLeftX(), operator.getLeftX()), intake);
     private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0, 0.0), intake);
     private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
     private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
