@@ -9,11 +9,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
+    // Limelight 3 on shooter
+    // Limelight 2 with Google Coral on Intake side
     public static class RobotConstants {
         public static final String kCanbus = "rio";
-        public static final double kRobotLength = Units.inchesToMeters(26.5); //TODO
+        public static final double kRobotLength = Units.inchesToMeters(34.75); //TODO +- .25
         public static final double kRobotWidth = Units.inchesToMeters(26.5); //TODO
-        public static final double kRobotHalfLength = kRobotLength / 2.0; //TODO
+        public static final double kRobotHalfLength = kRobotLength / 2.0; 
+        public static final double kRobotWeight = 80; //TODO +- 40
+        public static final double kRobotHeight = Units.inchesToMeters(22); //from the floor
+        public static final double kFramePerimeter = Units.inchesToMeters(122.5);
     }
 
     public static class ControllerConstants {
@@ -24,8 +29,8 @@ public final class Constants {
     }
 
     public static class HandoffConstants {
-        public static final int motorOneID = 0; //TODO: set ID once robot is built
-        public static final int motorTwoID = 0; //TODO: set ID once robot is built
+        public static final int loaderID = 0; //TODO: set ID once robot is built
+        // 1:1 gear ratio
     }
 
     public static class BeambreakConstants {
@@ -36,14 +41,21 @@ public final class Constants {
     public static class ShooterConstants {
         public static final int bottomShooterID = 0; //TODO: set ID once robot is built
         public static final int topShooterID = 0; //TODO: set ID once robot is built
+        public static final double shooterGearRatio = 24/18; // Motor to wheel
     }
 
     public static class IntakeConstants {
-        public static final int topIntakeID = 0; //TODO: set ID once robot is built
-        public static final int bottomIntakeID = 0; //TODO: set ID once robot is built
+        public static final int intakeID = 0; //TODO: set ID once robot is built
+        public static final double intakeGearRatio = 30/24; // Motor to wheel
+
     }
 
     public static class SwerveConstants {
+
+        public static final double kWidthBetweenModules = 19.25;
+        public static final double kLengthBetweenModules = 21.25;
+
+
         /*
          * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X
          * CONFIGURATIONS
@@ -53,7 +65,8 @@ public final class Constants {
          * ANGLE MOTOR
          * NEO Shaft to 12T Pulley to 24T Pulley to 14T Gear to 72T Main Rotation Gear
          */
-        public static final double kGearRatioTurnMotor = 12.0 / 24.0 * 14.0 / 72.0;
+        public static final double kGearRatioTurnMotor = 72/7;
+        // 12.0 / 24.0 * 14.0 / 72.0; //OLD
         /*
          * DRIVE MOTOR
          * NEO shaft to 12T Pulley to 24T Pulley to 24T Gear to 22T Gear to 15T bevel to
@@ -63,11 +76,12 @@ public final class Constants {
          * driver pulley is on the same
          * shaft as the 24T Pulley
          */
-        public static final double kDriveMotorGearRatio = 12.0 / 24.0 * 24.0 / 22.0 * 15.0 / 45.0;
-        public static final double kWheelDiameter = Units.inchesToMeters(3.5);
-        public static final double kWheelCircumfrence = kWheelDiameter * Math.PI;
-        public static final double kMaxTranslationalSpeed = Units.feetToMeters(3);
-        public static final double kMaxRotationalSpeed = Math.PI / 4; // arbitrary value in radians, let's say one pi/second
+        public static final double kDriveMotorGearRatio = 6;
+        // 12.0 / 24.0 * 24.0 / 22.0 * 15.0 / 45.0; //OLD
+        public static final double kWheelDiameter = Units.inchesToMeters(4); 
+        public static final double kWheelCircumfrence = kWheelDiameter * Math.PI; //TODO
+        public static final double kMaxTranslationalSpeed = Units.feetToMeters(3); //TODO
+        public static final double kMaxRotationalSpeed = Math.PI / 4; // arbitrary value in radians, let's say one pi/second  //TODO
         public static final double anglekP = 0.002;
         public static final double anglekI = 0;
         public static final double anglekD = 0;
@@ -87,6 +101,7 @@ public final class Constants {
         public static final SwerveDriveKinematics m_SwerveDriveKinematics = new SwerveDriveKinematics(
                 SwerveConstants.frontLeft.location, SwerveConstants.frontRight.location,
                 SwerveConstants.backLeft.location,  SwerveConstants.backRight.location);
+
     }
 
     public static class SwerveModuleConstants {
@@ -104,4 +119,5 @@ public final class Constants {
             this.location = location;
         }
     }
+    
 }
