@@ -19,7 +19,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // Declare the top and bottom motors
     private final TalonFX topMotor;
-    private final TalonFX bottomMotor;
     private final VelocityVoltage velocityVoltage;
 
     /**
@@ -28,13 +27,11 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public IntakeSubsystem() {
         // Initialize the top and bottom motors
-        this.topMotor = new TalonFX(Constants.IntakeConstants.topIntakeID, Constants.RobotConstants.kCanbus);
-        this.bottomMotor = new TalonFX(Constants.IntakeConstants.bottomIntakeID, Constants.RobotConstants.kCanbus);
+        this.topMotor = new TalonFX(Constants.IntakeConstants.intakeID, Constants.RobotConstants.kCanbus);
         this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
         // Invert the top motor, but not the bottom motor
         topMotor.setInverted(true);
-        bottomMotor.setInverted(false);
 
         // Configure the Talon FX motors
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -47,7 +44,6 @@ public class IntakeSubsystem extends SubsystemBase {
         config.Voltage.PeakForwardVoltage = 12; // Maximum forward voltage
         config.Voltage.PeakReverseVoltage = -12; // Maximum reverse voltage
         topMotor.getConfigurator().apply(config);
-        bottomMotor.getConfigurator().apply(config);
     }
 
     /**
@@ -63,13 +59,11 @@ public class IntakeSubsystem extends SubsystemBase {
         if (topRPM != 0 || bottomRPM != 0) {
             coast();
             topMotor.setControl(velocityVoltage.withVelocity(topRPM / 60.0D));
-            bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM / 60.0D));
         }
         // If both motors are stopped, set the motors to brake mode
         else {
             brake();
             topMotor.setControl(velocityVoltage.withVelocity(topRPM / 60.0D));
-            bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM / 60.0D));
         }
     }
 
@@ -80,15 +74,6 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public double getTopVelocity() {
         return topMotor.getVelocity().getValue();
-    }
-
-    /**
-     * Gets the current velocity of the bottom motor.
-     *
-     * @return the current velocity of the bottom motor in rotations per second
-     */
-    public double getBottomVelocity() {
-        return bottomMotor.getVelocity().getValue();
     }
 
     /**
@@ -104,7 +89,6 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     private void brake() {
         topMotor.setNeutralMode(NeutralModeValue.Brake);
-        bottomMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
     /**
@@ -114,7 +98,6 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // Put the top and bottom motor velocities on the SmartDashboard
-        SmartDashboard.putNumber("Shooter Bottom Velocity", getBottomVelocity());
         SmartDashboard.putNumber("Shooter Top Velocity", getTopVelocity());
     }
 }
