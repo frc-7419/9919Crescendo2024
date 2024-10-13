@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.drive;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,7 +12,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
@@ -24,34 +23,34 @@ public class DriveBaseSubsystem extends SubsystemBase {
     private final SwerveModule frontRightModule;
     private final SwerveModule backLeftModule;
     private final SwerveModule backRightModule;
-    private final AHRS ahrs;
+    private final Pigeon2 gyro;
 
     public DriveBaseSubsystem() {
         frontLeftModule = new SwerveModule(SwerveConstants.frontLeft.turnMotorID, SwerveConstants.frontLeft.driveMotorID, SwerveConstants.frontLeft.turnEncoderID, SwerveConstants.frontLeft.offset, "FrontLeftModule");
         frontRightModule = new SwerveModule(SwerveConstants.frontRight.turnMotorID, SwerveConstants.frontRight.driveMotorID, SwerveConstants.frontRight.turnEncoderID, SwerveConstants.frontRight.offset, "FrontRightModule");
         backLeftModule = new SwerveModule(SwerveConstants.backLeft.turnMotorID, SwerveConstants.backLeft.driveMotorID, SwerveConstants.backLeft.turnEncoderID, SwerveConstants.backLeft.offset, "BackLeftModule");
         backRightModule = new SwerveModule(SwerveConstants.backRight.turnMotorID, SwerveConstants.backRight.driveMotorID, SwerveConstants.backRight.turnEncoderID, SwerveConstants.backRight.offset, "BackRightModule");
-        ahrs = new AHRS(SerialPort.Port.kMXP);
-        ahrs.zeroYaw(); // field centric, we need yaw to be zero
-        m_odometry = new SwerveDriveOdometry(Constants.SwerveConstants.m_SwerveDriveKinematics, ahrs.getRotation2d(), getPositions());
+        gyro = new Pigeon2(0, "rio");
+        gyro.reset(); // field centric, we need yaw to be zero
+        m_odometry = new SwerveDriveOdometry(Constants.SwerveConstants.m_SwerveDriveKinematics, gyro.getRotation2d(), getPositions());
         coast();
     }
 
 
     public void zeroYaw() {
-        ahrs.zeroYaw();
+        gyro.reset();
     }
 
     public double getYaw() { // CW IS POSITIVE BY DEFAULT
-        return -ahrs.getYaw();
+        return -gyro.getYaw().getValue();
     }
 
     public double getPitch() {
-        return ahrs.getPitch();
+        return gyro.getPitch().getValue();
     }
 
     public double getRoll() {
-        return ahrs.getRoll();
+        return gyro.getRoll().getValue();
     }
 
     public boolean reachedDist(double meters) {
@@ -70,7 +69,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation2d() {
-        return ahrs.getRotation2d();
+        return gyro.getRotation2d();
         /*
          * the thing is .getYaw is -180 to 180 so it not being 0 to 360
          * may cause the internal conversion that Rotation2d does to be wrong
@@ -117,7 +116,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
      * @param pose The pose to which to set the odometry.
      */
     public void resetOdometry(Pose2d pose) {
-        m_odometry.resetPosition(ahrs.getRotation2d(), getPositions(), pose);
+        m_odometry.resetPosition(gyro.getRotation2d(), getPositions(), pose);
     }
 
     /**

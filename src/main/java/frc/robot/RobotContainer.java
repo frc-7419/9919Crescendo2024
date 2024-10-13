@@ -12,7 +12,6 @@ import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
-import frc.robot.subsystems.intake.IntakeWristSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooter.BeamBreakSubsystem;
 
@@ -39,7 +38,6 @@ public class RobotContainer {
     private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
     private final HandoffSubsystem handoff = new HandoffSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
-    private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
 
@@ -52,8 +50,6 @@ public class RobotContainer {
     private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
     private final Command runIntake = new InstantCommand(() -> intake.run(operator.getLeftX(), operator.getLeftX()), intake);
     private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0, 0.0), intake);
-    private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
-    private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
     private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 
     /**
