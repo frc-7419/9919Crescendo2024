@@ -30,7 +30,7 @@ public final class Constants {
 
     public static class HandoffConstants {
         public static final int loaderID = 0; //TODO: set ID once robot is built
-        public static final double loaderGearRatio = 38/42;
+        // 1:1 gear ratio
     }
 
     public static class BeambreakConstants {
