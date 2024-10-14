@@ -31,8 +31,7 @@ public final class Constants {
     }
 
     public static class HandoffConstants {
-        public static final int motorOneID = 0; //TODO: set ID once robot is built
-        public static final int motorTwoID = 0; //TODO: set ID once robot is built
+        public static final int motorID = 0; //TODO: set ID once robot is built
     }
 
     public static class BeambreakConstants {
@@ -46,8 +45,7 @@ public final class Constants {
     }
 
     public static class IntakeConstants {
-        public static final int topIntakeID = 0; //TODO: set ID once robot is built
-        public static final int bottomIntakeID = 0; //TODO: set ID once robot is built
+        public static final int intakeID = 0; //TODO: set ID once robot is built
         public static final int intakeWristMotorID = 0; //TODO: set ID once robot is built
     }
     public static class Limelight {

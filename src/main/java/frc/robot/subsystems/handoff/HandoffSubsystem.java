@@ -26,13 +26,11 @@ public class HandoffSubsystem extends SubsystemBase {
      */
 
       
-    private final TalonFX handoffMotorOne;
-    private final TalonFX handoffMotorTwo;
+    private final TalonFX handoffMotor;
 
     public HandoffSubsystem() {
-        handoffMotorOne = new TalonFX(HandoffConstants.motorOneID, Constants.RobotConstants.kCanbus);
-        handoffMotorTwo = new TalonFX(HandoffConstants.motorTwoID, Constants.RobotConstants.kCanbus);
-        handoffMotorTwo.setInverted(true);
+        handoffMotor = new TalonFX(HandoffConstants.motorID, Constants.RobotConstants.kCanbus);
+        handoffMotor.setInverted(false);
         coast();
     }
 
@@ -42,23 +40,19 @@ public class HandoffSubsystem extends SubsystemBase {
 
     /*Setting the handoff motors to neutral mode. */
     public void coast() {
-        handoffMotorOne.setNeutralMode(NeutralModeValue.Coast);
-        handoffMotorTwo.setNeutralMode(NeutralModeValue.Coast);
+        handoffMotor.setNeutralMode(NeutralModeValue.Coast);
     }
     /*Setting the handoff motors to brake mode. */
     public void brake() {
-        handoffMotorOne.setNeutralMode(NeutralModeValue.Brake);
-        handoffMotorTwo.setNeutralMode(NeutralModeValue.Brake);
+        handoffMotor.setNeutralMode(NeutralModeValue.Brake);
     }
     /*Setting the handoff motors to stop. */
     public void stop() {
-        handoffMotorOne.set(0);
-        handoffMotorTwo.set(0);
+        handoffMotor.set(0);
     }
 /*Outputitng the voltage of the handoff motor*/
     public void setVoltage(final double voltage) {
-        handoffMotorOne.setControl(m_request.withOutput(voltage));
-        handoffMotorTwo.setControl(m_request.withOutput(voltage));
+        handoffMotor.setControl(m_request.withOutput(voltage));
     }
 
     @Override
