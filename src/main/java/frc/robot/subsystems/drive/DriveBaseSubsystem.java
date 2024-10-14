@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.LimelightHelpers;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBaseSubsystem extends SubsystemBase {
@@ -27,11 +28,12 @@ public class DriveBaseSubsystem extends SubsystemBase {
     private final SwerveModule backLeftModule;
     private final SwerveModule backRightModule;
     private final Pigeon2 gyro;
-
+    
+    
     private final LimelightHelpers limeLight;
     private final SwerveDrivePoseEstimator m_poseEstimator;
-
     public DriveBaseSubsystem() {
+        
         frontLeftModule = new SwerveModule(SwerveConstants.frontLeft.turnMotorID,
                 SwerveConstants.frontLeft.driveMotorID, SwerveConstants.frontLeft.turnEncoderID,
                 SwerveConstants.frontLeft.offset, "FrontLeftModule");
@@ -58,15 +60,15 @@ public class DriveBaseSubsystem extends SubsystemBase {
     }
 
     public void estimatePost() {
-        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-        if (limelightMeasurement.tagCount >= 2) {
-            m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
-            m_poseEstimator.addVisionMeasurement(
-                    limelightMeasurement.pose,
-                    limelightMeasurement.timestampSeconds);
+        String alliance = DriverStation.getAlliance().toString();
+        LimelightHelpers.PoseEstimate limelightMeasurement;
+    
+        if (alliance.equalsIgnoreCase("blue")) {
+            limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        } else {
+            limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
         }
     }
-
     public void zeroYaw() {
         gyro.reset();
     }
