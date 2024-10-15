@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.HandoffConstants;
 
+
 public class HandoffSubsystem extends SubsystemBase {
     final VoltageOut m_request = new VoltageOut(0);
     /**
@@ -26,7 +27,7 @@ public class HandoffSubsystem extends SubsystemBase {
      */
 
       
-    private final TalonFX handoffMotorOne;
+    private final CANSparkMax handoffMotorOne;
 
     public HandoffSubsystem() {
         handoffMotorOne = new TalonFX(HandoffConstants.loaderID, Constants.RobotConstants.kCanbus);

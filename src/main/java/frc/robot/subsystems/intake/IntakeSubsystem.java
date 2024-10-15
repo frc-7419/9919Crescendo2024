@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
      */
 
     // Declare the top and bottom motors
-    private final TalonFX topMotor;
+    private final TalonFX motor;
     private final VelocityVoltage velocityVoltage;
 
     /**
@@ -27,11 +27,11 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public IntakeSubsystem() {
         // Initialize the top and bottom motors
-        this.topMotor = new TalonFX(Constants.IntakeConstants.intakeID, Constants.RobotConstants.kCanbus);
+        this.motor = new TalonFX(Constants.IntakeConstants.intakeID, Constants.RobotConstants.kCanbus);
         this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
         // Invert the top motor, but not the bottom motor
-        topMotor.setInverted(true);
+        motor.setInverted(true);
 
         // Configure the Talon FX motors
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -43,7 +43,7 @@ public class IntakeSubsystem extends SubsystemBase {
         config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
         config.Voltage.PeakForwardVoltage = 12; // Maximum forward voltage
         config.Voltage.PeakReverseVoltage = -12; // Maximum reverse voltage
-        topMotor.getConfigurator().apply(config);
+        motor.getConfigurator().apply(config);
     }
 
     /**
@@ -51,19 +51,18 @@ public class IntakeSubsystem extends SubsystemBase {
      * If either motor is running, the motors are set to coast mode.
      * If both motors are stopped, the motors are set to brake mode.
      *
-     * @param topRPM    the desired RPM for the top motor
-     * @param bottomRPM the desired RPM for the bottom motor
+     * @param RPM    the desired RPM for the top motor
      */
-    public void run(final double topRPM, final double bottomRPM) {
+    public void run(final double RPM) {
         // If either motor is running, set the motors to coast mode
-        if (topRPM != 0 || bottomRPM != 0) {
+        if (RPM != 0) {
             coast();
-            topMotor.setControl(velocityVoltage.withVelocity(topRPM / 60.0D));
+            motor.setControl(velocityVoltage.withVelocity(RPM / 60.0D));
         }
         // If both motors are stopped, set the motors to brake mode
         else {
             brake();
-            topMotor.setControl(velocityVoltage.withVelocity(topRPM / 60.0D));
+            motor.setControl(velocityVoltage.withVelocity(RPM / 60.0D));
         }
     }
 
@@ -73,22 +72,21 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return the current velocity of the top motor in rotations per second
      */
     public double getTopVelocity() {
-        return topMotor.getVelocity().getValue();
+        return motor.getVelocity().getValue();
     }
 
     /**
      * Sets the motors to coast mode.
      */
     private void coast() {
-        topMotor.setNeutralMode(NeutralModeValue.Coast);
-        topMotor.setNeutralMode(NeutralModeValue.Coast);
+        motor.setNeutralMode(NeutralModeValue.Coast);
     }
 
     /**
      * Sets the motors to brake mode.
      */
     private void brake() {
-        topMotor.setNeutralMode(NeutralModeValue.Brake);
+        motor.setNeutralMode(NeutralModeValue.Brake);
     }
 
     /**

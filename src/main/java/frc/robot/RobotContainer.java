@@ -26,7 +26,7 @@ public class RobotContainer {
      *  - The joystick objects handle handle all input from joysticks which are plugged in to the Driver Station
      *  - The port of the joystick is selected in the Driver Station, generally we have the drive controller in port 0 while the operator controller uses port 1
      */
-    private final XboxController driver = new XboxController(Constants.ControllerConstants.kDriveControllerPort);
+    // private final XboxController driver = new XboxController(Constants.ControllerConstants.kDriveControllerPort);
     private final CommandXboxController operator = new CommandXboxController(Constants.ControllerConstants.kOperatorControllerPort);
 
 
@@ -35,22 +35,23 @@ public class RobotContainer {
      *  - This catagory is for all subsystems which the robot has.
      *  - Subsystems should have methods which do low-level things such as running a motor, there shouldn't be complicated algorithms
      */
-    private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+    // private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
     private final HandoffSubsystem handoff = new HandoffSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
-    private final ShooterSubsystem shooter = new ShooterSubsystem();
-    private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
+    // private final ShooterSubsystem shooter = new ShooterSubsystem();
+    // private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
 
     /*
      * Commands
      *  - This catagory is for commands, the commands can either be lambda instant or run commands, or they can be classes
      */
-    private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
-    private final Command joystickShooter = new InstantCommand(() -> shooter.run(operator.getLeftY(), operator.getLeftY()), shooter);
-    private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
-    private final Command runIntake = new InstantCommand(() -> intake.run(operator.getLeftX(), operator.getLeftX()), intake);
-    private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0, 0.0), intake);
-    private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
+    // private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
+    // private final Command joystickShooter = new InstantCommand(() -> shooter.run(operator.getLeftY(), operator.getLeftY()), shooter);
+    // private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
+    private final Command runIntake = new RunCommand(() -> {intake.run(operator.getLeftY()); handoff.setVoltage(12*operator.getRightY());}, intake, handoff);
+    // private final Command runHandoff = new InstantCommand(() -> handoff.setVoltage(12*operator.getRightY()), handoff);
+    // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0), intake);
+    // private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 
     /**
      * Creates new RobotContainer and configures auton and buttons
@@ -73,7 +74,7 @@ public class RobotContainer {
      * This method is for configuring the auton chooser
      */
     private void configureAutoSelector() {
-        SmartDashboard.putData("Auton", autonomousChooser);
+        // SmartDashboard.putData("Auton", autonomousChooser);
     }
 
     /**
@@ -81,14 +82,16 @@ public class RobotContainer {
      * @return Auton command
      */
     public Command getAutonomousCommand() {
-        return new TranslateDistance(driveBase, 1, 0);
+        return null;
+        // return new TranslateDistance(driveBase, 1, 0);
     }
 
     /**
      * Sets default commands to be used for teleop
      */
     public void setDefaultCommands() {
-        driveBase.setDefaultCommand(swerveDriveFieldCentric);
-        shooter.setDefaultCommand(joystickShooter);
+        // driveBase.setDefaultCommand(swerveDriveFieldCentric);
+        // shooter.setDefaultCommand(joystickShooter);
+        intake.setDefaultCommand(runIntake);
     }
 }
