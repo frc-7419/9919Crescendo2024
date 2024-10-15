@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private final CANSparkMax motor;
+    private final CANSparkMax intakeMotor;
     private double baselineCurrentDraw;
 
     /**
@@ -22,7 +22,7 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public IntakeSubsystem() {
         // Initialize the top and bottom motors
-        this.motor = new CANSparkMax(IntakeConstants.intakeID, MotorType.kBrushless);
+        this.intakeMotor = new CANSparkMax(IntakeConstants.intakeID, MotorType.kBrushless);
         this.coast();
     }
 
@@ -37,22 +37,22 @@ public class IntakeSubsystem extends SubsystemBase {
         // If either motor is running, set the motors to coast mode
         if (percent != 0) {
             coast();
-            motor.set(percent);
+            intakeMotor.set(percent);
         }
         // If both motors are stopped, set the motors to brake mode
         else {
             brake();
-            motor.set(percent);
+            intakeMotor.set(percent);
         }
     }
 
     /**
-     * Gets the current velocity of the top motor.
+     * Gets the current output of the top motor.
      *
-     * @return the current velocity of the top motor in rotations per second
+     * @return The current set speed. Value is between -1.0 and 1.0.
      */
-    public double getVelocity() {
-        return motor.get();
+    public double getOutput() {
+        return intakeMotor.get();
     }
 
     /**
@@ -64,7 +64,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return true if a note is detected, false otherwise
      */
     public boolean noteDetectedByCurrent() {
-        double currentDraw = motor.getOutputCurrent();
+        double currentDraw = intakeMotor.getOutputCurrent();
         return Math.abs(currentDraw - baselineCurrentDraw) > IntakeConstants.CURRENT_THRESHOLD;
     }
 
@@ -72,21 +72,21 @@ public class IntakeSubsystem extends SubsystemBase {
      * Updates the baseline current draw of the motor.
      */
     public void updateBaselineCurrentDraw() {
-        baselineCurrentDraw = motor.getOutputCurrent();
+        baselineCurrentDraw = intakeMotor.getOutputCurrent();
     }
 
     /**
      * Sets the motors to coast mode.
      */
     public void coast() {
-        motor.setIdleMode(IdleMode.kCoast);
+        intakeMotor.setIdleMode(IdleMode.kCoast);
     }
 
     /**
      * Sets the motors to brake mode.
      */
     public void brake() {
-        motor.setIdleMode(IdleMode.kBrake);
+        intakeMotor.setIdleMode(IdleMode.kBrake);
     }
 
     /**
@@ -95,7 +95,8 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     @Override
     public void periodic() {
-        // Put the motor velocities on the SmartDashboard
-        SmartDashboard.putNumber("Shooter Top Velocity", getVelocity());
+        SmartDashboard.putNumber("Intake Output", getOutput());
+        SmartDashboard.putNumber("Intake Output Current", intakeMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Intake Baseline Current Draw", baselineCurrentDraw);
     }
 }
