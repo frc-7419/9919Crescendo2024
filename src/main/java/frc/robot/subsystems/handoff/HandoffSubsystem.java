@@ -80,7 +80,16 @@ public class HandoffSubsystem extends SubsystemBase {
 
     /* Outputitng the voltage of the handoff motor */
     public void run(final double percent) {
-        handoffMotor.set(percent);
+        // If motor is running, set the motor to coast mode
+        if (percent != 0) {
+            coast();
+            handoffMotor.set(percent);
+        }
+        // If motor is stopped, set the motor to brake mode
+        else {
+            brake();
+            handoffMotor.set(percent);
+        }
     }
 
     @Override

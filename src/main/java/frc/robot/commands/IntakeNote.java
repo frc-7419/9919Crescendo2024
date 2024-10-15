@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.IntakeConstants;
 
 /**
- * Handles the intake and handoff process for detecting notes
+ * Handles the intake and handoff process for detecting notes.
  * 
- * Monitors the intake current to detect notes, adjusts the
+ * Monitors the intake and handoff current to detect notes, adjusts the
  * operation of the intake and handoff subsystems, and completes once the note
  * is processed or a timeout occurs.
  * 
@@ -23,10 +24,11 @@ public class IntakeNote extends Command {
     private final HandoffSubsystem handoffSubsystem;
     private final Timer thresholdTimer;
     private final Timer timeoutTimer;
-    private final Timer endTimer;
+    private final Timer handoffVerificationTimer;
     private boolean init;
-    private boolean notePhaseOne;
+    private int notePhase = 0;
     private boolean done;
+    private boolean handoffVerified = false;
 
     /**
      * Constructs an IntakeNote command.
@@ -39,8 +41,8 @@ public class IntakeNote extends Command {
         this.handoffSubsystem = handoffSubsystem;
         this.thresholdTimer = new Timer();
         this.timeoutTimer = new Timer();
-        this.endTimer = new Timer();
-        addRequirements(intakeSubsystem);
+        this.handoffVerificationTimer = new Timer();
+        addRequirements(intakeSubsystem, handoffSubsystem);
     }
 
     /**
@@ -50,12 +52,13 @@ public class IntakeNote extends Command {
     @Override
     public void initialize() {
         intakeSubsystem.coast();
-        notePhaseOne = false;
+        handoffSubsystem.coast();
+        notePhase = 0;
         done = false;
-        endTimer.reset();
         thresholdTimer.reset();
         thresholdTimer.start();
         timeoutTimer.reset();
+        handoffVerificationTimer.reset();
         init = false;
     }
 
@@ -68,28 +71,37 @@ public class IntakeNote extends Command {
         intakeSubsystem.run(0.85);
         handoffSubsystem.run(0.4);
 
+        SmartDashboard.putNumber("Note Phase", notePhase);
+
         // Update baseline current draw after 0.5 seconds
         if (thresholdTimer.hasElapsed(0.5) && !init) {
             intakeSubsystem.updateBaselineCurrentDraw();
+            handoffSubsystem.updateBaselineCurrentDraw();
             init = true;
         }
 
-        // Detect the note and start handoff if detected
+        // Detect the note in intake and handoff the note to the handoff subsystem
         if (intakeSubsystem.noteDetectedByCurrent() && thresholdTimer.hasElapsed(0.5)) {
-            notePhaseOne = true;
+            notePhase = 1;
             timeoutTimer.start();
         }
 
-        // Stop the intake and run the handoff once the note has passed
-        if (notePhaseOne && !intakeSubsystem.noteDetectedByCurrent()) {
-            intakeSubsystem.run(0);
-            handoffSubsystem.run(0.5);
-            endTimer.start();
+        // If the note is detected by handoff and not intake, stop intake
+        if (handoffSubsystem.noteDetectedByCurrent() && !intakeSubsystem.noteDetectedByCurrent()) {
+            intakeSubsystem.run(0); // Stop the intake
+            notePhase = 2; // Update to the next phase where handoff takes control
         }
 
-        // End the command after 0.3 seconds of handoff operation
-        if (endTimer.hasElapsed(0.3)) {
-            done = true;
+        // After handoff gets the note, push it back slightly to verify its position
+        if (notePhase == 2 && !handoffVerified) {
+            handoffSubsystem.run(-0.3); // Reverse the handoff briefly
+            handoffVerificationTimer.start();
+            if (handoffVerificationTimer.hasElapsed(0.2)) { // Reverse for 0.2 seconds
+                handoffSubsystem.run(0); // Stop handoff after the pushback
+                notePhase = 3; 
+                done = true; // Note is processed
+                handoffVerificationTimer.stop();
+            }
         }
     }
 
@@ -106,7 +118,7 @@ public class IntakeNote extends Command {
         intakeSubsystem.brake();
         thresholdTimer.stop();
         timeoutTimer.stop();
-        endTimer.stop();
+        handoffVerificationTimer.stop();
     }
 
     /**
