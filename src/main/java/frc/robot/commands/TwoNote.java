@@ -25,9 +25,9 @@ public class TwoNote extends SequentialCommandGroup {
 
                     }, shooterSubsystem)
                 ),
-                new ShootNote(shooterSubsystem, handoffSubsystem, intakeSubsystem),
+                new ShootNote(shooterSubsystem, handoffSubsystem, intakeSubsystem)
                 // FIX THIS COMMAND WHEN U GET THE CHANCE :drivetrain.setModuleStates(drivetrain.getChassisSpeedsFromJoystick(0.8, 0.0, 0.0, false))
-                            )
+            )
         );
   }
 }
