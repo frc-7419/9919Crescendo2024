@@ -4,40 +4,49 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants.IntakeConstants;
 
+/**
+ * Handles the intake and handoff process for detecting notes
+ * 
+ * Monitors the intake current to detect notes, adjusts the
+ * operation of the intake and handoff subsystems, and completes once the note
+ * is processed or a timeout occurs.
+ * 
+ */
 public class IntakeNote extends Command {
     private final IntakeSubsystem intakeSubsystem;
-    private final HandoffSubsystem handoff;
-    private final XboxController driver;
-    private final XboxController operator;
+    private final HandoffSubsystem handoffSubsystem;
     private final Timer thresholdTimer;
     private final Timer timeoutTimer;
     private final Timer endTimer;
-    // private final double VOLTAGE_THRESHOLD = 0.5; // need to adjust based on the voltage readings [OUTDATED - LOOK IN INTAKE SUBSYSTEM]
-    private final double MAX_INTAKE_TIME = 2.0; 
     private boolean init;
     private boolean notePhaseOne;
     private boolean done;
 
-    public IntakeNote(IntakeSubsystem intakeSubsystem, HandoffSubsystem handoff, XboxController driver, XboxController operator) {
+    /**
+     * Constructs an IntakeNote command.
+     * 
+     * @param intakeSubsystem  the intake subsystem used by this command
+     * @param handoffSubsystem the handoff subsystem used by this command
+     */
+    public IntakeNote(IntakeSubsystem intakeSubsystem, HandoffSubsystem handoffSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
-        this.handoff  = handoff;
-        this.driver = driver;
-        this.operator = operator;
+        this.handoffSubsystem = handoffSubsystem;
         this.thresholdTimer = new Timer();
         this.timeoutTimer = new Timer();
         this.endTimer = new Timer();
         addRequirements(intakeSubsystem);
     }
 
-    // Called when the command is initially scheduled.
+    /**
+     * Initializes the command, setting subsystem modes and timers for detecting
+     * notes.
+     */
     @Override
     public void initialize() {
         intakeSubsystem.coast();
@@ -50,49 +59,63 @@ public class IntakeNote extends Command {
         init = false;
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
+    /**
+     * Main runtime, running the intake and handoff subsystems and
+     * monitoring for note detection based on current draw.
+     */
     @Override
     public void execute() {
         intakeSubsystem.run(0.85);
-        handoff.run(0.4);
-        if(thresholdTimer.hasElapsed(0.5) && (init == false)){
+        handoffSubsystem.run(0.4);
+
+        // Update baseline current draw after 0.5 seconds
+        if (thresholdTimer.hasElapsed(0.5) && !init) {
             intakeSubsystem.updateBaselineCurrentDraw();
             init = true;
         }
-        if(intakeSubsystem.noteDetectedByCurrent() && thresholdTimer.hasElapsed(0.5)){
+
+        // Detect the note and start handoff if detected
+        if (intakeSubsystem.noteDetectedByCurrent() && thresholdTimer.hasElapsed(0.5)) {
             notePhaseOne = true;
             timeoutTimer.start();
         }
-        if(notePhaseOne && !intakeSubsystem.noteDetectedByCurrent()) {
-            intakeSubsystem.setSpeed(0);
-            intakeSubsystem.setSerializerSpeed(0.5);
+
+        // Stop the intake and run the handoff once the note has passed
+        if (notePhaseOne && !intakeSubsystem.noteDetectedByCurrent()) {
+            intakeSubsystem.run(0);
+            handoffSubsystem.run(0.5);
             endTimer.start();
         }
-        if(endTimer.hasElapsed(0.3)){
+
+        // End the command after 0.3 seconds of handoff operation
+        if (endTimer.hasElapsed(0.3)) {
             done = true;
         }
     }
 
-    // Called once the command ends or is interrupted.
+    /**
+     * Ends the command by stopping both subsystems and resetting timers.
+     * 
+     * @param interrupted whether the command was interrupted before finishing
+     */
     @Override
     public void end(boolean interrupted) {
-        intakeSubsystem.setSerializerSpeed(0);
-        intakeSubsystem.setSpeed(0);
-        intakeSubsystem.brakeSerializer();
+        handoffSubsystem.run(0);
+        intakeSubsystem.run(0);
+        handoffSubsystem.brake();
         intakeSubsystem.brake();
         thresholdTimer.stop();
         timeoutTimer.stop();
         endTimer.stop();
-        if(DriverStation.isTeleop()){
-            new ParallelCommandGroup(new PulseRumble(driver), new PulseRumble(operator)).schedule();
-        }   
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    }
 
-    // Returns true when the command should end.
+    /**
+     * Determines whether the command has finished.
+     * 
+     * @return true if the note has been processed or the command times out
+     */
     @Override
     public boolean isFinished() {
-        // with beam break
-        // return intakeSubsystem.frontBeamBreakIsTriggered();
-        return done || timeoutTimer.hasElapsed(MAX_INTAKE_TIME);
+        return done || timeoutTimer.hasElapsed(IntakeConstants.MAX_INTAKE_TIME);
     }
 }

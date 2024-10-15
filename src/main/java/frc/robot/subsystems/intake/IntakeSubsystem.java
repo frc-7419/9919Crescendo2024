@@ -6,21 +6,23 @@ package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final CANSparkMax motor;
+    private double baselineCurrentDraw;
 
     /**
      * Constructs a new IntakeSubsystem.
-     * Initializes the top and bottom motors, sets their inversion, and configures the Talon FX motors.
+     * Initializes the top and bottom motors, sets their inversion, and configures
+     * the Talon FX motors.
      */
     public IntakeSubsystem() {
         // Initialize the top and bottom motors
-        this.motor = new CANSparkMax(Constants.IntakeConstants.intakeID, MotorType.kBrushless);
+        this.motor = new CANSparkMax(IntakeConstants.intakeID, MotorType.kBrushless);
         this.coast();
     }
 
@@ -29,7 +31,7 @@ public class IntakeSubsystem extends SubsystemBase {
      * If either motor is running, the motors are set to coast mode.
      * If both motors are stopped, the motors are set to brake mode.
      *
-     * @param percent    the desired percent for motor
+     * @param percent the desired percent for motor
      */
     public void run(final double percent) {
         // If either motor is running, set the motors to coast mode
@@ -49,8 +51,28 @@ public class IntakeSubsystem extends SubsystemBase {
      *
      * @return the current velocity of the top motor in rotations per second
      */
-    public double getTopVelocity() {
-        return 0;
+    public double getVelocity() {
+        return motor.get();
+    }
+
+    /**
+     * 
+     * Checks if there is a note intaken using voltage compensation.
+     * Checks if the current draw of the motor is significantly different from the
+     * baseline current draw.
+     * 
+     * @return true if a note is detected, false otherwise
+     */
+    public boolean noteDetectedByCurrent() {
+        double currentDraw = motor.getOutputCurrent();
+        return Math.abs(currentDraw - baselineCurrentDraw) > IntakeConstants.CURRENT_THRESHOLD;
+    }
+
+    /**
+     * Updates the baseline current draw of the motor.
+     */
+    public void updateBaselineCurrentDraw() {
+        baselineCurrentDraw = motor.getOutputCurrent();
     }
 
     /**
@@ -69,11 +91,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
     /**
      * Periodic function called by the scheduler.
-     * Puts the top and bottom motor velocities on the SmartDashboard.
+     * Puts the motor velocities on the SmartDashboard.
      */
     @Override
     public void periodic() {
-        // Put the top and bottom motor velocities on the SmartDashboard
-        SmartDashboard.putNumber("Shooter Top Velocity", getTopVelocity());
+        // Put the motor velocities on the SmartDashboard
+        SmartDashboard.putNumber("Shooter Top Velocity", getVelocity());
     }
 }
