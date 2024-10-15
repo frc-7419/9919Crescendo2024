@@ -29,7 +29,7 @@ public final class Constants {
     }
 
     public static class HandoffConstants {
-        public static final int loaderID = 0; //TODO: set ID once robot is built
+        public static final int loaderID = 10;
         // 1:1 gear ratio
     }
 
@@ -45,7 +45,7 @@ public final class Constants {
     }
 
     public static class IntakeConstants {
-        public static final int intakeID = 0; //TODO: set ID once robot is built
+        public static final int intakeID = 11;
         public static final double intakeGearRatio = 30/24; // Motor to wheel
 
     }

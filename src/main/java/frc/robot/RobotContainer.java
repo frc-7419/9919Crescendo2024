@@ -48,7 +48,7 @@ public class RobotContainer {
     // private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
     // private final Command joystickShooter = new InstantCommand(() -> shooter.run(operator.getLeftY(), operator.getLeftY()), shooter);
     // private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
-    private final Command runIntake = new RunCommand(() -> {intake.run(operator.getLeftY()); handoff.setVoltage(12*operator.getRightY());}, intake, handoff);
+    private final Command runIntake = new RunCommand(() -> {intake.run(operator.getLeftY()); handoff.run(operator.getRightY());}, intake, handoff);
     // private final Command runHandoff = new InstantCommand(() -> handoff.setVoltage(12*operator.getRightY()), handoff);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0), intake);
     // private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();

@@ -4,33 +4,27 @@
 
 package frc.robot.subsystems.handoff;
 
-import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.HandoffConstants;
 
 
 public class HandoffSubsystem extends SubsystemBase {
-    final VoltageOut m_request = new VoltageOut(0);
-    /**
-     * Creates a new HandoffSubsystem.
-     */
-
     /*
-     * Just a diverter wheel powered by a falcon.
+     * Just a diverter wheel powered by a rev.
      *
      * Clockwise: To Elevator
      * Counter-Clockwise: To Intake
      */
-
       
-    private final CANSparkMax handoffMotorOne;
+    private final CANSparkMax handoffMotor;
 
     public HandoffSubsystem() {
-        handoffMotorOne = new TalonFX(HandoffConstants.loaderID, Constants.RobotConstants.kCanbus);
+        handoffMotor = new CANSparkMax(HandoffConstants.loaderID, MotorType.kBrushless);
+        handoffMotor.setInverted(true);
         coast();
     }
 
@@ -40,19 +34,19 @@ public class HandoffSubsystem extends SubsystemBase {
 
     /*Setting the handoff motors to neutral mode. */
     public void coast() {
-        handoffMotorOne.setNeutralMode(NeutralModeValue.Coast);
+        handoffMotor.setIdleMode(IdleMode.kCoast);
     }
     /*Setting the handoff motors to brake mode. */
     public void brake() {
-        handoffMotorOne.setNeutralMode(NeutralModeValue.Brake);
+        handoffMotor.setIdleMode(IdleMode.kCoast);
     }
     /*Setting the handoff motors to stop. */
     public void stop() {
-        handoffMotorOne.set(0);
+        handoffMotor.set(0);
     }
 /*Outputitng the voltage of the handoff motor*/
-    public void setVoltage(final double voltage) {
-        handoffMotorOne.setControl(m_request.withOutput(voltage));
+    public void run(final double percent) {
+        handoffMotor.set(percent);
     }
 
     @Override

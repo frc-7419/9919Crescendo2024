@@ -37,7 +37,7 @@ public class RunDiverter extends Command {
     @Override
     public void execute() {
         // Run the motor
-        handoffSubsystem.setVoltage(voltage);
+        handoffSubsystem.run(voltage);
     }
 
     // Called once the command ends or is interrupted.
@@ -45,7 +45,7 @@ public class RunDiverter extends Command {
     public void end(boolean interrupted) {
         // Stop the motor
         handoffSubsystem.brake();
-        handoffSubsystem.setVoltage(0);
+        handoffSubsystem.run(0);
     }
 
     // Returns true when the command should end.

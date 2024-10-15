@@ -5,21 +5,14 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
-    /**
-     * Creates a new IntakeSubsystem.
-     */
-
-    // Declare the top and bottom motors
-    private final TalonFX motor;
-    private final VelocityVoltage velocityVoltage;
+    private final CANSparkMax motor;
 
     /**
      * Constructs a new IntakeSubsystem.
@@ -27,23 +20,8 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public IntakeSubsystem() {
         // Initialize the top and bottom motors
-        this.motor = new TalonFX(Constants.IntakeConstants.intakeID, Constants.RobotConstants.kCanbus);
-        this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
-
-        // Invert the top motor, but not the bottom motor
-        motor.setInverted(true);
-
-        // Configure the Talon FX motors
-        TalonFXConfiguration config = new TalonFXConfiguration();
-        config.Slot0.kS = 0.1; // To account for friction                                                     TODO: calculate friction
-        config.Slot0.kV = 0.11299435; // volts per rotation per second                                        DONT TOUCH
-        config.Slot0.kP = 0.11; // An error of 1 rotation per second results in 0.11 V output                 TODO: tune value for P
-        config.Slot0.kI = 0; // No output for integrated error                                                DONT TOUCH
-        config.Slot0.kD = 0; // No output for error derivative                                                DONT TOUCH
-        config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
-        config.Voltage.PeakForwardVoltage = 12; // Maximum forward voltage
-        config.Voltage.PeakReverseVoltage = -12; // Maximum reverse voltage
-        motor.getConfigurator().apply(config);
+        this.motor = new CANSparkMax(Constants.IntakeConstants.intakeID, MotorType.kBrushless);
+        this.coast();
     }
 
     /**
@@ -51,18 +29,18 @@ public class IntakeSubsystem extends SubsystemBase {
      * If either motor is running, the motors are set to coast mode.
      * If both motors are stopped, the motors are set to brake mode.
      *
-     * @param RPM    the desired RPM for the top motor
+     * @param percent    the desired percent for motor
      */
-    public void run(final double RPM) {
+    public void run(final double percent) {
         // If either motor is running, set the motors to coast mode
-        if (RPM != 0) {
+        if (percent != 0) {
             coast();
-            motor.setControl(velocityVoltage.withVelocity(RPM / 60.0D));
+            motor.set(percent);
         }
         // If both motors are stopped, set the motors to brake mode
         else {
             brake();
-            motor.setControl(velocityVoltage.withVelocity(RPM / 60.0D));
+            motor.set(percent);
         }
     }
 
@@ -72,21 +50,21 @@ public class IntakeSubsystem extends SubsystemBase {
      * @return the current velocity of the top motor in rotations per second
      */
     public double getTopVelocity() {
-        return motor.getVelocity().getValue();
+        return 0;
     }
 
     /**
      * Sets the motors to coast mode.
      */
-    private void coast() {
-        motor.setNeutralMode(NeutralModeValue.Coast);
+    public void coast() {
+        motor.setIdleMode(IdleMode.kCoast);
     }
 
     /**
      * Sets the motors to brake mode.
      */
-    private void brake() {
-        motor.setNeutralMode(NeutralModeValue.Brake);
+    public void brake() {
+        motor.setIdleMode(IdleMode.kBrake);
     }
 
     /**
