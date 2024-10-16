@@ -28,7 +28,6 @@ public class DriveBaseSubsystem extends SubsystemBase {
     private final SwerveModule backRightModule;
     private final Pigeon2 gyro;
 
-    private final LimelightHelpers limeLight;
     private final SwerveDrivePoseEstimator m_poseEstimator;
 
     public DriveBaseSubsystem() {
@@ -47,7 +46,6 @@ public class DriveBaseSubsystem extends SubsystemBase {
         gyro.reset(); // field centric, we need yaw to be zero
         m_odometry = new SwerveDriveOdometry(Constants.SwerveConstants.m_SwerveDriveKinematics, gyro.getRotation2d(),getPositions());
         coast();
-        limeLight = new LimelightHelpers();
         m_poseEstimator = new SwerveDrivePoseEstimator(
                 Constants.SwerveConstants.m_SwerveDriveKinematics,
                 getRotation2d(),

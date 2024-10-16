@@ -27,7 +27,7 @@ public class IntakeNote extends Command {
   @Override
   public void execute() {
     wrist.goToPosition(0.9); // Arbitrary value
-    intake.run(0.8, 0.8); // Arbitrary value
+    intake.run(0.8); // Arbitrary value
   }
 
   // Called once the command ends or is interrupted.
