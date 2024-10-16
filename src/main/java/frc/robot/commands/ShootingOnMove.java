@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -13,68 +9,95 @@ import frc.robot.subsystems.drive.DriveBaseSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class ShootingOnMove extends Command {
-  /** Creates a new ShootingOnMove. */
   private final DriveBaseSubsystem driveBaseSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final PIDController aimController;
-  private final double shooterAngle;
-  public final double shooterSpeed;
   private static final double aimTolerance = 1.0; // degrees 
   private static final double maxSpeedAdjustment = 0.2;
-  public static final double kP = 0.1;
-  public static final double kI = 0.0;
-  public static final double kD = 0.1;
+  private static final double kP = 0.1;
+  private static final double kI = 0.0;
+  private static final double kD = 0.1;
+  private static final double NOMINAL_SHOOTER_SPEED = 0.9;
+  private static final double COMPENSATION_FACTOR = 0.1; // Proportional factor for velocity compensation
   private final Joystick joystick;
+
   public ShootingOnMove(DriveBaseSubsystem driveBaseSubsystem, ShooterSubsystem shooterSubsystem, Joystick joystick) {
-    // initializing subsystems + variables
     this.driveBaseSubsystem = driveBaseSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.shooterAngle = 60.0; // this is an arbitrary angle in degrees; replace with correct angle value
-    this.shooterSpeed = 0.9; 
     this.aimController = new PIDController(kP, kI, kD);
     this.aimController.setTolerance(aimTolerance);
     this.joystick = joystick;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveBaseSubsystem, shooterSubsystem);
   }
-// gtg
-  // Called when the command is initially scheduled.
+
   @Override
   public void initialize() {
     aimController.reset();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     ChassisSpeeds currentSpeeds = driveBaseSubsystem.getChassisSpeedsFromJoystick(joystick.getX(), joystick.getY(), joystick.getZ(), false);
-
-    double tx = LimelightHelpers.getTX("limelight"); 
-    double rotationAdjustment = aimController.calculate(tx,0); 
+    
+    double robotVelocityX = currentSpeeds.vxMetersPerSecond; // Forward velocity of the robot
+    double tx = LimelightHelpers.getTX("limelight");
+    double rotationAdjustment = aimController.calculate(tx, 0); 
     
     ChassisSpeeds adjustedSpeeds = new ChassisSpeeds(
       currentSpeeds.vxMetersPerSecond,
       currentSpeeds.vyMetersPerSecond,
-      currentSpeeds.omegaRadiansPerSecond	+ rotationAdjustment
+      currentSpeeds.omegaRadiansPerSecond + rotationAdjustment
     );
- 
-    // rotationAdjustment = Math.max(-0.5, Math.min(0.5,rotationSpeed)); // clamp
+    
+    driveBaseSubsystem.setModuleStates(adjustedSpeeds);
 
-    driveBaseSubsystem.setModuleStates(
-      driveBaseSubsystem.getChassisSpeedsFromJoystick(adjustedSpeeds.vxMetersPerSecond,adjustedSpeeds.vyMetersPerSecond,adjustedSpeeds.omegaRadiansPerSecond,false)
-    );
-    
-    shooterSubsystem.run(100.0, 100.0); // arbitrary values; should be fixed
-    
+    // Manually calculate the distance to the target using Limelight
+    double distanceToTarget = getDistanceToTarget();
+
+    // Manually calculate the shooter speed based on the distance
+    double baseShooterSpeed = getShooterSpeedForDistance(distanceToTarget);
+
+    // Adjust shooter speed to compensate for robot's forward velocity
+    double adjustedShooterSpeed = baseShooterSpeed + (robotVelocityX * COMPENSATION_FACTOR);
+
+    // Ensure the adjusted shooter speed stays within bounds (e.g., max shooter speed = 1.0)
+    adjustedShooterSpeed = Math.min(1.0, adjustedShooterSpeed);
+
+    // Set the shooter speed
+    shooterSubsystem.run(adjustedShooterSpeed, adjustedShooterSpeed);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  // Manual function to calculate distance to target using Limelight data
+  public double getDistanceToTarget() {
+    double targetHeight = 2.5; // Example: height of the target in meters (e.g., high goal)
+    double cameraHeight = 1.0; // Example: height of your Limelight in meters
+    double cameraAngle = 25.0; // Example: angle of your Limelight from horizontal in degrees
+    double ty = LimelightHelpers.getTY("limelight"); // Vertical offset angle from Limelight
+
+    double angleToTargetRadians = Math.toRadians(cameraAngle + ty);
+    
+    return (targetHeight - cameraHeight) / Math.tan(angleToTargetRadians);
+  }
+
+  // Manual function to calculate shooter speed based on distance to target
+  public double getShooterSpeedForDistance(double distance) {
+    double minSpeed = 0.6; // Example: minimum shooter speed at the closest range
+    double maxSpeed = 1.0; // Example: maximum shooter speed at farthest range
+    double minDistance = 2.0; // Example: minimum shooting distance in meters
+    double maxDistance = 8.0; // Example: maximum shooting distance in meters
+    
+    double k = (maxSpeed - minSpeed) / (maxDistance - minDistance);
+
+    double shooterSpeed = minSpeed + k * (distance - minDistance);
+
+    return Math.min(maxSpeed, Math.max(minSpeed, shooterSpeed));
   }
 }
