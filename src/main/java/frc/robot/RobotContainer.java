@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
+import frc.robot.subsystems.drive.BackupDriveBaseSubsystem;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -37,6 +38,7 @@ public class RobotContainer {
      *  - Subsystems should have methods which do low-level things such as running a motor, there shouldn't be complicated algorithms
      */
     private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+    private final BackupDriveBaseSubsystem backupDriveBaseSubsystem = new BackupDriveBaseSubsystem();
     private final HandoffSubsystem handoff = new HandoffSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
     private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
