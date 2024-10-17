@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.generated.TunerConstants;
 
 public final class Constants {
     // Limelight 3 on shooter
@@ -55,76 +56,7 @@ public final class Constants {
     }
 
     public static class SwerveConstants {
-
-        public static final double kWidthBetweenModules = 19.25;
-        public static final double kLengthBetweenModules = 21.25;
-
-        /*
-         * IMPORTANT: THIS WAS FOUND THROUGH CAD FILES BUT THERE ARE MANY SWERVE X
-         * CONFIGURATIONS
-         * SO YOU NEED TO DOUBLE CHECK THIS IS CORRECT IN PRACTICE
-         */
-        /*
-         * ANGLE MOTOR
-         * NEO Shaft to 12T Pulley to 24T Pulley to 14T Gear to 72T Main Rotation Gear
-         */
-        public static final double kGearRatioTurnMotor = 72 / 7;
-        // 12.0 / 24.0 * 14.0 / 72.0; //OLD
-        /*
-         * DRIVE MOTOR
-         * NEO shaft to 12T Pulley to 24T Pulley to 24T Gear to 22T Gear to 15T bevel to
-         * 45T Bevel
-         *
-         * The CANCODER measures rotations of a the driven 1:1 PULLEY in which the
-         * driver pulley is on the same
-         * shaft as the 24T Pulley
-         */
-        public static final double kDriveMotorGearRatio = 6;
-        // 12.0 / 24.0 * 24.0 / 22.0 * 15.0 / 45.0; //OLD
-        public static final double kWheelDiameter = Units.inchesToMeters(4);
-        public static final double kWheelCircumfrence = kWheelDiameter * Math.PI; // TODO
-        public static final double kMaxTranslationalSpeed = Units.feetToMeters(3); // TODO
-        public static final double kMaxRotationalSpeed = Math.PI / 4; // arbitrary value in radians, let's say one
-                                                                      // pi/second //TODO
-        public static final double anglekP = 0.002;
-        public static final double anglekI = 0;
-        public static final double anglekD = 0;
-        /*
-         * INFO: according to WPILib docs "The locations for the modules must be
-         * relative to the center of the robot. Positive x
-         * values represent moving toward the front of the robot whereas positive y
-         * values represent moving toward the left of the robot."
-         */
-        // front of the robot is the shooter facing speaker side, back is opposite
-        public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(2, 1, 1, 0,
-                new Translation2d(RobotConstants.kRobotHalfLength, RobotConstants.kRobotHalfLength));
-        public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(4, 3, 2, 0,
-                new Translation2d(RobotConstants.kRobotHalfLength, -RobotConstants.kRobotHalfLength));
-        public static final SwerveModuleConstants backLeft = new SwerveModuleConstants(6, 6, 3, 0,
-                new Translation2d(-RobotConstants.kRobotHalfLength, RobotConstants.kRobotHalfLength));
-        public static final SwerveModuleConstants backRight = new SwerveModuleConstants(8, 8, 4, 0,
-                new Translation2d(-RobotConstants.kRobotHalfLength, -RobotConstants.kRobotHalfLength));
-        public static final SwerveDriveKinematics m_SwerveDriveKinematics = new SwerveDriveKinematics(
-                SwerveConstants.frontLeft.location, SwerveConstants.frontRight.location,
-                SwerveConstants.backLeft.location, SwerveConstants.backRight.location);
-
+        public static final double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
+        public static final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
     }
-
-    public static class SwerveModuleConstants {
-        public final int driveMotorID;
-        public final int turnMotorID;
-        public final int turnEncoderID;
-        public final double offset;
-        public final Translation2d location;
-
-        public SwerveModuleConstants(final int driveMotorID, final int turnMotorID, final int turnEncoderID,
-                final double offset, final Translation2d location) {
-            this.driveMotorID = driveMotorID;
-            this.turnMotorID = turnMotorID;
-            this.turnEncoderID = turnEncoderID;
-            this.offset = offset;
-            this.location = location;
-        }
-    }
-
 }
