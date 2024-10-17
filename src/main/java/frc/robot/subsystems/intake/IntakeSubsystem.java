@@ -96,7 +96,7 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     private void coast() {
         topMotor.setNeutralMode(NeutralModeValue.Coast);
-        topMotor.setNeutralMode(NeutralModeValue.Coast);
+        bottomMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
     /**
