@@ -30,6 +30,8 @@ public final class Constants {
 
     public static class HandoffConstants {
         public static final int loaderID = 10;
+        public static final double CURRENT_THRESHOLD = 5.0; // TODO: set threshold
+        public static final double HANDOFF_POWER = 0.4; // Constant power for handoff
         // 1:1 gear ratio
     }
 
@@ -49,6 +51,7 @@ public final class Constants {
         public static final double intakeGearRatio = 30 / 24; // Motor to wheel
         public static final double CURRENT_THRESHOLD = 5.0; // TODO: set threshold
         public static final double MAX_INTAKE_TIME = 2.0; // TODO: set time
+        public static final double INTAKE_POWER = 0.85; // Constant power for intake
     }
 
     public static class SwerveConstants {
@@ -92,7 +95,7 @@ public final class Constants {
          * values represent moving toward the front of the robot whereas positive y
          * values represent moving toward the left of the robot."
          */
-        //front of the robot is the shooter facing speaker side, back is opposite
+        // front of the robot is the shooter facing speaker side, back is opposite
         public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(5, 6, 1, 0,
                 new Translation2d(RobotConstants.kRobotHalfLength, RobotConstants.kRobotHalfLength));
         public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(11, 12, 4, 0,

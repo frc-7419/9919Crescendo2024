@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HandoffConstants;
-import frc.robot.Constants.IntakeConstants;
 
 public class HandoffSubsystem extends SubsystemBase {
     /*
@@ -40,7 +39,7 @@ public class HandoffSubsystem extends SubsystemBase {
      */
     public boolean noteDetectedByCurrent() {
         double currentDraw = handoffMotor.getOutputCurrent();
-        return Math.abs(currentDraw - baselineCurrentDraw) > IntakeConstants.CURRENT_THRESHOLD;
+        return Math.abs(currentDraw - baselineCurrentDraw) > HandoffConstants.CURRENT_THRESHOLD;
     }
 
     /**
@@ -90,6 +89,15 @@ public class HandoffSubsystem extends SubsystemBase {
             brake();
             handoffMotor.set(percent);
         }
+    }
+
+    /**
+     * Gets the current draw of the motor.
+     * 
+     * @returns The motor controller's output current in Amps.
+     */
+    public double getCurrent() {
+        return handoffMotor.getOutputCurrent();
     }
 
     @Override

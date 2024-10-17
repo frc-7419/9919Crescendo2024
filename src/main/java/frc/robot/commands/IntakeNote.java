@@ -9,6 +9,7 @@ import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.HandoffConstants;
 import frc.robot.Constants.IntakeConstants;
 
 /**
@@ -68,8 +69,8 @@ public class IntakeNote extends Command {
      */
     @Override
     public void execute() {
-        intakeSubsystem.run(0.85);
-        handoffSubsystem.run(0.4);
+        intakeSubsystem.run(IntakeConstants.INTAKE_POWER);
+        handoffSubsystem.run(HandoffConstants.HANDOFF_POWER);
 
         SmartDashboard.putNumber("Note Phase", notePhase);
 
@@ -98,7 +99,7 @@ public class IntakeNote extends Command {
             handoffVerificationTimer.start();
             if (handoffVerificationTimer.hasElapsed(0.2)) { // Reverse for 0.2 seconds
                 handoffSubsystem.run(0); // Stop handoff after the pushback
-                notePhase = 3; 
+                notePhase = 3;
                 done = true; // Note is processed
                 handoffVerificationTimer.stop();
             }

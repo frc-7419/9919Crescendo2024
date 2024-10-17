@@ -4,12 +4,13 @@
 
 package frc.robot.subsystems.intake;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.IntakeConstants;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final CANSparkMax intakeMotor;
@@ -87,6 +88,15 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public void brake() {
         intakeMotor.setIdleMode(IdleMode.kBrake);
+    }
+
+    /**
+     * Gets the current draw of the motor.
+     * 
+     * @returns The motor controller's output current in Amps.
+     */
+    public double getCurrent() {
+        return intakeMotor.getOutputCurrent();
     }
 
     /**
