@@ -96,13 +96,13 @@ public final class Constants {
          * values represent moving toward the left of the robot."
          */
         // front of the robot is the shooter facing speaker side, back is opposite
-        public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(5, 6, 1, 0,
+        public static final SwerveModuleConstants frontLeft = new SwerveModuleConstants(2, 1, 1, 0,
                 new Translation2d(RobotConstants.kRobotHalfLength, RobotConstants.kRobotHalfLength));
-        public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(11, 12, 4, 0,
+        public static final SwerveModuleConstants frontRight = new SwerveModuleConstants(4, 3, 2, 0,
                 new Translation2d(RobotConstants.kRobotHalfLength, -RobotConstants.kRobotHalfLength));
-        public static final SwerveModuleConstants backLeft = new SwerveModuleConstants(7, 8, 2, 0,
+        public static final SwerveModuleConstants backLeft = new SwerveModuleConstants(6, 6, 3, 0,
                 new Translation2d(-RobotConstants.kRobotHalfLength, RobotConstants.kRobotHalfLength));
-        public static final SwerveModuleConstants backRight = new SwerveModuleConstants(9, 10, 3, 0,
+        public static final SwerveModuleConstants backRight = new SwerveModuleConstants(8, 8, 4, 0,
                 new Translation2d(-RobotConstants.kRobotHalfLength, -RobotConstants.kRobotHalfLength));
         public static final SwerveDriveKinematics m_SwerveDriveKinematics = new SwerveDriveKinematics(
                 SwerveConstants.frontLeft.location, SwerveConstants.frontRight.location,
