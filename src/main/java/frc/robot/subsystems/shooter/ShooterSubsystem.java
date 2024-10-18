@@ -74,6 +74,11 @@ public class ShooterSubsystem extends SubsystemBase {
         return bottomMotor.getVelocity().getValue();
     }
 
+    public void stop(){
+        topMotor.setControl(velocityVoltage.withVelocity(0));
+        bottomMotor.setControl(velocityVoltage.withVelocity(0));
+    }
+
 
     @Override
     public void periodic() {
@@ -85,12 +90,12 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("shooter/Bottom Temperature", bottomMotor.getDeviceTemp().getValue());
     }
 
-    private void coast() {
+    void coast() {
         topMotor.setNeutralMode(NeutralModeValue.Coast);
         bottomMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
-    private void brake() {
+    void brake() {
         topMotor.setNeutralMode(NeutralModeValue.Brake);
         bottomMotor.setNeutralMode(NeutralModeValue.Brake);
     }
