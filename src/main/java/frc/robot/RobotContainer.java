@@ -4,6 +4,7 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -129,6 +130,19 @@ public class RobotContainer {
         if (Utils.isSimulation()) {
             drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
         }
+
+        /* Bindings for drivetrain characterization */
+        /*
+         * These bindings require multiple buttons pushed to swap between quastatic and
+         * dynamic
+         */
+        /*
+         * Back/Start select dynamic/quasistatic, Y/X select forward/reverse direction
+         */
+        driver.back().and(driver.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        driver.back().and(driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
