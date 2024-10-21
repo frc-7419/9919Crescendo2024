@@ -36,7 +36,7 @@ public class LimelightRangeChecker extends SubsystemBase {
                 }
                 
             }else{
-                SmartDashboard.putString("Currently", " no fiducial with speaker id detected, other fiducials detected");
+                SmartDashboard.putString("Currently", " no fiducial with speaker id detected, other fiducials detected at range: "+fiducial.distToCamera);
             }
         }
         return false; 
