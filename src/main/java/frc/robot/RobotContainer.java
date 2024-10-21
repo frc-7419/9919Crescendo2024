@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -77,6 +78,7 @@ public class RobotContainer {
     // private final SendableChooser<Command> autonomousChooser = new
     // SendableChooser<>();
 
+
     /*
      * Drivebase
      * - This category is for TunerX Command Based Drivetrain initialization.
@@ -94,6 +96,11 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Telemetry logger = new Telemetry(SwerveConstants.MaxSpeed);
+
+    /*
+     * Autos
+     */
+    private final PathPlannerAuto testAuto = new PathPlannerAuto("Test Auto");
 
     /**
      * Creates new RobotContainer and configures auton and buttons
@@ -162,7 +169,7 @@ public class RobotContainer {
      * @return Auton command
      */
     public Command getAutonomousCommand() {
-        return null;
+        return testAuto;
         // return new TranslateDistance(driveBase, 1, 0);
     }
 
@@ -172,6 +179,6 @@ public class RobotContainer {
     public void setDefaultCommands() {
         // driveBase.setDefaultCommand(swerveDriveFieldCentric);
         // shooter.setDefaultCommand(joystickShooter);
-        intake.setDefaultCommand(runIntake);
+        // intake.setDefaultCommand(runIntake);
     }
 }
