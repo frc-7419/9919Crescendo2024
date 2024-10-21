@@ -7,13 +7,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 
-public class RunShooter extends Command {
+public class RunShooterWithTimer extends Command {
   private final ShooterSubsystem shooter;
   private final double speed;
   private static final double minimum = 12.7;
+  private final Timer timer = new Timer();
   /** Creates a new ShootNote. */
-  public RunShooter(ShooterSubsystem shooter, double speed) {
+  public RunShooterWithTimer(ShooterSubsystem shooter, double speed) {
     this.shooter = shooter;
     this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,20 +28,28 @@ public class RunShooter extends Command {
   // Called every time the scheduler runs while the command is sched/led.
   @Override
   public void execute() {
+    timer.reset();
+    timer.start();
+
+
     double currentVoltage = RobotController.getBatteryVoltage();
 
-    //runs if the battery voltage is less than 12.7 to compensate for undervolted motor
-    if(currentVoltage < 12.7) {
-       double voltageCompensatedSpeed = speed * (currentVoltage / minimum);
+
+    if (timer.get() <= 0.5) { // Value needs to be changed - arbitrary
+        if(currentVoltage < 12.7) {
+        double voltageCompensatedSpeed = speed * (currentVoltage / minimum);
     
     // Limit speed to a maximum of 1.0 for safety
     voltageCompensatedSpeed = Math.max(voltageCompensatedSpeed, 1.0);
 
+    
     shooter.run(voltageCompensatedSpeed, voltageCompensatedSpeed);
+      }
+      else {
+        shooter.run(speed, speed);
+      }
     }
-    else {
-      shooter.run(speed, speed);
-    }
+    //runs if the battery voltage is less than 12.7 to compensate for undervolted motor
   }
 
   // Called once the command ends or is interrupted.
