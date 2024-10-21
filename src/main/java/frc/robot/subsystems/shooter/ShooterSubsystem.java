@@ -90,12 +90,12 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("shooter/Bottom Temperature", bottomMotor.getDeviceTemp().getValue());
     }
 
-    void coast() {
+    public void coast() {
         topMotor.setNeutralMode(NeutralModeValue.Coast);
         bottomMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
-    void brake() {
+    public void brake() {
         topMotor.setNeutralMode(NeutralModeValue.Brake);
         bottomMotor.setNeutralMode(NeutralModeValue.Brake);
     }
