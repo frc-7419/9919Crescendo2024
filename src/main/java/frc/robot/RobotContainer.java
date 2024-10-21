@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DetectTag;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
+import frc.robot.subsystems.LimelightRangeChecker;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
 import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -42,12 +44,14 @@ public class RobotContainer {
     private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
+    private final LimelightRangeChecker rangeChecker = new LimelightRangeChecker();
 
     /*
      * Commands
      *  - This catagory is for commands, the commands can either be lambda instant or run commands, or they can be classes
      */
     private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
+    private final DetectTag detectTag = new DetectTag(rangeChecker);
     private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
     private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
     private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(), driver.getLeftX()), intake);
@@ -94,5 +98,6 @@ public class RobotContainer {
     public void setDefaultCommands() {
         driveBase.setDefaultCommand(swerveDriveFieldCentric);
         shooter.setDefaultCommand(joystickShooter);
+        rangeChecker.setDefaultCommand(detectTag);
     }
 }
