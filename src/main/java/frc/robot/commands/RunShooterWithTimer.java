@@ -14,10 +14,12 @@ public class RunShooterWithTimer extends Command {
   private final double speed;
   private static final double minimum = 12.7;
   private final Timer timer = new Timer();
+  private double timeLimit;
   /** Creates a new ShootNote. */
-  public RunShooterWithTimer(ShooterSubsystem shooter, double speed) {
+  public RunShooterWithTimer(ShooterSubsystem shooter, double speed, double timeLimit) {
     this.shooter = shooter;
     this.speed = speed;
+    this.timeLimit = timeLimit;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
@@ -28,14 +30,13 @@ public class RunShooterWithTimer extends Command {
   // Called every time the scheduler runs while the command is sched/led.
   @Override
   public void execute() {
-    timer.reset();
     timer.start();
 
 
     double currentVoltage = RobotController.getBatteryVoltage();
 
 
-    if (timer.get() <= 0.5) { // Value needs to be changed - arbitrary
+    if (timer.get() <= timeLimit) { // Value needs to be changed - arbitrary
         if(currentVoltage < 12.7) {
         double voltageCompensatedSpeed = speed * (currentVoltage / minimum);
     
@@ -54,7 +55,9 @@ public class RunShooterWithTimer extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    timer.reset();
+  }
 
   // Returns true when the command should end
   @Override

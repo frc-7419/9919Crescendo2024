@@ -23,11 +23,11 @@ public class ShootNote extends SequentialCommandGroup {
                         new SequentialCommandGroup(
                                 new ParallelRaceGroup(
                                         new WaitCommand(1.5),
-                                        new RunShooterWithTimer(shooterSubsystem, 0.9)
+                                        new RunShooterWithTimer(shooterSubsystem, 0.9, 0.5)
                                 ),
                                 new ParallelDeadlineGroup(
                                         new RunDiverter(handoffSubsystem, (float)0.5).withTimeout(0.5), //arbitrary values
-                                        new RunShooterWithTimer(shooterSubsystem, 0.8)
+                                        new RunShooterWithTimer(shooterSubsystem, 0.8, 0.5)
                                 )
                         ) 
                 )
