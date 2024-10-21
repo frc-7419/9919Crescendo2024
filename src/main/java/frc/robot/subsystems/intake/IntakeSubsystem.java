@@ -74,6 +74,14 @@ public class IntakeSubsystem extends SubsystemBase {
         return intakeMotor.getVelocity().getValue();
     }
 
+    public double getCurrentDraw() {
+        return intakeMotor.getStatorCurrent().getValueAsDouble();
+    }
+
+    public double getRPM() {
+        return intakeMotor.getVelocity().getValueAsDouble();
+    }
+
     /**
      * Sets the motors to coast mode.
      */
@@ -96,5 +104,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public void periodic() {
         // Put the top and bottom motor velocities on the SmartDashboard
         SmartDashboard.putNumber("Shooter Intake Velocity", getIntakeVelocity());
+        SmartDashboard.putNumber("Shooter Intake Current Draw", getCurrentDraw());
+        SmartDashboard.putNumber("Shooter Intake RPM", getRPM());
     }
 }
