@@ -15,6 +15,7 @@ public class DetectTag extends Command {
   private boolean speakerInRange = false;
   public DetectTag(LimelightRangeChecker limelightRangeChecker) {
     this.limelightRangeChecker = limelightRangeChecker;
+    addRequirements(limelightRangeChecker);
   }
 
 
