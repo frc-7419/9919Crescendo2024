@@ -38,26 +38,26 @@ public class RobotContainer {
      *  - This catagory is for all subsystems which the robot has.
      *  - Subsystems should have methods which do low-level things such as running a motor, there shouldn't be complicated algorithms
      */
-    private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
-    private final HandoffSubsystem handoff = new HandoffSubsystem();
-    private final IntakeSubsystem intake = new IntakeSubsystem();
-    private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
-    private final ShooterSubsystem shooter = new ShooterSubsystem();
-    private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
+    // private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
+    // private final HandoffSubsystem handoff = new HandoffSubsystem();
+    // private final IntakeSubsystem intake = new IntakeSubsystem();
+    // private final IntakeWristSubsystem intakeWrist = new IntakeWristSubsystem();
+    // private final ShooterSubsystem shooter = new ShooterSubsystem();
+    // private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
     private final LimelightRangeChecker rangeChecker = new LimelightRangeChecker();
 
     /*
      * Commands
      *  - This catagory is for commands, the commands can either be lambda instant or run commands, or they can be classes
      */
-    private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
+    // private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
     private final DetectTag detectTag = new DetectTag(rangeChecker);
-    private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
-    private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
-    private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(), driver.getLeftX()), intake);
-    private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0, 0.0), intake);
-    private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
-    private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
+    // private final Command joystickShooter = new InstantCommand(() -> shooter.run(driver.getLeftY(), driver.getLeftY()), shooter);
+    // private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
+    // private final Command runIntake = new InstantCommand(() -> intake.run(driver.getLeftX(), driver.getLeftX()), intake);
+    // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0, 0.0), intake);
+    // private final Command raiseWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
+    // private final Command lowerWrist = new RunCommand(() -> intakeWrist.goToPosition(0.0), intake);
     private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 
     /**
@@ -89,15 +89,15 @@ public class RobotContainer {
      * @return Auton command
      */
     public Command getAutonomousCommand() {
-        return new TranslateDistance(driveBase, 1, 0);
+        return null;//new TranslateDistance(driveBase, 1, 0);
     }
 
     /**
      * Sets default commands to be used for teleop
      */
     public void setDefaultCommands() {
-        driveBase.setDefaultCommand(swerveDriveFieldCentric);
-        shooter.setDefaultCommand(joystickShooter);
+        //driveBase.setDefaultCommand(swerveDriveFieldCentric);
+        //shooter.setDefaultCommand(joystickShooter);
         rangeChecker.setDefaultCommand(detectTag);
     }
 }
