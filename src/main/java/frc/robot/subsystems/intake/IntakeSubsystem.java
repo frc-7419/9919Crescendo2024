@@ -24,6 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem() {
         // Initialize the top and bottom motors
         this.intakeMotor = new CANSparkMax(IntakeConstants.intakeID, MotorType.kBrushless);
+        intakeMotor.setInverted(true);
         this.coast();
     }
 
@@ -66,7 +67,7 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public boolean noteDetectedByCurrent() {
         double currentDraw = intakeMotor.getOutputCurrent();
-        return Math.abs(currentDraw - baselineCurrentDraw) > IntakeConstants.CURRENT_THRESHOLD;
+        return currentDraw > IntakeConstants.CURRENT_THRESHOLD;
     }
 
     /**
@@ -108,5 +109,6 @@ public class IntakeSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Intake Output", getOutput());
         SmartDashboard.putNumber("Intake Output Current", intakeMotor.getOutputCurrent());
         SmartDashboard.putNumber("Intake Baseline Current Draw", baselineCurrentDraw);
+        SmartDashboard.putBoolean("Has Note", noteDetectedByCurrent());
     }
 }

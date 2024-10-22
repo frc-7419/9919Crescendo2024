@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.HandoffConstants;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.IntakeNote;
 import frc.robot.commands.SwerveDriveFieldCentric;
 import frc.robot.commands.TranslateDistance;
 import frc.robot.subsystems.drive.DriveBaseSubsystem;
@@ -48,7 +51,8 @@ public class RobotContainer {
     // private final SwerveDriveFieldCentric swerveDriveFieldCentric = new SwerveDriveFieldCentric(driver, driveBase);
     // private final Command joystickShooter = new InstantCommand(() -> shooter.run(operator.getLeftY(), operator.getLeftY()), shooter);
     // private final Command runShooter = new RunCommand(() -> shooter.run(11.5, 10.5), shooter); // change values later
-    private final Command runIntake = new RunCommand(() -> {intake.run(operator.getLeftY()); handoff.run(operator.getRightY());}, intake, handoff);
+    private final Command runIntake = new InstantCommand(() -> {intake.run(IntakeConstants.INTAKE_POWER); handoff.run(HandoffConstants.HANDOFF_POWER);}, intake, handoff);
+    private final IntakeNote intakeNote = new IntakeNote(intake, handoff);
     // private final Command runHandoff = new InstantCommand(() -> handoff.setVoltage(12*operator.getRightY()), handoff);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0), intake);
     // private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
@@ -68,6 +72,8 @@ public class RobotContainer {
         // Handoff
         // Run diverter clockwise. Ex: operator.y().whileTrue(new RunDiverter(diverter, 0.5));
         // Same for counter-clockwise
+        operator.leftBumper().onTrue(intakeNote);
+        operator.a().whileTrue(runIntake);
     }
 
     /**
@@ -92,6 +98,5 @@ public class RobotContainer {
     public void setDefaultCommands() {
         // driveBase.setDefaultCommand(swerveDriveFieldCentric);
         // shooter.setDefaultCommand(joystickShooter);
-        intake.setDefaultCommand(runIntake);
     }
 }

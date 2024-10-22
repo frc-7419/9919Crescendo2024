@@ -39,7 +39,7 @@ public class HandoffSubsystem extends SubsystemBase {
      */
     public boolean noteDetectedByCurrent() {
         double currentDraw = handoffMotor.getOutputCurrent();
-        return Math.abs(currentDraw - baselineCurrentDraw) > HandoffConstants.CURRENT_THRESHOLD;
+        return currentDraw > HandoffConstants.CURRENT_THRESHOLD;
     }
 
     /**

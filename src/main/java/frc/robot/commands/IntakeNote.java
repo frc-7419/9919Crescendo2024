@@ -75,20 +75,20 @@ public class IntakeNote extends Command {
         SmartDashboard.putNumber("Note Phase", notePhase);
 
         // Update baseline current draw after 0.5 seconds
-        if (thresholdTimer.hasElapsed(0.5) && !init) {
-            intakeSubsystem.updateBaselineCurrentDraw();
-            handoffSubsystem.updateBaselineCurrentDraw();
+        if (thresholdTimer.hasElapsed(1) && !init) {
+            //intakeSubsystem.updateBaselineCurrentDraw();
+            //handoffSubsystem.updateBaselineCurrentDraw();
             init = true;
         }
 
         // Detect the note in intake and handoff the note to the handoff subsystem
-        if (intakeSubsystem.noteDetectedByCurrent() && thresholdTimer.hasElapsed(0.5)) {
+        if (intakeSubsystem.noteDetectedByCurrent() && init) {
             notePhase = 1;
             timeoutTimer.start();
         }
 
         // If the note is detected by handoff and not intake, stop intake
-        if (handoffSubsystem.noteDetectedByCurrent() && !intakeSubsystem.noteDetectedByCurrent()) {
+        if (handoffSubsystem.noteDetectedByCurrent() && !intakeSubsystem.noteDetectedByCurrent() && init && notePhase==1) {
             intakeSubsystem.run(0); // Stop the intake
             notePhase = 2; // Update to the next phase where handoff takes control
         }
