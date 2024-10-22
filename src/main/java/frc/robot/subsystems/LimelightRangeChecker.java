@@ -15,13 +15,13 @@ public class LimelightRangeChecker extends SubsystemBase {
 
 
     public boolean speakerFiducialInRange(int targetRange) {
-        PoseEstimate poseEstimate; //making a PoseEstimate, which is what limeleight helpers uses for pose stuff
+        LimelightHelpers.PoseEstimate poseEstimate; //making a PoseEstimate, which is what limeleight helpers uses for pose stuff
         if (DriverStation.getAlliance().toString().equalsIgnoreCase("blue")) { // getting pose estimate based on alliance color
             poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
         } else {
             poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
         }
-        if (poseEstimate.rawFiducials.length == 0) { // making sure there are fiducials detected
+        if (poseEstimate.tagCount <= 0) { // making sure there are fiducials detected
             SmartDashboard.putString("Currently", " no fiducials detected"); // for debugging purposes
             return false;
         }
