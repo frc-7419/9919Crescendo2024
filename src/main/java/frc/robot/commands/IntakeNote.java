@@ -21,114 +21,110 @@ import frc.robot.Constants.IntakeConstants;
  * 
  */
 public class IntakeNote extends Command {
-    private final IntakeSubsystem intakeSubsystem;
-    private final HandoffSubsystem handoffSubsystem;
-    private final Timer thresholdTimer;
-    private final Timer timeoutTimer;
-    private final Timer handoffVerificationTimer;
-    private boolean init;
-    private int notePhase = 0;
-    private boolean done;
-    private boolean handoffVerified = false;
+  private final IntakeSubsystem intakeSubsystem;
+  private final HandoffSubsystem handoffSubsystem;
+  private final Timer thresholdTimer;
+  private final Timer timeoutTimer;
+  private final Timer handoffVerificationTimer;
+  private boolean init;
+  private int notePhase = 0;
+  private boolean done;
+  private boolean handoffVerified = false;
 
-    /**
-     * Constructs an IntakeNote command.
-     * 
-     * @param intakeSubsystem  the intake subsystem used by this command
-     * @param handoffSubsystem the handoff subsystem used by this command
-     */
-    public IntakeNote(IntakeSubsystem intakeSubsystem, HandoffSubsystem handoffSubsystem) {
-        this.intakeSubsystem = intakeSubsystem;
-        this.handoffSubsystem = handoffSubsystem;
-        this.thresholdTimer = new Timer();
-        this.timeoutTimer = new Timer();
-        this.handoffVerificationTimer = new Timer();
-        addRequirements(intakeSubsystem, handoffSubsystem);
+  /**
+   * Constructs an IntakeNote command.
+   * 
+   * @param intakeSubsystem  the intake subsystem used by this command
+   * @param handoffSubsystem the handoff subsystem used by this command
+   */
+  public IntakeNote(IntakeSubsystem intakeSubsystem, HandoffSubsystem handoffSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
+    this.handoffSubsystem = handoffSubsystem;
+    this.thresholdTimer = new Timer();
+    this.timeoutTimer = new Timer();
+    this.handoffVerificationTimer = new Timer();
+    addRequirements(intakeSubsystem, handoffSubsystem);
+  }
+
+  /**
+   * Initializes the command, setting subsystem modes and timers for detecting
+   * notes.
+   */
+  @Override
+  public void initialize() {
+    intakeSubsystem.coast();
+    handoffSubsystem.coast();
+    notePhase = 0;
+    done = false;
+    thresholdTimer.reset();
+    thresholdTimer.start();
+    timeoutTimer.reset();
+    handoffVerificationTimer.reset();
+    init = false;
+  }
+
+  /**
+   * Main runtime, running the intake and handoff subsystems and
+   * monitoring for note detection based on current draw.
+   */
+  @Override
+  public void execute() {
+    SmartDashboard.putNumber("Note Phase", notePhase);
+
+    if(!init){
+      intakeSubsystem.run(IntakeConstants.INTAKE_POWER);
     }
 
-    /**
-     * Initializes the command, setting subsystem modes and timers for detecting
-     * notes.
-     */
-    @Override
-    public void initialize() {
-        intakeSubsystem.coast();
-        handoffSubsystem.coast();
-        notePhase = 0;
-        done = false;
-        thresholdTimer.reset();
-        thresholdTimer.start();
-        timeoutTimer.reset();
-        handoffVerificationTimer.reset();
-        init = false;
+    // Update baseline current draw after 0.5 seconds
+    if (thresholdTimer.hasElapsed(1) && !init) {
+      // intakeSubsystem.updateBaselineCurrentDraw();
+      // handoffSubsystem.updateBaselineCurrentDraw();
+      init = true;
     }
 
-    /**
-     * Main runtime, running the intake and handoff subsystems and
-     * monitoring for note detection based on current draw.
-     */
-    @Override
-    public void execute() {
-        intakeSubsystem.run(IntakeConstants.INTAKE_POWER);
-        handoffSubsystem.run(HandoffConstants.HANDOFF_POWER);
-
-        SmartDashboard.putNumber("Note Phase", notePhase);
-
-        // Update baseline current draw after 0.5 seconds
-        if (thresholdTimer.hasElapsed(1) && !init) {
-            //intakeSubsystem.updateBaselineCurrentDraw();
-            //handoffSubsystem.updateBaselineCurrentDraw();
-            init = true;
-        }
-
-        // Detect the note in intake and handoff the note to the handoff subsystem
-        if (intakeSubsystem.noteDetectedByCurrent() && init) {
-            notePhase = 1;
-            timeoutTimer.start();
-        }
-
-        // If the note is detected by handoff and not intake, stop intake
-        if (handoffSubsystem.noteDetectedByCurrent() && !intakeSubsystem.noteDetectedByCurrent() && init && notePhase==1) {
-            intakeSubsystem.run(0); // Stop the intake
-            notePhase = 2; // Update to the next phase where handoff takes control
-        }
-
-        // After handoff gets the note, push it back slightly to verify its position
-        if (notePhase == 2 && !handoffVerified) {
-            handoffSubsystem.run(-0.3); // Reverse the handoff briefly
-            handoffVerificationTimer.start();
-            if (handoffVerificationTimer.hasElapsed(0.2)) { // Reverse for 0.2 seconds
-                handoffSubsystem.run(0); // Stop handoff after the pushback
-                notePhase = 3;
-                done = true; // Note is processed
-                handoffVerificationTimer.stop();
-            }
-        }
+    // Detect the note in intake and handoff the note to the handoff subsystem
+    if (intakeSubsystem.noteDetectedByCurrent() && init && notePhase == 0) {
+      timeoutTimer.start();
+      // intakeSubsystem.run(0); // Stop the intake
+      notePhase = 2; // Update to the next phase where handoff takes control
     }
 
-    /**
-     * Ends the command by stopping both subsystems and resetting timers.
-     * 
-     * @param interrupted whether the command was interrupted before finishing
-     */
-    @Override
-    public void end(boolean interrupted) {
-        handoffSubsystem.run(0);
-        intakeSubsystem.run(0);
-        handoffSubsystem.brake();
-        intakeSubsystem.brake();
-        thresholdTimer.stop();
-        timeoutTimer.stop();
+    // After handoff gets the note, push it back slightly to verify its position
+    if (notePhase == 2 && timeoutTimer.hasElapsed(0.3)) {
+      intakeSubsystem.run(-0.3); // Reverse the handoff briefly
+      handoffVerificationTimer.start();
+      if (handoffVerificationTimer.hasElapsed(0.2)) { // Reverse for 0.2 seconds
+        intakeSubsystem.run(0); // Stop handoff after the pushback
+        notePhase = 3;
+        done = true; // Note is processed
         handoffVerificationTimer.stop();
+      }
     }
+  }
 
-    /**
-     * Determines whether the command has finished.
-     * 
-     * @return true if the note has been processed or the command times out
-     */
-    @Override
-    public boolean isFinished() {
-        return done || timeoutTimer.hasElapsed(IntakeConstants.MAX_INTAKE_TIME);
-    }
+  /**
+   * Ends the command by stopping both subsystems and resetting timers.
+   * 
+   * @param interrupted whether the command was interrupted before finishing
+   */
+  @Override
+  public void end(boolean interrupted) {
+    handoffSubsystem.run(0);
+    intakeSubsystem.run(0);
+    handoffSubsystem.brake();
+    intakeSubsystem.brake();
+    thresholdTimer.stop();
+    timeoutTimer.stop();
+    handoffVerificationTimer.stop();
+  }
+
+  /**
+   * Determines whether the command has finished.
+   * 
+   * @return true if the note has been processed or the command times out
+   */
+  @Override
+  public boolean isFinished() {
+    return done || timeoutTimer.hasElapsed(IntakeConstants.MAX_INTAKE_TIME);
+  }
 }

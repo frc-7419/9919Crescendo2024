@@ -50,8 +50,8 @@ public final class Constants {
         public static final int intakeID = 11;
         public static final double intakeGearRatio = 30 / 24; // Motor to wheel
         public static final double CURRENT_THRESHOLD = 15.0; // TODO: set threshold
-        public static final double MAX_INTAKE_TIME = 2.0; // TODO: set time
-        public static final double INTAKE_POWER = 0.5; // Constant power for intake
+        public static final double MAX_INTAKE_TIME = 10.0; // TODO: set time
+        public static final double INTAKE_POWER = 0.35; // Constant power for intake
     }
 
     public static class SwerveConstants {
