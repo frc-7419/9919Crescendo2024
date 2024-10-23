@@ -17,7 +17,7 @@ public class LimelightRangeChecker extends SubsystemBase {
     public LimelightRangeChecker() {}
 
     public double getDistance(LimelightHelpers.LimelightTarget_Fiducial fiducial) {
-        Rotation2d angleToGoal = Rotation2d.fromDegrees(fiducial.ty);//could be -fiducial.ty 
+        Rotation2d angleToGoal = Rotation2d.fromDegrees(fiducial.ty);//could be -fiducial.ty, since angle should be relative to the robot, not to the april tag
         
         double distance = (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / angleToGoal.getTan(); // math formula that i found on docmentation 
         SmartDashboard.putNumber("Distance to Fiducial " + fiducial.fiducialID, distance);
@@ -26,9 +26,9 @@ public class LimelightRangeChecker extends SubsystemBase {
     
 
     public boolean speakerFiducialInRange(int targetRange) {
-        LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
+        LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight"); //getting the json data from limelight
         
-        if (llresults == null || llresults.targets_Fiducials == null) {
+        if (llresults == null || llresults.targets_Fiducials == null) { //making sure its not null to prevent code from breaking robot
             SmartDashboard.putString("Currently", "No Limelight results found");
             System.out.println("NOTHING FOUND :-(");
             return false;
@@ -37,7 +37,7 @@ public class LimelightRangeChecker extends SubsystemBase {
             
             // Iterate through fiducials to find speaker fiducial
             for (LimelightHelpers.LimelightTarget_Fiducial fiducial : llresults.targets_Fiducials) {
-                double distance = getDistance(fiducial);
+                double distance = getDistance(fiducial);//calls getdistance function with fiducial as argument
                 if ((DriverStation.getAlliance().toString().equalsIgnoreCase("blue") && fiducial.fiducialID == blueSpeakerFiducialID) ||
                     (DriverStation.getAlliance().toString().equalsIgnoreCase("red") && fiducial.fiducialID == redSpeakerFiducialID)) {
     

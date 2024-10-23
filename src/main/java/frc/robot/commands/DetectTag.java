@@ -27,7 +27,7 @@ public class DetectTag extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    speakerInRange = limelightRangeChecker.speakerFiducialInRange(3); //this still needs testing to see what shooting range is
+    speakerInRange = limelightRangeChecker.speakerFiducialInRange(10); //this still needs testing to see what shooting range is
     SmartDashboard.putBoolean("Speaker in range: ", speakerInRange);
   }
 
