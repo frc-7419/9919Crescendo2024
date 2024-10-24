@@ -53,6 +53,7 @@ public class RobotContainer {
     // private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
     private final HandoffSubsystem handoff = new HandoffSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
+    private final ShooterSubsystem shooter = new ShooterSubsystem();
     // private final ShooterSubsystem shooter = new ShooterSubsystem();
     // private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
 
@@ -71,6 +72,14 @@ public class RobotContainer {
         intake.run(operator.getLeftY());
         handoff.run(operator.getRightY());
     }, intake, handoff);
+
+    private final Command runShooter = new RunCommand(() -> {
+        if(operator.leftBumper().getAsBoolean()) {
+            shooter.run(11.5, 10.5);
+        } else {
+            shooter.run(0, 0);
+        }
+    });
     // private final Command runHandoff = new InstantCommand(() ->
     // handoff.setVoltage(12*operator.getRightY()), handoff);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0),
@@ -178,7 +187,7 @@ public class RobotContainer {
      */
     public void setDefaultCommands() {
         // driveBase.setDefaultCommand(swerveDriveFieldCentric);
-        // shooter.setDefaultCommand(joystickShooter);
-        // intake.setDefaultCommand(runIntake);
+        shooter.setDefaultCommand(runShooter);
+        intake.setDefaultCommand(runIntake);
     }
 }
