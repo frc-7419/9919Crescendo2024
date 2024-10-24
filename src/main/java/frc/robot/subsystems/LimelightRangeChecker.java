@@ -17,7 +17,7 @@ public class LimelightRangeChecker extends SubsystemBase {
     public LimelightRangeChecker() {}
 
     public double getDistance(LimelightHelpers.LimelightTarget_Fiducial fiducial) {
-        Rotation2d angleToGoal = Rotation2d.fromDegrees(fiducial.ty);//could be -fiducial.ty, since angle should be relative to the robot, not to the april tag
+        Rotation2d angleToGoal = Rotation2d.fromDegrees(-fiducial.ty);//could be -fiducial.ty, since angle should be relative to the robot, not to the april tag
         
         double distance = (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / angleToGoal.getTan(); // math formula that i found on docmentation 
         SmartDashboard.putNumber("Distance to Fiducial " + fiducial.fiducialID, distance);
@@ -33,9 +33,10 @@ public class LimelightRangeChecker extends SubsystemBase {
             System.out.println("NOTHING FOUND :-(");
             return false;
         } else {
-            System.out.println("NOT NULL :-))");
-            
+        
+            System.out.println(llresults.targets_Fiducials[0].fiducialID);
             // Iterate through fiducials to find speaker fiducial
+            System.out.println(llresults.targets_Fiducials.length);
             for (LimelightHelpers.LimelightTarget_Fiducial fiducial : llresults.targets_Fiducials) {
                 double distance = getDistance(fiducial);//calls getdistance function with fiducial as argument
                 if ((DriverStation.getAlliance().toString().equalsIgnoreCase("blue") && fiducial.fiducialID == blueSpeakerFiducialID) ||
