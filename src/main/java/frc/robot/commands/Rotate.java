@@ -36,6 +36,6 @@ public class Rotate extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(degrees - (driveBaseSubsystem.getYaw() + 320.4)) < 3;
+        return Math.abs(degrees - driveBaseSubsystem.getYaw()) < 3;
     }
 }
