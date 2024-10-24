@@ -32,8 +32,6 @@ public class RobotContainer {
      * - The port of the joystick is selected in the Driver Station, generally we
      * have the drive controller in port 0 while the operator controller uses port 1
      */
-    // private final XboxController driver = new
-    // XboxController(Constants.ControllerConstants.kDriveControllerPort);
     private final CommandXboxController driver = new CommandXboxController(
             Constants.ControllerConstants.kDriveControllerPort);
     private final CommandXboxController operator = new CommandXboxController(
@@ -45,11 +43,8 @@ public class RobotContainer {
      * - Subsystems should have methods which do low-level things such as running a
      * motor, there shouldn't be complicated algorithms
      */
-    // private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
-    // private final ShooterSubsystem shooter = new ShooterSubsystem();
-    // private final BeamBreakSubsystem beambreak = new BeamBreakSubsystem();
 
     /*
      * Commands
@@ -73,8 +68,6 @@ public class RobotContainer {
             shooter.run(0, 0);
         }
     });
-    // private final Command runHandoff = new InstantCommand(() ->
-    // handoff.setVoltage(12*operator.getRightY()), handoff);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0),
     // intake);
     // private final SendableChooser<Command> autonomousChooser = new
