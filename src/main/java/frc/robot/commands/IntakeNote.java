@@ -5,11 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.HandoffConstants;
 import frc.robot.Constants.IntakeConstants;
 
 /**
@@ -22,28 +20,24 @@ import frc.robot.Constants.IntakeConstants;
  */
 public class IntakeNote extends Command {
   private final IntakeSubsystem intakeSubsystem;
-  private final HandoffSubsystem handoffSubsystem;
   private final Timer thresholdTimer;
   private final Timer timeoutTimer;
   private final Timer handoffVerificationTimer;
   private boolean init;
   private int notePhase = 0;
   private boolean done;
-  private boolean handoffVerified = false;
 
   /**
    * Constructs an IntakeNote command.
    * 
    * @param intakeSubsystem  the intake subsystem used by this command
-   * @param handoffSubsystem the handoff subsystem used by this command
    */
-  public IntakeNote(IntakeSubsystem intakeSubsystem, HandoffSubsystem handoffSubsystem) {
+  public IntakeNote(IntakeSubsystem intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
-    this.handoffSubsystem = handoffSubsystem;
     this.thresholdTimer = new Timer();
     this.timeoutTimer = new Timer();
     this.handoffVerificationTimer = new Timer();
-    addRequirements(intakeSubsystem, handoffSubsystem);
+    addRequirements(intakeSubsystem);
   }
 
   /**
@@ -53,7 +47,6 @@ public class IntakeNote extends Command {
   @Override
   public void initialize() {
     intakeSubsystem.coast();
-    handoffSubsystem.coast();
     notePhase = 0;
     done = false;
     thresholdTimer.reset();
@@ -109,9 +102,7 @@ public class IntakeNote extends Command {
    */
   @Override
   public void end(boolean interrupted) {
-    handoffSubsystem.run(0);
     intakeSubsystem.run(0);
-    handoffSubsystem.brake();
     intakeSubsystem.brake();
     thresholdTimer.stop();
     timeoutTimer.stop();

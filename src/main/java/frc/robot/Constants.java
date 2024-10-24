@@ -29,12 +29,6 @@ public final class Constants {
         public static final double defaultPulseInterval = 0.5;
     }
 
-    public static class HandoffConstants {
-        public static final int loaderID = 10;
-        public static final double CURRENT_THRESHOLD = 5.0; // TODO: set threshold
-        public static final double HANDOFF_POWER = 0.4; // Constant power for handoff
-        // 1:1 gear ratio
-    }
 
     public static class BeambreakConstants {
         public static final int frontBeambreakChannel = 0; // TODO: set channel once robot is built

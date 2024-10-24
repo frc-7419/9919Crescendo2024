@@ -17,14 +17,12 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.Constants.HandoffConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.CommandSwerveDrivetrain;
 
-import frc.robot.subsystems.handoff.HandoffSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooter.BeamBreakSubsystem;
@@ -56,7 +54,6 @@ public class RobotContainer {
      * motor, there shouldn't be complicated algorithms
      */
     // private final DriveBaseSubsystem driveBase = new DriveBaseSubsystem();
-    private final HandoffSubsystem handoff = new HandoffSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     // private final ShooterSubsystem shooter = new ShooterSubsystem();
@@ -75,8 +72,7 @@ public class RobotContainer {
     // 10.5), shooter); // change values later
     private final Command runIntake = new RunCommand(() -> {
         intake.run(operator.getLeftY());
-        handoff.run(operator.getRightY());
-    }, intake, handoff);
+    }, intake);
 
     private final Command runShooter = new RunCommand(() -> {
         if(operator.rightBumper().getAsBoolean()) {
