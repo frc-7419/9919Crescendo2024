@@ -74,7 +74,7 @@ public class RobotContainer {
     }, intake, handoff);
 
     private final Command runShooter = new RunCommand(() -> {
-        if(operator.leftBumper().getAsBoolean()) {
+        if(operator.rightBumper().getAsBoolean()) {
             shooter.run(11.5, 10.5);
         } else {
             shooter.run(0, 0);
