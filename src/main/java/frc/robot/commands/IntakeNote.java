@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.IntakeConstants;
 
 /**
- * Handles the intake and handoff process for detecting notes.
+ * Handles the intake process for detecting notes.
  * 
- * Monitors the intake and handoff current to detect notes, adjusts the
- * operation of the intake and handoff subsystems, and completes once the note
+ * Monitors the intake current to detect notes, adjusts the
+ * operation of the intake subsystem, and completes once the note
  * is processed or a timeout occurs.
  * 
  */
@@ -22,7 +22,7 @@ public class IntakeNote extends Command {
   private final IntakeSubsystem intakeSubsystem;
   private final Timer thresholdTimer;
   private final Timer timeoutTimer;
-  private final Timer handoffVerificationTimer;
+  private final Timer intakeVerificationTimer;
   private boolean init;
   private int notePhase = 0;
   private boolean done;
@@ -36,7 +36,7 @@ public class IntakeNote extends Command {
     this.intakeSubsystem = intakeSubsystem;
     this.thresholdTimer = new Timer();
     this.timeoutTimer = new Timer();
-    this.handoffVerificationTimer = new Timer();
+    this.intakeVerificationTimer = new Timer();
     addRequirements(intakeSubsystem);
   }
 
@@ -52,45 +52,35 @@ public class IntakeNote extends Command {
     thresholdTimer.reset();
     thresholdTimer.start();
     timeoutTimer.reset();
-    handoffVerificationTimer.reset();
+    intakeVerificationTimer.reset();
     init = false;
   }
 
   /**
-   * Main runtime, running the intake and handoff subsystems and
+   * Main runtime, running the intake subsystem and
    * monitoring for note detection based on current draw.
    */
   @Override
   public void execute() {
     SmartDashboard.putNumber("Note Phase", notePhase);
-
-    if(!init){
-      intakeSubsystem.run(IntakeConstants.INTAKE_POWER);
-    }
-
+    if(!init) intakeSubsystem.run(IntakeConstants.INTAKE_POWER);
     // Update baseline current draw after 0.5 seconds
-    if (thresholdTimer.hasElapsed(1) && !init) {
-      // intakeSubsystem.updateBaselineCurrentDraw();
-      // handoffSubsystem.updateBaselineCurrentDraw();
-      init = true;
-    }
-
-    // Detect the note in intake and handoff the note to the handoff subsystem
+    if (thresholdTimer.hasElapsed(1) && !init) init = true;
+    // Detect the note in intake
     if (intakeSubsystem.noteDetectedByCurrent() && init && notePhase == 0) {
       timeoutTimer.start();
-      // intakeSubsystem.run(0); // Stop the intake
       notePhase = 2; // Update to the next phase where handoff takes control
     }
 
-    // After handoff gets the note, push it back slightly to verify its position
+    // After intake gets the note, push it back slightly to verify its position
     if (notePhase == 2 && timeoutTimer.hasElapsed(0.3)) {
-      intakeSubsystem.run(-0.3); // Reverse the handoff briefly
-      handoffVerificationTimer.start();
-      if (handoffVerificationTimer.hasElapsed(0.2)) { // Reverse for 0.2 seconds
-        intakeSubsystem.run(0); // Stop handoff after the pushback
+      intakeSubsystem.run(-0.3); // Reverse the intake briefly
+      intakeVerificationTimer.start();
+      if (intakeVerificationTimer.hasElapsed(0.2)) { // Reverse for 0.2 seconds
+        intakeSubsystem.run(0); // Stop intake after the pushback
         notePhase = 3;
         done = true; // Note is processed
-        handoffVerificationTimer.stop();
+        intakeVerificationTimer.stop();
       }
     }
   }
@@ -106,7 +96,7 @@ public class IntakeNote extends Command {
     intakeSubsystem.brake();
     thresholdTimer.stop();
     timeoutTimer.stop();
-    handoffVerificationTimer.stop();
+    intakeVerificationTimer.stop();
   }
 
   /**
