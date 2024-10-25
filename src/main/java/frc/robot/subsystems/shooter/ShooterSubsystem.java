@@ -29,8 +29,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         this.topMotor = new TalonFX(Constants.ShooterConstants.topShooterID, "9919");
         this.bottomMotor = new TalonFX(Constants.ShooterConstants.bottomShooterID, "9919");
-        topMotor.setInverted(false);   
-        bottomMotor.setInverted(true);
         this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
         SysIdRoutineFlywheel = new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -54,6 +52,8 @@ public class ShooterSubsystem extends SubsystemBase {
         config.Voltage.PeakReverseVoltage = -12;
         topMotor.getConfigurator().apply(config);
         bottomMotor.getConfigurator().apply(config);
+        topMotor.setInverted(false);   
+        bottomMotor.setInverted(true);
         SignalLogger.start();
     }
 
@@ -64,16 +64,13 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param topSpeed    speed of the top motor in RPM, positive will push the note forward
      */
     public void run(final double topRPM, final double bottomRPM) {
-        VelocityVoltage topRequest = new VelocityVoltage(topRPM).withSlot(0).withEnableFOC(true);
-        VelocityVoltage bottomRequest = new VelocityVoltage(bottomRPM).withSlot(0).withEnableFOC(true);
-        if (topRPM != 0 || bottomRPM != 0) {
+        if (topRPM != 0 && bottomRPM != 0) {
             coast();
-            topMotor.setControl(topRequest);
-            bottomMotor.setControl(bottomRequest);
+            topMotor.setControl(velocityVoltage.withAcceleration(0.01).withVelocity(topRPM / 60.0D));
+            bottomMotor.setControl(velocityVoltage.withAcceleration(0.01).withVelocity(bottomRPM / 60.0D));
         } else {
-            brake();
-            topMotor.setControl(topRequest);
-            bottomMotor.setControl(bottomRequest);
+            topMotor.setControl(velocityVoltage.withVelocity(topRPM));
+            bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM));
         }
     }
 
