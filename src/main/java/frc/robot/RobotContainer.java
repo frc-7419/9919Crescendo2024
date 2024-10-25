@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -13,9 +14,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.RobotConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.RunShooter;
+import frc.robot.commands.RunShooterAuton;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.CommandSwerveDrivetrain;
 
@@ -101,6 +104,15 @@ public class RobotContainer {
     public RobotContainer() {
         configureButtonBindings();
         configureAutoSelector();
+        registerCommands();
+    }
+
+    /**
+     * Registers commands in the path planner system, these can be used when running
+     * paths
+     */
+    private void registerCommands() {
+        NamedCommands.registerCommand("RunShooterAuton", new RunShooterAuton(shooter, intake));
     }
 
     /**
@@ -158,7 +170,8 @@ public class RobotContainer {
         operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
         operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
 
-        operator.rightBumper().whileTrue(new RunShooter(shooter, 2000, 2000));
+        operator.rightBumper()
+                .whileTrue(new RunShooter(shooter, ShooterConstants.topShooterRPM, ShooterConstants.bottomShooterRPM));
         operator.leftBumper().onTrue(intakeNote);
 
         drivetrain.registerTelemetry(logger::telemeterize);
