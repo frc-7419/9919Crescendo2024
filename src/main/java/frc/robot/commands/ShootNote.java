@@ -10,14 +10,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.handoff.HandoffSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShootNote extends SequentialCommandGroup {
 
-    public ShootNote(ShooterSubsystem shooterSubsystem, HandoffSubsystem handoffSubsystem, IntakeSubsystem intakeSubsystem) {
+    public ShootNote(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
         addCommands(
                 new ParallelDeadlineGroup(
                         new SequentialCommandGroup(
@@ -31,7 +30,7 @@ public class ShootNote extends SequentialCommandGroup {
                                         new RunShooterWithTimer(shooterSubsystem, 0.9, 0.5)
                                 ),
                                 new ParallelDeadlineGroup(
-                                        new RunDiverter(handoffSubsystem, (float)0.5).withTimeout(0.5), //arbitrary values
+                                        // new RunDiverter(handoffSubsystem, (float)0.5).withTimeout(0.5), //arbitrary values
                                         new RunShooterWithTimer(shooterSubsystem, 0.8, 0.5)
                                 )
                         ) 
