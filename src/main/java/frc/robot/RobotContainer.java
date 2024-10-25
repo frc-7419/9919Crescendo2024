@@ -101,6 +101,7 @@ public class RobotContainer {
     private final PathPlannerAuto threeNoteLeftAuto = new PathPlannerAuto("ThreeNoteLeft");
     private final PathPlannerAuto twoNoteRightAuto = new PathPlannerAuto("TwoNoteRight");
     private final PathPlannerAuto threeNoteRightAuto = new PathPlannerAuto("ThreeNoteRight");
+    private final PathPlannerAuto threeNoteMidAuto = new PathPlannerAuto("ThreeNoteMid");
 
     /**
      * Creates new RobotContainer and configures auton and buttons
@@ -201,7 +202,8 @@ public class RobotContainer {
         return twoNoteLeftAuto;
         // return threeNoteLeftAuto;
         // return twoNoteRightAuto;
-        // return threeNoteRightAuto
+        // return threeNoteRightAuto;
+        // return threeNoteMidAuto;
         // return new TranslateDistance(driveBase, 1, 0);
     }
 
