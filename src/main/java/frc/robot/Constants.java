@@ -27,7 +27,6 @@ public final class Constants {
         public static final double defaultPulseInterval = 0.5;
     }
 
-
     public static class BeambreakConstants {
         public static final int frontBeambreakChannel = 0; // TODO: set channel once robot is built
         public static final int backBeambreakChannel = 0; // TODO: set channel once robot is built
@@ -37,6 +36,8 @@ public final class Constants {
         public static final int bottomShooterID = 10; // TODO: set ID once robot is built
         public static final int topShooterID = 11; // TODO: set ID once robot is built
         public static final double shooterGearRatio = 24 / 18; // Motor to wheel
+        public static final double topShooterRPM = 2000;
+        public static final double bottomShooterRPM = 2000;
     }
 
     public static class IntakeConstants {
