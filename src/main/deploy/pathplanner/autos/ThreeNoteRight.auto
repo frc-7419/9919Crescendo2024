@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.9353839259056967,
-      "y": 6.985103093013204
+      "x": 1.0794066700915361,
+      "y": 4.1046482092964185
     },
-    "rotation": 56.6459742484832
+    "rotation": -56.65929265352298
   },
   "command": {
     "type": "sequential",
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeftNoteCommunity"
+                  "pathName": "RightNoteCommunity"
                 }
               }
             ]
@@ -39,7 +39,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackToSpeakerLeft"
+            "pathName": "BackToSpeakerRight"
           }
         },
         {

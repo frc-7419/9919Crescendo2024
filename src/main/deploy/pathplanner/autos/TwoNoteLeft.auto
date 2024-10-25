@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.9353839259056967,
-      "y": 6.985103093013204
+      "x": 1.0794066700915361,
+      "y": 4.413268375408932
     },
     "rotation": 56.6459742484832
   },
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "RunShooterAuton"
           }
         },
         {
@@ -45,7 +45,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "RunShooterAuton"
           }
         }
       ]
