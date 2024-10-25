@@ -34,8 +34,8 @@ public final class Constants {
     }
 
     public static class ShooterConstants {
-        public static final int bottomShooterID = 0; // TODO: set ID once robot is built
-        public static final int topShooterID = 0; // TODO: set ID once robot is built
+        public static final int bottomShooterID = 10; // TODO: set ID once robot is built
+        public static final int topShooterID = 11; // TODO: set ID once robot is built
         public static final double shooterGearRatio = 24 / 18; // Motor to wheel
     }
 

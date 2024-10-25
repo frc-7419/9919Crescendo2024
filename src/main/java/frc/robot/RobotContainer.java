@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.RunShooter;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.CommandSwerveDrivetrain;
 
@@ -61,18 +62,10 @@ public class RobotContainer {
         intake.run(operator.getLeftY());
     }, intake);
 
-    private final Command runShooter = new RunCommand(() -> {
-        if(operator.rightBumper().getAsBoolean()) {
-            shooter.run(11.5, 10.5);
-        } else {
-            shooter.run(0, 0);
-        }
-    });
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0),
     // intake);
     // private final SendableChooser<Command> autonomousChooser = new
     // SendableChooser<>();
-
 
     /*
      * Drivebase
@@ -146,6 +139,12 @@ public class RobotContainer {
         driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
+        operator.back().and(operator.y()).whileTrue(shooter.sysIdDynamic(Direction.kForward));
+        operator.back().and(operator.x()).whileTrue(shooter.sysIdDynamic(Direction.kReverse));
+        operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
+        operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
+
+        operator.rightBumper().whileTrue(new RunShooter(shooter,100, 100));
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
@@ -172,7 +171,7 @@ public class RobotContainer {
      * Sets default commands to be used for teleop
      */
     public void setDefaultCommands() {
-        shooter.setDefaultCommand(runShooter);
+        // shooter.setDefaultCommand(new RunShooter(shooter,1600, 1600));
         intake.setDefaultCommand(runIntake);
     }
 }
