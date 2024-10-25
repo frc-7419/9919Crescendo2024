@@ -97,13 +97,16 @@ public class RobotContainer {
      * Autos
      */
 
-    private final PathPlannerAuto oneNoteLeftAuto = new PathPlannerAuto("OneNoteLeftAuto");
+    private final PathPlannerAuto twoNoteLeftAuto = new PathPlannerAuto("TwoNoteLeft");
+    private final PathPlannerAuto threeNoteLeftAuto = new PathPlannerAuto("ThreeNoteLeft");
+    private final PathPlannerAuto twoNoteRightAuto = new PathPlannerAuto("TwoNoteRight");
+    private final PathPlannerAuto threeNoteRightAuto = new PathPlannerAuto("ThreeNoteRight");
 
     /**
      * Creates new RobotContainer and configures auton and buttons
      */
     public RobotContainer() {
-        NamedCommands.registerCommand("RunIntake", runIntake);
+        
         configureButtonBindings();
         configureAutoSelector();
         registerCommands();
@@ -114,6 +117,7 @@ public class RobotContainer {
      * paths
      */
     private void registerCommands() {
+        NamedCommands.registerCommand("RunIntake", runIntake);
         NamedCommands.registerCommand("RunShooterAuton", new RunShooterAuton(shooter, intake));
     }
 
@@ -194,7 +198,10 @@ public class RobotContainer {
      * @return Auton command
      */
     public Command getAutonomousCommand() {
-        return oneNoteLeftAuto;
+        return twoNoteLeftAuto;
+        // return threeNoteLeftAuto;
+        // return twoNoteRightAuto;
+        // return threeNoteRightAuto
         // return new TranslateDistance(driveBase, 1, 0);
     }
 
