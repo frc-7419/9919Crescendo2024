@@ -4,26 +4,44 @@
 
 package frc.robot.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.Volts;
+
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
     private final TalonFX topMotor;
     private final TalonFX bottomMotor;
     private final VelocityVoltage velocityVoltage;
+    private final VoltageOut voltReq = new VoltageOut(0.0);
+    /* Use one of these sysidroutines for your particular test */
+    private final SysIdRoutine SysIdRoutineFlywheel;
 
     public ShooterSubsystem() {
-        this.topMotor = new TalonFX(Constants.ShooterConstants.topShooterID, Constants.RobotConstants.kCanbus);
-        this.bottomMotor = new TalonFX(Constants.ShooterConstants.bottomShooterID, Constants.RobotConstants.kCanbus);
-        topMotor.setInverted(true);    //TODO: when robot is built and motor are in place check if inversion is needed
-        bottomMotor.setInverted(false);//TODO: when robot is built and motor are in place check if inversion is needed
+        this.topMotor = new TalonFX(Constants.ShooterConstants.topShooterID, "9919");
+        this.bottomMotor = new TalonFX(Constants.ShooterConstants.bottomShooterID, "9919");
+        topMotor.setInverted(false);   
+        bottomMotor.setInverted(true);
         this.velocityVoltage = new VelocityVoltage(0).withSlot(0);
-
+        SysIdRoutineFlywheel = new SysIdRoutine(
+            new SysIdRoutine.Config(
+                    null,
+                    Volts.of(4),
+                    null,
+                    (state) -> SignalLogger.writeString("state", state.toString())),
+            new SysIdRoutine.Mechanism(
+                    (volts) -> topMotor.setControl(voltReq.withOutput(volts.in(Volts))),
+                    null,
+                    this));
         TalonFXConfiguration config = new TalonFXConfiguration();
         /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
         config.Slot0.kS = 0.1; // To account for friction                                                     TODO: calculate friction
@@ -93,5 +111,19 @@ public class ShooterSubsystem extends SubsystemBase {
     private void brake() {
         topMotor.setNeutralMode(NeutralModeValue.Brake);
         bottomMotor.setNeutralMode(NeutralModeValue.Brake);
+    }
+
+    
+
+    /*
+     * Both the sysid commands are specific to one particular sysid routine, change
+     * which one you're trying to characterize
+     */
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return SysIdRoutineFlywheel.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return SysIdRoutineFlywheel.dynamic(direction);
     }
 }

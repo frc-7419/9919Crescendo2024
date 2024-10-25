@@ -62,17 +62,16 @@ public class RobotContainer {
     }, intake);
 
     private final Command runShooter = new RunCommand(() -> {
-        if(operator.rightBumper().getAsBoolean()) {
+        if (operator.rightBumper().getAsBoolean()) {
             shooter.run(11.5, 10.5);
         } else {
             shooter.run(0, 0);
         }
-    });
+    }, shooter);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0),
     // intake);
     // private final SendableChooser<Command> autonomousChooser = new
     // SendableChooser<>();
-
 
     /*
      * Drivebase
@@ -145,6 +144,11 @@ public class RobotContainer {
         driver.back().and(driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+        operator.back().and(operator.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        operator.back().and(operator.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        operator.start().and(operator.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        operator.start().and(operator.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
