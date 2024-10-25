@@ -44,9 +44,9 @@ public class ShooterSubsystem extends SubsystemBase {
                     this));
         TalonFXConfiguration config = new TalonFXConfiguration();
         /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
-        config.Slot0.kS = 0.1; // To account for friction                                                     TODO: calculate friction
-        config.Slot0.kV = 0.11299435; // volts per rotation per second                                        DONT TOUCH
-        config.Slot0.kP = 0.11; // An error of 1 rotation per second results in 0.11 V output                 TODO: tune value for P
+        config.Slot0.kS = 0.18239; // To account for friction                                                     TODO: calculate friction
+        config.Slot0.kV = 0.11451; // volts per rotation per second                                        DONT TOUCH
+        config.Slot0.kP = 0.029207; // An error of 1 rotation per second results in 0.11 V output                 TODO: tune value for P
         config.Slot0.kI = 0; // No output for integrated error                                                DONT TOUCH
         config.Slot0.kD = 0; // No output for error derivative                                                DONT TOUCH
         config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
@@ -54,23 +54,26 @@ public class ShooterSubsystem extends SubsystemBase {
         config.Voltage.PeakReverseVoltage = -12;
         topMotor.getConfigurator().apply(config);
         bottomMotor.getConfigurator().apply(config);
+        SignalLogger.start();
     }
 
     /**
-     * Runs the motors of the shooter at the given speeds in RPS
+     * Runs the motors of the shooter at the given speeds in RPM
      *
-     * @param bottomSpeed speed of the bottom motor in RPS, positive will push the note forward
-     * @param topSpeed    speed of the top motor in RPS, positive will push the note forward
+     * @param bottomSpeed speed of the bottom motor in RPM, positive will push the note forward
+     * @param topSpeed    speed of the top motor in RPM, positive will push the note forward
      */
     public void run(final double topRPM, final double bottomRPM) {
+        VelocityVoltage topRequest = new VelocityVoltage(topRPM).withSlot(0).withEnableFOC(true);
+        VelocityVoltage bottomRequest = new VelocityVoltage(bottomRPM).withSlot(0).withEnableFOC(true);
         if (topRPM != 0 || bottomRPM != 0) {
             coast();
-            topMotor.setControl(velocityVoltage.withVelocity(topRPM / 60.0D));
-            bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM / 60.0D));
+            topMotor.setControl(topRequest);
+            bottomMotor.setControl(bottomRequest);
         } else {
             brake();
-            topMotor.setControl(velocityVoltage.withVelocity(topRPM / 60.0D));
-            bottomMotor.setControl(velocityVoltage.withVelocity(bottomRPM / 60.0D));
+            topMotor.setControl(topRequest);
+            bottomMotor.setControl(bottomRequest);
         }
     }
 

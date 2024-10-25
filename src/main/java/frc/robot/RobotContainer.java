@@ -63,7 +63,7 @@ public class RobotContainer {
 
     private final Command runShooter = new RunCommand(() -> {
         if (operator.rightBumper().getAsBoolean()) {
-            shooter.run(11.5, 10.5);
+            shooter.run(100, 100);
         } else {
             shooter.run(0, 0);
         }
@@ -145,10 +145,10 @@ public class RobotContainer {
         driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        operator.back().and(operator.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        operator.back().and(operator.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        operator.start().and(operator.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        operator.start().and(operator.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        operator.back().and(operator.y()).whileTrue(shooter.sysIdDynamic(Direction.kForward));
+        operator.back().and(operator.x()).whileTrue(shooter.sysIdDynamic(Direction.kReverse));
+        operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
+        operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
