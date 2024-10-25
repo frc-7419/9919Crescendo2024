@@ -12,7 +12,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.IntakeNote;
 import frc.robot.commands.RunShooter;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.CommandSwerveDrivetrain;
@@ -62,6 +64,7 @@ public class RobotContainer {
         intake.run(operator.getLeftY());
     }, intake);
 
+    private final IntakeNote intakeNote = new IntakeNote(intake);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0),
     // intake);
     // private final SendableChooser<Command> autonomousChooser = new
@@ -82,6 +85,8 @@ public class RobotContainer {
                                                                      // driving in open loop
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+
+    private final SwerveRequest.FieldCentricFacingAngle fieldAngle = new SwerveRequest.FieldCentricFacingAngle();
 
     private final Telemetry logger = new Telemetry(SwerveConstants.MaxSpeed);
 
@@ -139,12 +144,23 @@ public class RobotContainer {
         driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
+        driver.x().whileTrue(
+                drivetrain.applyRequest(
+                        () -> fieldAngle.withVelocityX(-driver.getLeftY() * SwerveConstants.MaxSpeed)
+                                .withVelocityY(-driver.getLeftX() * SwerveConstants.MaxSpeed)
+                                .withTargetDirection(new Rotation2d(0))
+                                .withDeadband(SwerveConstants.MaxSpeed * 0.1)
+                                .withRotationalDeadband(SwerveConstants.MaxAngularRate * 0.1)));
+
+        /* Bindings for operator */
         operator.back().and(operator.y()).whileTrue(shooter.sysIdDynamic(Direction.kForward));
         operator.back().and(operator.x()).whileTrue(shooter.sysIdDynamic(Direction.kReverse));
         operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
         operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
 
-        operator.rightBumper().whileTrue(new RunShooter(shooter,100, 100));
+        operator.rightBumper().whileTrue(new RunShooter(shooter, 2000, 2000));
+        operator.leftBumper().onTrue(intakeNote);
+
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
