@@ -96,12 +96,14 @@ public class RobotContainer {
     /*
      * Autos
      */
-    private final PathPlannerAuto testAuto = new PathPlannerAuto("Test Auto");
+
+    private final PathPlannerAuto oneNoteLeftAuto = new PathPlannerAuto("OneNoteLeftAuto");
 
     /**
      * Creates new RobotContainer and configures auton and buttons
      */
     public RobotContainer() {
+        NamedCommands.registerCommand("RunIntake", runIntake);
         configureButtonBindings();
         configureAutoSelector();
         registerCommands();
@@ -192,7 +194,7 @@ public class RobotContainer {
      * @return Auton command
      */
     public Command getAutonomousCommand() {
-        return testAuto;
+        return oneNoteLeftAuto;
         // return new TranslateDistance(driveBase, 1, 0);
     }
 
