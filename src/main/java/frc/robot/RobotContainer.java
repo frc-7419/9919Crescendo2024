@@ -64,14 +64,14 @@ public class RobotContainer {
     // private final Command runShooter = new RunCommand(() -> shooter.run(11.5,
     // 10.5), shooter); // change values later
     private final Command runIntake = new RunCommand(() -> {
-        intake.run(operator.getLeftY());
+        intake.run(-operator.getLeftY());
     }, intake);
 
     private final IntakeNote intakeNote = new IntakeNote(intake);
     // private final Command runIntakeAuton = new RunCommand(() -> intake.run(0.0),
     // intake);
-    // private final SendableChooser<Command> autonomousChooser = new
-    // SendableChooser<>();
+    // private final Senda. nbleChooser<Command> autonomousChooser = new
+    // SendableChooser<>();h
 
     /*
      * Drivebase
@@ -199,11 +199,11 @@ public class RobotContainer {
      * @return Auton command
      */
     public Command getAutonomousCommand() {
-        return twoNoteLeftAuto;
+        // return twoNoteLeftAuto;
         // return threeNoteLeftAuto;
         // return twoNoteRightAuto;
         // return threeNoteRightAuto;
-        // return threeNoteMidAuto;
+        return threeNoteMidAuto;
         // return new TranslateDistance(driveBase, 1, 0);
     }
 

@@ -48,8 +48,8 @@ public class ShooterSubsystem extends SubsystemBase {
         config.Slot0.kI = 0; // No output for integrated error                                                DONT TOUCH
         config.Slot0.kD = 0; // No output for error derivative                                                DONT TOUCH
         config.Slot0.kG = 0; // No gravity :)                                                                 DONT TOUCH
-        config.Voltage.PeakForwardVoltage = 12;
-        config.Voltage.PeakReverseVoltage = -12;
+        config.Voltage.PeakForwardVoltage = 6;
+        config.Voltage.PeakReverseVoltage = -6;
         topMotor.getConfigurator().apply(config);
         bottomMotor.getConfigurator().apply(config);
         topMotor.setInverted(false);   

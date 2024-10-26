@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -17,7 +18,7 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 public class RunShooterAuton extends SequentialCommandGroup {
         public RunShooterAuton(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
                 addCommands(
-                                new ParallelRaceGroup(
+                                new ParallelDeadlineGroup(
                                                 new WaitCommand(2),
                                                 new RunIntake(intakeSubsystem),
                                                 new RunShooter(shooterSubsystem, ShooterConstants.topShooterRPM,
