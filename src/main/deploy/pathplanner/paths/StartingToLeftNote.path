@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 1.892106440854486,
-        "y": 5.730047750822318
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.748083696668647,
-        "y": 6.799930993345696
+        "y": 6.569883242523378
       },
       "isLocked": false,
       "linkedName": "SpeakerMid"
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BackToSpeakerLeft"
     }
   ],
   "rotationTargets": [],

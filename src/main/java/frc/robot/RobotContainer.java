@@ -93,24 +93,21 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(SwerveConstants.MaxSpeed);
 
-    /*
-     * Autos
-     */
-
-    private final PathPlannerAuto twoNoteLeftAuto = new PathPlannerAuto("TwoNoteLeft");
-    private final PathPlannerAuto threeNoteLeftAuto = new PathPlannerAuto("ThreeNoteLeft");
-    private final PathPlannerAuto twoNoteRightAuto = new PathPlannerAuto("TwoNoteRight");
-    private final PathPlannerAuto threeNoteRightAuto = new PathPlannerAuto("ThreeNoteRight");
-    private final PathPlannerAuto threeNoteMidAuto = new PathPlannerAuto("ThreeNoteMid");
+    private PathPlannerAuto twoNoteLeftAuto;
+    private PathPlannerAuto threeNoteLeftAuto;
+    private PathPlannerAuto twoNoteRightAuto;
+    private PathPlannerAuto threeNoteRightAuto;
+    private PathPlannerAuto threeNoteMidAuto;
 
     /**
      * Creates new RobotContainer and configures auton and buttons
      */
     public RobotContainer() {
-        
+
         configureButtonBindings();
         configureAutoSelector();
         registerCommands();
+        registerAutos();
     }
 
     /**
@@ -119,7 +116,19 @@ public class RobotContainer {
      */
     private void registerCommands() {
         NamedCommands.registerCommand("RunIntake", runIntake);
+        NamedCommands.registerCommand("IntakeNote", intakeNote.withTimeout(2));
         NamedCommands.registerCommand("RunShooterAuton", new RunShooterAuton(shooter, intake));
+    }
+
+    /*
+     * Autos
+     */
+    private void registerAutos() {
+        twoNoteLeftAuto = new PathPlannerAuto("TwoNoteLeft");
+        threeNoteLeftAuto = new PathPlannerAuto("ThreeNoteLeft");
+        twoNoteRightAuto = new PathPlannerAuto("TwoNoteRight");
+        threeNoteRightAuto = new PathPlannerAuto("ThreeNoteRight");
+        threeNoteMidAuto = new PathPlannerAuto("ThreeNoteMid");
     }
 
     /**
@@ -172,11 +181,11 @@ public class RobotContainer {
                                 .withRotationalDeadband(SwerveConstants.MaxAngularRate * 0.1)));
 
         /* Bindings for operator */
-        operator.back().and(operator.y()).whileTrue(shooter.sysIdDynamic(Direction.kForward));
-        operator.back().and(operator.x()).whileTrue(shooter.sysIdDynamic(Direction.kReverse));
-        operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
-        operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
-
+        // operator.back().and(operator.y()).whileTrue(shooter.sysIdDynamic(Direction.kForward));
+        // operator.back().and(operator.x()).whileTrue(shooter.sysIdDynamic(Direction.kReverse));
+        // operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
+        // operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
+        operator.a().whileTrue(new RunShooter(shooter, -ShooterConstants.topShooterRPM, -ShooterConstants.bottomShooterRPM));
         operator.rightBumper()
                 .whileTrue(new RunShooter(shooter, ShooterConstants.topShooterRPM, ShooterConstants.bottomShooterRPM));
         operator.leftBumper().onTrue(intakeNote);
