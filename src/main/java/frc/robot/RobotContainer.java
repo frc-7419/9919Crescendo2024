@@ -139,15 +139,15 @@ public class RobotContainer {
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive.withVelocityX(driver.getLeftY() * SwerveConstants.MaxSpeed) // Drive
-                                                                                                                 // forward
-                                                                                                                 // with
+                                                                                                                // forward
+                                                                                                                // with
                         // negative Y (forward)
                         .withVelocityY(driver.getLeftX() * SwerveConstants.MaxSpeed) // Drive left with negative X
-                                                                                      // (left)
+                                                                                     // (left)
                         .withRotationalRate(driver.getRightX() * SwerveConstants.MaxAngularRate) // Drive
-                                                                                                  // counterclockwise
-                                                                                                  // with negative X
-                                                                                                  // (left)
+                                                                                                 // counterclockwise
+                                                                                                 // with negative X
+                                                                                                 // (left)
                 ));
 
         driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -187,11 +187,12 @@ public class RobotContainer {
         // operator.back().and(operator.x()).whileTrue(shooter.sysIdDynamic(Direction.kReverse));
         // operator.start().and(operator.y()).whileTrue(shooter.sysIdQuasistatic(Direction.kForward));
         // operator.start().and(operator.x()).whileTrue(shooter.sysIdQuasistatic(Direction.kReverse));
-        operator.a().whileTrue(new RunShooter(shooter, -ShooterConstants.topShooterRPM, -ShooterConstants.bottomShooterRPM));
+        operator.a().whileTrue(
+                new RunShooter(shooter, -ShooterConstants.topShooterRPM, -ShooterConstants.bottomShooterRPM));
         operator.rightBumper()
                 .whileTrue(new RunShooter(shooter, ShooterConstants.topShooterRPM, ShooterConstants.bottomShooterRPM));
-        //operator.leftBumper().onTrue(intakeNote);
-
+        // operator.leftBumper().onTrue(intakeNote);
+        operator.b().whileTrue(new RunShooter(shooter, 6500, 2000));
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
