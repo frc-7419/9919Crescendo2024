@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 1.892106440854486,
-        "y": 5.730047750822318
+        "y": 5.51401363454356
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.906511592672309,
-        "y": 5.730047750822318
+        "y": 5.51401363454356
       },
       "isLocked": false,
       "linkedName": "SpeakerMid"
