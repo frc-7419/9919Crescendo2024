@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -19,30 +22,44 @@ public class AutoRevSubsystem extends SubsystemBase {
   private boolean inRange;
   private boolean toggleAutoRev;
   private final double lineXValue;
+  private String alliance;
   public AutoRevSubsystem(ShooterSubsystem shooterSubsystem, CommandSwerveDrivetrain commandSwerveDrivetrain, CommandXboxController commandXboxController) {
     this.shooterSubsystem = shooterSubsystem;
     this.commandXboxController = commandXboxController;
     this.commandSwerveDrivetrain = commandSwerveDrivetrain;
-    lineXValue = 3; //change after getting actual start line x
+    lineXValue = 8.3; //change after getting actual start line x
     inRange = true;
     toggleAutoRev = true;
+    alliance = DriverStation.getAlliance().toString();
   }
   public void revWhenInRange(){
      Pose2d currentPos = commandSwerveDrivetrain.getPose2d();
     double currentX = currentPos.getX();
-    if(currentX <= lineXValue){
-        inRange = true;
+    if (alliance.equalsIgnoreCase("blue")) {
+        if(currentX <= lineXValue){
+          inRange = true;
         if (toggleAutoRev) {
           shooterSubsystem.run(Constants.ShooterConstants.topShooterRPM,Constants.ShooterConstants.bottomShooterRPM);
         }
-    }else{
-        inRange = false;
-    }
+        }else{
+          inRange = false;
+        }
 
+    }else{
+        if(currentX >= lineXValue){
+          inRange = true;
+        if (toggleAutoRev) {
+          shooterSubsystem.run(Constants.ShooterConstants.topShooterRPM,Constants.ShooterConstants.bottomShooterRPM);
+        }
+        }else{
+          inRange = false;
+        }
+    }
     if (commandXboxController.getLeftTriggerAxis()>=0.1 && commandXboxController.getRightTriggerAxis()>=0.1) {
       toggleAutoRev = !toggleAutoRev;
       if (!toggleAutoRev) shooterSubsystem.brake();
     }
+    
     
   }
   @Override
