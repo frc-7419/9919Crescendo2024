@@ -30,18 +30,15 @@ public class AutoRevSubsystem extends SubsystemBase {
     inRange = true;
     toggleAutoRev = true;
   }
-  public void revWhenInRange(){
+  public void revWhenInRange() throws InterruptedException{
      Pose2d currentPos = commandSwerveDrivetrain.getPose2d();
     double currentX = currentPos.getX();
     if(currentX <= lineXValue){
         inRange = true;
         if (toggleAutoRev) {
           shooterSubsystem.run(Constants.ShooterConstants.topShooterRPM,Constants.ShooterConstants.bottomShooterRPM);
-          revingTime += 1;
-          TimeUnit.SECONDS.sleep(0);
-          revingTime += 1;
-          TimeUnit.SECONDS.sleep(0);
-          revingTime += 1;
+          TimeUnit.SECONDS.sleep(4); //TODO: fix this syntax error and figure out the actual amount of time it takes for shooter to rev
+          revingTime += 4;
           //the value of reving time is the amount of seconds since the shooter has started revving (someone please look into these syntax errors i need to sleep)
 
 
@@ -71,6 +68,9 @@ public class AutoRevSubsystem extends SubsystemBase {
     if(currentX <= lineXValue){
       return true;
 
+     }else{
+      return false;
      }
+  
   }
 }
