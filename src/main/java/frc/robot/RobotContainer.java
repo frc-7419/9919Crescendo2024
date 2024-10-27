@@ -99,6 +99,7 @@ public class RobotContainer {
     private PathPlannerAuto threeNoteRightAuto;
     private PathPlannerAuto threeNoteMidAuto;
     private PathPlannerAuto squareAutoTesting;
+    private PathPlannerAuto straightTest;
 
     /**
      * Creates new RobotContainer and configures auton and buttons
@@ -131,6 +132,7 @@ public class RobotContainer {
         threeNoteRightAuto = new PathPlannerAuto("ThreeNoteRight");
         threeNoteMidAuto = new PathPlannerAuto("ThreeNoteMid");
         squareAutoTesting = new PathPlannerAuto("SquareAutoTesting");
+        straightTest = new PathPlannerAuto("StraightTest");
     }
 
     /**
@@ -216,6 +218,7 @@ public class RobotContainer {
         // return twoNoteRightAuto;
         // return threeNoteRightAuto;
         // return squareAutoTesting;
+        //return squareAutoTesting;
         return new RunShooterAuton(shooter, intake);
         // return new TranslateDistance(driveBase, 1, 0);
     }
