@@ -98,6 +98,7 @@ public class RobotContainer {
     private PathPlannerAuto twoNoteRightAuto;
     private PathPlannerAuto threeNoteRightAuto;
     private PathPlannerAuto threeNoteMidAuto;
+    private PathPlannerAuto squareAutoTesting;
 
     /**
      * Creates new RobotContainer and configures auton and buttons
@@ -129,6 +130,7 @@ public class RobotContainer {
         twoNoteRightAuto = new PathPlannerAuto("TwoNoteRight");
         threeNoteRightAuto = new PathPlannerAuto("ThreeNoteRight");
         threeNoteMidAuto = new PathPlannerAuto("ThreeNoteMid");
+        squareAutoTesting = new PathPlannerAuto("SquareAutoTesting");
     }
 
     /**
@@ -136,13 +138,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-driver.getLeftY() * SwerveConstants.MaxSpeed) // Drive
+                drivetrain.applyRequest(() -> drive.withVelocityX(driver.getLeftY() * SwerveConstants.MaxSpeed) // Drive
                                                                                                                  // forward
                                                                                                                  // with
                         // negative Y (forward)
-                        .withVelocityY(-driver.getLeftX() * SwerveConstants.MaxSpeed) // Drive left with negative X
+                        .withVelocityY(driver.getLeftX() * SwerveConstants.MaxSpeed) // Drive left with negative X
                                                                                       // (left)
-                        .withRotationalRate(-driver.getRightX() * SwerveConstants.MaxAngularRate) // Drive
+                        .withRotationalRate(driver.getRightX() * SwerveConstants.MaxAngularRate) // Drive
                                                                                                   // counterclockwise
                                                                                                   // with negative X
                                                                                                   // (left)
@@ -167,10 +169,10 @@ public class RobotContainer {
         /*
          * Back/Start select dynamic/quasistatic, Y/X select forward/reverse direction
          */
-        driver.back().and(driver.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        driver.back().and(driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // driver.back().and(driver.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // driver.back().and(driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         driver.x().whileTrue(
                 drivetrain.applyRequest(
@@ -188,7 +190,7 @@ public class RobotContainer {
         operator.a().whileTrue(new RunShooter(shooter, -ShooterConstants.topShooterRPM, -ShooterConstants.bottomShooterRPM));
         operator.rightBumper()
                 .whileTrue(new RunShooter(shooter, ShooterConstants.topShooterRPM, ShooterConstants.bottomShooterRPM));
-        operator.leftBumper().onTrue(intakeNote);
+        //operator.leftBumper().onTrue(intakeNote);
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -212,7 +214,8 @@ public class RobotContainer {
         // return threeNoteLeftAuto;
         // return twoNoteRightAuto;
         // return threeNoteRightAuto;
-        return threeNoteMidAuto;
+        // return squareAutoTesting;
+        return new RunShooterAuton(shooter, intake);
         // return new TranslateDistance(driveBase, 1, 0);
     }
 

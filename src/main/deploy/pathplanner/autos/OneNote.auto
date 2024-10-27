@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.95,
-      "y": 7.0
+      "x": 1.7275090189278128,
+      "y": 5.54487565115481
     },
     "rotation": 0
   },
@@ -12,9 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "SquarePath"
+            "name": "RunShooterAuton"
           }
         }
       ]

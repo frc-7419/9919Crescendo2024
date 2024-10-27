@@ -2,6 +2,7 @@ package frc.robot.generated;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MountPoseConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -40,7 +41,7 @@ public class TunerConstants {
 
         // The stator current at which the wheels start to slip;
         // This needs to be tuned to your individual robot
-        private static final double kSlipCurrentA = 150.0;
+        private static final double kSlipCurrentA = 100.0;
 
         // Initial configs for the drive and steer motors and the CANcoder; these cannot
         // be null.
@@ -66,7 +67,8 @@ public class TunerConstants {
                                                         .withStatorCurrentLimitEnable(true));
         private static final CANcoderConfiguration cancoderInitialConfigs = new CANcoderConfiguration();
         // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
-        private static final Pigeon2Configuration pigeonConfigs = null;
+        private static final Pigeon2Configuration pigeonConfigs = new Pigeon2Configuration()
+        .withMountPose(new MountPoseConfigs().withMountPoseYaw(180));
 
         // Theoretical free speed (m/s) at 12v applied output;
         // This needs to be tuned to your individual robot
