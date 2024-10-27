@@ -162,3 +162,8 @@ bin/
 *-window.json
 
 .history
+
+ctre_sim/
+networktables.json
+simgui*.json
+*.wpilog

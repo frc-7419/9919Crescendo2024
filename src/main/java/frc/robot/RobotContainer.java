@@ -117,7 +117,7 @@ public class RobotContainer {
      */
     private void registerCommands() {
         NamedCommands.registerCommand("RunIntake", runIntake);
-        NamedCommands.registerCommand("IntakeNote", intakeNote.withTimeout(2));
+        NamedCommands.registerCommand("IntakeNote", new IntakeNote(intake).withTimeout(2));
         NamedCommands.registerCommand("RunShooterAuton", new RunShooterAuton(shooter, intake));
     }
 
@@ -191,7 +191,7 @@ public class RobotContainer {
                 new RunShooter(shooter, -ShooterConstants.topShooterRPM, -ShooterConstants.bottomShooterRPM));
         operator.rightBumper()
                 .whileTrue(new RunShooter(shooter, ShooterConstants.topShooterRPM, ShooterConstants.bottomShooterRPM));
-        // operator.leftBumper().onTrue(intakeNote);
+        operator.leftBumper().onTrue(intakeNote);
         operator.b().whileTrue(new RunShooter(shooter, 6500, 2000));
         drivetrain.registerTelemetry(logger::telemeterize);
     }
