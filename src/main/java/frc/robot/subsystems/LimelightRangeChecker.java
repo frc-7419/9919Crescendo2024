@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +28,7 @@ public class LimelightRangeChecker extends SubsystemBase {
 
     public boolean speakerFiducialInRange(int targetRange) {
         LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight"); //getting the json data from limelight
-        
+        Pose2d botPose = LimelightHelpers.getBotPose2d("limelight");
         if (llresults == null || llresults.targets_Fiducials == null) { //making sure its not null to prevent code from breaking robot
             SmartDashboard.putString("Currently", "No Limelight results found");
             System.out.println("NOTHING FOUND :-(");
