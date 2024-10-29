@@ -12,17 +12,19 @@ import frc.robot.LimelightHelpers.RawFiducial;
 public class LimelightRangeChecker extends SubsystemBase {
     private final int blueSpeakerFiducialID = 7;
     private final int redSpeakerFiducialID = 4;
-    private final int TARGET_HEIGHT = 3; //3 feet(need to test)
-    private final int LIMELIGHT_HEIGHT = 1; //1 feet off the ground(need to test as well)
+    private final double limelightMountAngleDegrees = 25.0; 
+    private double limelightLensHeightInches = 20.0; 
+    private double goalHeightInches = 60.0; 
 
     public LimelightRangeChecker() {}
 
     public double getDistance(LimelightHelpers.LimelightTarget_Fiducial fiducial) {
-        Rotation2d angleToGoal = Rotation2d.fromDegrees(-fiducial.ty);//could be -fiducial.ty, since angle should be relative to the robot, not to the april tag
+        double targetOffsetAngle_Vertical = fiducial.ty;
         
-        double distance = (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / angleToGoal.getTan(); // math formula that i found on docmentation 
-        SmartDashboard.putNumber("Distance to Fiducial " + fiducial.fiducialID, distance);
-        return distance;
+        double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+        double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+        return distanceFromLimelightToGoalInches;
     }
     
 
