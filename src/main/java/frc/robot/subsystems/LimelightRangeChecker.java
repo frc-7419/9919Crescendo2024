@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
@@ -30,8 +33,10 @@ public class LimelightRangeChecker extends SubsystemBase {
         return LimelightHelpers.getTX("limelight");
     }
     public boolean speakerFiducialInRange(int targetRange) {
+        Optional<Alliance> ally = DriverStation.getAlliance();
         LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight"); //getting the json data from limelight
         Pose2d botPose = LimelightHelpers.getBotPose2d("limelight");
+        
         if (llresults == null || llresults.targets_Fiducials == null) { //making sure its not null to prevent code from breaking robot
             SmartDashboard.putString("Currently", "No Limelight results found");
             System.out.println("NOTHING FOUND :-(");
@@ -43,8 +48,8 @@ public class LimelightRangeChecker extends SubsystemBase {
             System.out.println(llresults.targets_Fiducials.length);
             for (LimelightHelpers.LimelightTarget_Fiducial fiducial : llresults.targets_Fiducials) {
                 double distance = getDistance(fiducial);//calls getdistance function with fiducial as argument
-                if ((DriverStation.getAlliance().toString().equalsIgnoreCase("blue") && fiducial.fiducialID == blueSpeakerFiducialID) ||
-                    (DriverStation.getAlliance().toString().equalsIgnoreCase("red") && fiducial.fiducialID == redSpeakerFiducialID)) {
+                if ((ally.get() == Alliance.Blue && fiducial.fiducialID == blueSpeakerFiducialID) ||
+                    (ally.get() == Alliance.Red && fiducial.fiducialID == redSpeakerFiducialID)) {
     
                     SmartDashboard.putString("Currently", "Speaker fiducial detected at distance: " + distance);
                     if (distance <= targetRange) {
