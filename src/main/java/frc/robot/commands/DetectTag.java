@@ -29,6 +29,7 @@ public class DetectTag extends Command {
   public void execute() {
     speakerInRange = limelightRangeChecker.speakerFiducialInRange(10); //this still needs testing to see what shooting range is
     SmartDashboard.putBoolean("Speaker in range: ", speakerInRange);
+    SmartDashboard.putNumber("Limelight TX", limelightRangeChecker.getTX());
   }
 
   // Called once the command ends or is interrupted.

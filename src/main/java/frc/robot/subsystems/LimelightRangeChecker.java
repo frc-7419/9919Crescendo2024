@@ -20,14 +20,15 @@ public class LimelightRangeChecker extends SubsystemBase {
 
     public double getDistance(LimelightHelpers.LimelightTarget_Fiducial fiducial) {
         double targetOffsetAngle_Vertical = fiducial.ty;
-        
         double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
         return distanceFromLimelightToGoalInches;
     }
     
-
+    public double getTX(){
+        return LimelightHelpers.getTX("limelight");
+    }
     public boolean speakerFiducialInRange(int targetRange) {
         LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight"); //getting the json data from limelight
         Pose2d botPose = LimelightHelpers.getBotPose2d("limelight");
@@ -62,6 +63,5 @@ public class LimelightRangeChecker extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
     }
 }
